@@ -16,3 +16,8 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
+
+Route::post('/refresh/{token}/{env_id}', function($token, $env_id)
+{
+    echo $token . ' ' . $env_id;
+});

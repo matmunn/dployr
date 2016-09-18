@@ -29,6 +29,11 @@ class User extends Authenticatable
 
     public function repositories()
     {
-        return $this->hasMany('App\Models\Respository');
+        return $this->hasMany('App\Models\Repository');
+    }
+
+    public function plan()
+    {
+        return $this->belongsTo('App\Models\Plan');
     }
 }

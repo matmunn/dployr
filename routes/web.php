@@ -12,5 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
+});
+
+Auth::routes();
+
+Route::get('/logout', 'Auth\LoginController@logout');
+
+Route::get('/home', 'HomeController@index');
+Route::get('myaccount', 'HomeController@dashboard');
+
+Route::group(['prefix' => 'repository'], function()
+{
+    Route::get('/', 'RepositoryController@list');
+    Route::get('new', 'RepositoryController@new');
+    Route::get('{repo}/manage', 'RepositoryController@manage');
 });

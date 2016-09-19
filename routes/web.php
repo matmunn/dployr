@@ -26,5 +26,6 @@ Route::group(['prefix' => 'repository'], function()
 {
     Route::get('/', 'RepositoryController@list');
     Route::get('new', 'RepositoryController@new');
+    Route::post('new', 'RepositoryController@save');
     Route::get('{repo}/manage', 'RepositoryController@manage');
 });

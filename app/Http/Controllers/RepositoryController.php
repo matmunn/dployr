@@ -27,4 +27,20 @@ class RepositoryController extends Controller
         
         return view('repository.manage');
     }
+
+    public function new()
+    {
+        return view('repository.new');
+    }
+
+    public function save(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string',
+            'url' => 'required|string'
+        ]);
+        $repo = Auth::user()->repositories()->create(['name' => $request->name, 'url' => $request->url]);
+        $repo->generateSecretKey();
+        dd($repo->secret_key);
+    }
 }

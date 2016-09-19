@@ -7,7 +7,7 @@
             <!--   Icon Section   -->
             <div class="row">
                 <div class="col s12 m4">
-                    <a class="waves-effect waves-light btn">Connect Repository</a>
+                    <a class="waves-effect waves-light btn" href="{{ action('RepositoryController@new') }}">Connect Repository</a>
                 </div>
             </div>
             <div class="row">

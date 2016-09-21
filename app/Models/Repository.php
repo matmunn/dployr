@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Repository extends Model
 {
@@ -17,6 +18,11 @@ class Repository extends Model
     {
         $this->secret_key = Hash::make($this->user->name . $this->name . microtime());
         $this->save();
+    }
+
+    public function getPrivateKeyPathAttribute()
+    {
+        return storage_path('app/keys/repos/'.$this->id);
     }
 
     public function user()

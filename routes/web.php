@@ -28,4 +28,6 @@ Route::group(['prefix' => 'repository'], function()
     Route::get('new', 'RepositoryController@new');
     Route::post('new', 'RepositoryController@save');
     Route::get('{repo}/manage', 'RepositoryController@manage');
+    Route::get('{repo}/details', 'RepositoryController@details');
+    Route::get('{repo}/clone', 'RepositoryController@clone');
 });

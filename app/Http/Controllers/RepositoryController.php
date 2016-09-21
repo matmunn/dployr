@@ -6,6 +6,7 @@ use Storage;
 use App\Http\Requests;
 use phpseclib\Crypt\RSA;
 use App\Models\Repository;
+use GitWrapper\GitWrapper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,14 +55,41 @@ class RepositoryController extends Controller
         $rsa->setPublicKeyFormat(RSA::PUBLIC_FORMAT_OPENSSH);
         $keys = $rsa->createKey();
         $pubKey = $keys['publickey'];
-        $pubKey = str_replace('phpseclib-generated-key', 'Dployr@'.$repo->name, $pubKey);
+        $pubKey = str_replace('phpseclib-generated-key', $repo->name.'@Dployr', $pubKey);
         $repo->public_key = $pubKey;
         Auth::user()->repositories()->save($repo);
         $repo->generateSecretKey();
 
-        Storage::put('keys/repo/'.$repo->id, $keys['privatekey']);
+        Storage::put($repo->privateKeyPath, $keys['privatekey']);
+        chmod($repo->privateKeyPath, 600);
 
-        dd($repo);
+        // dd($repo);
+        return redirect()->action('RepositoryController@details', $repo);
         // $repo->save();
+    }
+
+    public function details($repo)
+    {
+        if(!$repo = Auth::user()->repositories->find($repo))
+        {
+            return redirect()->action('HomeController@dashboard');
+        }
+        // dd(Storage::url('keys/repo/'.$repo->id));
+        return view('repository.details')->with(compact('repo'));
+    }
+
+    public function clone($repo)
+    {
+        if(!$repo = Auth::user()->repositories->find($repo))
+        {
+            return redirect()->action('HomeController@dashboard');
+        }
+
+        Storage::makeDirectory('repos/'.$repo->id);
+
+        $wrapper = new GitWrapper('/usr/bin/git');
+        $wrapper->setPrivateKey($repo->privateKeyPath);
+        $git = $wrapper->clone($repo->url, storage_path('app/repos/'.$repo->id));
+        // dd();
     }
 }

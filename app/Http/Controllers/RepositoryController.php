@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Storage;
 use App\Http\Requests;
+use phpseclib\Crypt\RSA;
+use App\Models\Repository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,8 +42,26 @@ class RepositoryController extends Controller
             'name' => 'required|string',
             'url' => 'required|string'
         ]);
-        $repo = Auth::user()->repositories()->create(['name' => $request->name, 'url' => $request->url]);
+
+        if($repo = Auth::user()->repositories->where('url', $request->url)->first())
+        {
+            return redirect()->action('RepositoryController@new')->withInput()->with('error', 'That repository URL already exists');
+        }
+
+        $repo = new Repository(['name' => $request->name, 'url' => $request->url]);
+
+        $rsa = new RSA();
+        $rsa->setPublicKeyFormat(RSA::PUBLIC_FORMAT_OPENSSH);
+        $keys = $rsa->createKey();
+        $pubKey = $keys['publickey'];
+        $pubKey = str_replace('phpseclib-generated-key', 'Dployr@'.$repo->name, $pubKey);
+        $repo->public_key = $pubKey;
+        Auth::user()->repositories()->save($repo);
         $repo->generateSecretKey();
-        dd($repo->secret_key);
+
+        Storage::put('keys/repo/'.$repo->id, $keys['privatekey']);
+
+        dd($repo);
+        // $repo->save();
     }
 }

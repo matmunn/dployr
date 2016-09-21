@@ -3,7 +3,7 @@
 @section('content')
 <div class="section">
     <div class="row">
-        <form class="col s12" role="form" method="POST" action="{{ url('/login') }}">
+        <form class="col s6 offset-s3" role="form" method="POST" action="{{ url('/login') }}">
             {{ csrf_field() }}
             <div class="row">
                 <div class="input-field">

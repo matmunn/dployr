@@ -30,4 +30,5 @@ Route::group(['prefix' => 'repository'], function()
     Route::get('{repo}/manage', 'RepositoryController@manage');
     Route::get('{repo}/details', 'RepositoryController@details');
     Route::get('{repo}/clone', 'RepositoryController@clone');
+    Route::get('{repo}/branches', 'RepositoryController@branches');
 });

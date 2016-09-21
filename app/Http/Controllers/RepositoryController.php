@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Auth;
 
 class RepositoryController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     //
     public function list()
     {
@@ -87,9 +92,18 @@ class RepositoryController extends Controller
 
         Storage::makeDirectory('repos/'.$repo->id);
 
-        $wrapper = new GitWrapper('/usr/bin/git');
-        $wrapper->setPrivateKey($repo->privateKeyPath);
-        $git = $wrapper->clone($repo->url, storage_path('app/repos/'.$repo->id));
-        // dd();
+        $git = $repo->getGitInstance()->clone($repo->url, $repo->repositoryPath);
+    }
+
+    public function branches($repo)
+    {
+        if(!$repo = Auth::user()->repositories->find($repo))
+        {
+            return redirect()->action('HomeController@dashboard');
+        }
+
+        $branches = $repo->branchList;
+
+        dd($branches);
     }
 }

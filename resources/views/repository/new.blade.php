@@ -3,13 +3,11 @@
 @section('fill')
     <div class="container">
         <div class="section">
-
-            <!--   Icon Section   -->
-{{--             <div class="row">
-                <div class="col s12 m4">
-                    <a class="waves-effect waves-light btn" href="{{ action('RepositoryController@new') }}">Connect Repository</a>
+            <div class="row">
+                <div class="col s12">
+                    <h4>Connect New Repository</h4>
                 </div>
-            </div> --}}
+            </div>
             <div class="row">
                 <div class="col s12 m12">
                     <form action="{{ action('RepositoryController@save') }}" method="POST">

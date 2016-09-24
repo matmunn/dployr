@@ -29,12 +29,12 @@ class RepositoryController extends Controller
 
     public function manage($repo)
     {
-        if(!$repo = Auth::user()->repositories()->find($repo))
+        if(!$repo = Auth::user()->repositories()->where('id', $repo)->with('environments')->first())
         {
             return "The repo couldn't be found for this user";
         }
         
-        return view('repository.manage');
+        return view('repository.manage')->with(compact('repo'));
     }
 
     public function new()
@@ -60,13 +60,13 @@ class RepositoryController extends Controller
         $rsa->setPublicKeyFormat(RSA::PUBLIC_FORMAT_OPENSSH);
         $keys = $rsa->createKey();
         $pubKey = $keys['publickey'];
-        $pubKey = str_replace('phpseclib-generated-key', $repo->name.'@Dployr', $pubKey);
+        $pubKey = str_replace('phpseclib-generated-key', str_replace(" ", "", $repo->name).'@Dployr', $pubKey);
         $repo->public_key = $pubKey;
         Auth::user()->repositories()->save($repo);
         $repo->generateSecretKey();
 
-        Storage::put($repo->privateKeyPath, $keys['privatekey']);
-        chmod($repo->privateKeyPath, 600);
+        Storage::put($repo->privateKeyPath(false), $keys['privatekey']);
+        chmod($repo->privateKeyPath(), 0600);
 
         // dd($repo);
         return redirect()->action('RepositoryController@details', $repo);
@@ -102,8 +102,33 @@ class RepositoryController extends Controller
             return redirect()->action('HomeController@dashboard');
         }
 
-        $branches = $repo->branchList;
+        $branches = $repo->getBranches('');
 
         dd($branches);
+    }
+
+    public function changedFiles($repo)
+    {
+        if(!$repo = Auth::user()->repositories->find($repo))
+        {
+            return redirect()->action('HomeController@dashboard');
+        }
+
+        $branches = $repo->changedFiles();
+
+        dd($branches);
+    }
+
+    public function testing($repo)
+    {
+        if(!$repo = Auth::user()->repositories->find($repo))
+        {
+            return redirect()->action('HomeController@dashboard');
+        }
+
+        $branches = $repo->getCurrentBranch();
+        var_dump($branches);
+        $repo->changeBranch('site');
+        dd($repo->getCurrentBranch());
     }
 }

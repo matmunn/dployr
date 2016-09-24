@@ -23,4 +23,5 @@ require('materialize-css/dist/js/materialize.js');
 
 $(document).ready(function()
 {
+    $('select').material_select();
 });

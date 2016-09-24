@@ -1,12 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Environment extends Model
+class Deployment extends Model
 {
     //
+
     public function repository()
     {
         return $this->belongsTo('App\Models\Repository');

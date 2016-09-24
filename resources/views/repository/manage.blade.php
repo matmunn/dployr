@@ -6,12 +6,12 @@
 
             <div class="row">
                 <div class="col s12">
-                    <h4>Your Repositories</h4>
+                    <h4>{{ $repo->name }}</h4>
                 </div>
             </div>
             <div class="row">
                 <div class="col s12 right-align">
-                    <a class="waves-effect waves-light btn" href="{{ action('RepositoryController@new') }}">Connect Repository</a>
+                    <a class="waves-effect waves-light btn" href="{{ action('EnvironmentController@new', $repo->id) }}">New Environment</a>
                 </div>
             </div>
             <div class="row">
@@ -20,25 +20,25 @@
                         <thead>
                             <tr>
                                 <th>
-                                    Repository Name
+                                    Environment Name
                                 </th>
                                 <th>
-                                    Repository URL
+                                    Environment Type
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if(count($repositories) > 0)
-                                @foreach($repositories as $repository)
+                            @if(count($repo->environments) > 0)
+                                @foreach($repo->environments as $environment)
                                     <tr>
-                                        <td><a href="{{ action('RepositoryController@manage', $repository->id) }}">{{ $repository->name }}</a></td>
-                                        <td>{{ $repository->url }}</td>
+                                        <td><a href="{{ action('EnvironmentController@manage', $environment->id) }}">{{ $environment->name }}</a></td>
+                                        <td>{{ $environment->type }}</td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
                                     <td colspan="2" class="center-align">
-                                        You have no repositories
+                                        This repository has no environments
                                     </td>
                                 </tr>
                             @endif

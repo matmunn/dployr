@@ -5,28 +5,27 @@
     <div class="section">
         <div class="row">
             <div class="col s12">
-                <h4>Create New Environment</h4>
+                <h4>Create New FTP Server</h4>
             </div>
         </div>
         <div class="row">
             <div class="col s12 m12">
-                <form action="{{ action('EnvironmentController@save') }}" method="POST">
+                <form action="{{ action('ServerController@save') }}" method="POST">
                     {{ csrf_field() }}
-                    <input type="hidden" value="{{ $repo->id }}" name="repo" />
                     <div class="input-field">
-                        <input type="text" class="validate" name="name">
-                        <label>Environment name</label>
+                        <input type="text" value="{{ $env->name }}" disabled>
+                        <label class="active">Environment name</label>
                     </div>
                     <div class="input-field">
-                        <select name="type">
-                            <option selected disabled>--</option>
-                            <option value="ftp">FTP</option>
+                        <select name="type" class="browser-default">
+                            <option value="" selected disabled>--</option>
+                            <option value="FTP">FTP</option>
                         </select>
                         <label>Environment Type</label>
                     </div>
                     <div class="input-field">
-                        <select name="branch">
-                            <option selected disabled>--</option>
+                        <select name="branch"  class="browser-default">
+                            <option value="" selected disabled>--</option>
                             @foreach($repo->getBranches('remote') as $branch)
                                 <option value="{{ $branch }}">{{ $branch}}</option>
                             @endforeach
@@ -39,5 +38,4 @@
         </div>
     </div>
 </div>
-
 @endsection

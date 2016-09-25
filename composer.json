@@ -9,7 +9,8 @@
         "laravel/framework": "5.3.*",
         "doctrine/dbal": "^2.5",
         "phpseclib/phpseclib": "^2.0",
-        "cpliakas/git-wrapper": "^1.7"
+        "cpliakas/git-wrapper": "^1.7",
+        "touki/ftp": "^1.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

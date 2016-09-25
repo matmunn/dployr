@@ -9,12 +9,16 @@ class Environment extends Model
     //
     protected $fillable = [
         'name',
-        'type',
         'branch',
     ];
 
     public function repository()
     {
         return $this->belongsTo('App\Models\Repository');
+    }
+
+    public function servers()
+    {
+        return $this->hasMany('App\Models\Server');
     }
 }

@@ -6,12 +6,22 @@
 
             <div class="row">
                 <div class="col s12">
-                    <h4>{{ $repo->name }}</h4>
+                    <h4>{{ $env->repository->name }} - {{ $env->name }}</h4>
                 </div>
             </div>
             <div class="row">
                 <div class="col s12 right-align">
-                    <a class="waves-effect waves-light btn" href="{{ action('EnvironmentController@new', $repo->id) }}">New Environment</a>
+                    {{-- <a class="waves-effect waves-light btn" href="{{ action('EnvironmentController@new', $env->id) }}">New Server</a> --}}
+                    <div class="fixed-action-btn horizontal">
+                        <a class="btn">
+                            New Server
+                        </a>
+                        <ul>
+                            <li>
+                                <a class="btn-floating red" href="{{ action('ServerController@new', [$env->id, 'ftp']) }}">FTP</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -20,31 +30,25 @@
                         <thead>
                             <tr>
                                 <th>
-                                    Environment Name
+                                    Server Name
                                 </th>
                                 <th>
-                                    Environment Branch
-                                </th>
-                                <th>
-                                    Number of servers
+                                    Server Type - URL
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if(count($repo->environments) > 0)
-                                @foreach($repo->environments as $environment)
+                            @if(count($env->servers) > 0)
+                                @foreach($env->servers as $server)
                                     <tr>
-                                        <td><a href="{{ action('EnvironmentController@manage', $environment->id) }}">{{ $environment->name }}</a></td>
-                                        <td>
-                                            {{ $environment->branch }}
-                                        </td>
+                                        <td><a href="{{ action('ServerController@manage', $server->id) }}">{{ $server->name }}</a></td>
                                         <td>{{ $environment->servers->count() }}</td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
                                     <td colspan="2" class="center-align">
-                                        This repository has no environments
+                                        This environment has no servers
                                     </td>
                                 </tr>
                             @endif

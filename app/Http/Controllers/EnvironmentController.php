@@ -14,6 +14,16 @@ class EnvironmentController extends Controller
         $this->middleware('auth');
     }
 
+    public function manage($environment)
+    {
+        if(!$env = Auth::user()->environments->find($environment))
+        {
+            dd("Couldn't find the environment for the logged in user.");
+        }
+
+        return view('environment.manage')->with(compact('env'));
+    }
+
     public function new($repo)
     {
         if(!$repo = Auth::user()->repositories->find($repo))
@@ -26,8 +36,6 @@ class EnvironmentController extends Controller
 
     public function save(Request $request)
     {
-        // dd($request);
-
         $this->validate($request, [
             'name' => 'required|string',
             'type' => 'required',

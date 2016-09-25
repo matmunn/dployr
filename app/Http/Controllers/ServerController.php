@@ -22,6 +22,11 @@ class ServerController extends Controller
             dd('No matching environment could be found for this user.');
         }
 
-        return view('server.new.'.$server)->with(compact('env', 'server'));
+        return view('server.new.'.$server)->with(compact('environment', 'server'));
+    }
+
+    public function save(Request $request)
+    {
+        dd($request);
     }
 }

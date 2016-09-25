@@ -32,6 +32,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Repository');
     }
 
+    public function environments()
+    {
+        return $this->hasManyThrough('App\Models\Environment', 'App\Models\Repository');
+    }
+
     public function plan()
     {
         return $this->belongsTo('App\Models\Plan');

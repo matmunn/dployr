@@ -7,8 +7,7 @@
  * code may be modified to fit the specific needs of your application.
  */
 
-window.$ = window.jQuery = require('jquery.2');
-window.$.velocity = window.jQuery.velocity = require('materialize-css/js/velocity.min.js');
+// window.$ = window.jQuery = require('jquery.2');
 // require('bootstrap-sass');
 
 // /**

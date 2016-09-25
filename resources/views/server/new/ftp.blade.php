@@ -12,25 +12,22 @@
             <div class="col s12 m12">
                 <form action="{{ action('ServerController@save') }}" method="POST">
                     {{ csrf_field() }}
+                    <input type="hidden" name="type" value="ftp">
                     <div class="input-field">
-                        <input type="text" value="{{ $env->name }}" disabled>
-                        <label class="active">Environment name</label>
+                        <input type="text" name="ul" value="{{ old('url') }}">
+                        <label>Server URL</label>
                     </div>
                     <div class="input-field">
-                        <select name="type" class="browser-default">
-                            <option value="" selected disabled>--</option>
-                            <option value="FTP">FTP</option>
-                        </select>
-                        <label>Environment Type</label>
+                        <input type="text" name="user" value="{{ old('user') }}">
+                        <label>FTP Username</label>
                     </div>
                     <div class="input-field">
-                        <select name="branch"  class="browser-default">
-                            <option value="" selected disabled>--</option>
-                            @foreach($repo->getBranches('remote') as $branch)
-                                <option value="{{ $branch }}">{{ $branch}}</option>
-                            @endforeach
-                        </select>
-                        <label>Branch</label>
+                        <input type="password" name="password">
+                        <label>FTP Password</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" name="path">
+                        <label>FTP Path</label>
                     </div>
                     <input type="submit" class="btn green" value="Save">
                 </form>

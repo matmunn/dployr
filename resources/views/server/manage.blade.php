@@ -6,7 +6,7 @@
 
             <div class="row">
                 <div class="col s12">
-                    <h4>{{ $env->repository->name }} - {{ $env->name }}</h4>
+                    <h4>{{ $server->name }} ({{ strtoupper($server->type) }}) - {{ $env->name }}</h4>
                 </div>
             </div>
             <div class="row">
@@ -41,7 +41,7 @@
                             @if(count($env->servers) > 0)
                                 @foreach($env->servers as $server)
                                     <tr>
-                                        <td><a href="{{ action('ServerController@manage', $server) }}">{{ $server->name }}</a></td>
+                                        <td><a href="#">{{ $server->name }}</a></td>
                                         <td>{{ strtoupper($server->type) }} - {{ $server->server_name }}</td>
                                     </tr>
                                 @endforeach

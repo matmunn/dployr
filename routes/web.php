@@ -46,4 +46,5 @@ Route::group(['prefix' => 'server'], function()
 {
     Route::get('{environment}/{server}/new', 'ServerController@new');
     Route::post('save', 'ServerController@save');
+    Route::get('{server}/manage', 'ServerController@manage');
 });

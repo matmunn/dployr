@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -9,15 +10,23 @@ class Server extends Model
 {
     //
     use SoftDeletes;
+    protected $fillable = [
+        'name',
+        'type',
+        'server_name',
+        'server_username',
+        'server_password',
+        'server_path',
+    ];
 
     public function setServerNameAttribute($value)
     {
-        return Crypt::encrypt($value);
+        $this->attributes['server_name'] = Crypt::encrypt($value);
     }
 
-    public function getServerNameAttribute()
+    public function getServerNameAttribute($value)
     {
-        return Crypt::decrypt($this->serverName);
+        return Crypt::decrypt($value);
     }
 
     public function environment()

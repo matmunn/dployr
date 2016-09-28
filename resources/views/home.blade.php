@@ -62,7 +62,7 @@
 
 @section('content')
     @if(Auth::user())
-        <nav class="green lighten-2" role="navigation">
+        <nav class="indigo darken-2" role="navigation">
             <div class="nav-wrapper container">
                 <ul class="hide-on-med-and-down">
                     <li><a href="{{ action('RepositoryController@list') }}">Repositories</a></li>

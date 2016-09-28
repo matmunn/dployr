@@ -31,11 +31,13 @@
         <script src="{{ elixir('js/app.js') }}"></script>
     </head>
 
-    <body>
+    <body class="indigo lighten-5">
 
-    <nav class="green lighten-1" role="navigation">
+    <nav class="indigo darken-4" role="navigation">
         <div class="nav-wrapper container">
-            <a id="logo-container" href="/" class="brand-logo">dployr</a>
+            <a id="logo-container" href="/" class="brand-logo">
+                <img src="/img/logo.svg" alt="dployr" class="logo">
+            </a>
             <ul class="right hide-on-med-and-down">
                 @if(Auth::user())
                     <li
@@ -53,7 +55,7 @@
 
     @yield('content')
 
-    <footer class="page-footer green lighten-2">
+    <footer class="page-footer indigo darken-3">
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">

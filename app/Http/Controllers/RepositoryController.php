@@ -83,17 +83,17 @@ class RepositoryController extends Controller
         return view('repository.details')->with(compact('repo'));
     }
 
-    public function clone($repo)
-    {
-        if(!$repo = Auth::user()->repositories->find($repo))
-        {
-            return redirect()->action('HomeController@dashboard');
-        }
+    // public function clone($repo)
+    // {
+    //     if(!$repo = Auth::user()->repositories->find($repo))
+    //     {
+    //         return redirect()->action('HomeController@dashboard');
+    //     }
 
-        Storage::makeDirectory('repos/'.$repo->id);
+    //     Storage::makeDirectory('repos/'.$repo->id);
 
-        $git = $repo->getGitInstance()->clone($repo->url, $repo->repositoryPath);
-    }
+    //     $git = $repo->getGitInstance()->clone($repo->url, $repo->repositoryPath);
+    // }
 
     public function branches($repo)
     {

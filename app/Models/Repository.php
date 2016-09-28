@@ -9,7 +9,17 @@ use Illuminate\Support\Facades\Storage;
 
 class Repository extends Model
 {
-    //
+    /**
+     *
+     * Repository Statuses
+     * 
+     * 1 = Idle
+     * 2 = Initialising
+     * 4 = Updating
+     * 8 = Deploying
+     * 16 = Error
+     *
+     */
     protected $fillable = [
         'name',
         'url',

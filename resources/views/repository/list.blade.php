@@ -25,6 +25,9 @@
                                 <th>
                                     Repository URL
                                 </th>
+                                <th style="width: 15%">
+                                    
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -33,11 +36,28 @@
                                     <tr>
                                         <td><a href="{{ action('RepositoryController@manage', $repository->id) }}">{{ $repository->name }}</a></td>
                                         <td>{{ $repository->url }}</td>
+                                        <td>
+                                            @if($repository->status & 2)
+                                                Initialising 
+                                                <div class="sk-folding-cube">
+                                                    <div class="sk-cube1 sk-cube"></div>
+                                                    <div class="sk-cube2 sk-cube"></div>
+                                                    <div class="sk-cube4 sk-cube"></div>
+                                                    <div class="sk-cube3 sk-cube"></div>
+                                                </div>
+                                            @endif
+                                            @if($repository->status & 16)
+                                                <span class="red-text">
+                                                    <i class="material-icons" style="vertical-align: bottom">clear</i>
+                                                    Error
+                                                </span>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="2" class="center-align">
+                                    <td colspan="3" class="center-align">
                                         You have no repositories
                                     </td>
                                 </tr>

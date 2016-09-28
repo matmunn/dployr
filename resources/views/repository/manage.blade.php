@@ -49,7 +49,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="2" class="center-align">
+                                    <td colspan="3" class="center-align">
                                         This repository has no environments
                                     </td>
                                 </tr>

@@ -8,6 +8,7 @@ use phpseclib\Crypt\RSA;
 use App\Models\Repository;
 use GitWrapper\GitWrapper;
 use Illuminate\Http\Request;
+use App\Jobs\CloneRepository;
 use Illuminate\Support\Facades\Auth;
 
 class RepositoryController extends Controller
@@ -68,8 +69,13 @@ class RepositoryController extends Controller
         Storage::put($repo->privateKeyPath(false), $keys['privatekey']);
         chmod($repo->privateKeyPath(), 0600);
 
+        $repo->status = 2;
+        $repo->save();
+
+        dispatch(new CloneRepository($repo));
+
         // dd($repo);
-        return redirect()->action('RepositoryController@details', $repo);
+        return redirect()->action('RepositoryController@list');
         // $repo->save();
     }
 

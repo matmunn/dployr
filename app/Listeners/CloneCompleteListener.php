@@ -27,5 +27,8 @@ class CloneCompleteListener
     public function handle(CloneComplete $event)
     {
         //
+        $repo = $event->repository;
+        $repo->status = 1;
+        $repo->save();
     }
 }

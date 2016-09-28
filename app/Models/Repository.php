@@ -33,8 +33,9 @@ class Repository extends Model
 
     public function getGitInstance()
     {
-        $wrapper = new GitWrapper('/usr/bin/git');
+        $wrapper = new GitWrapper(env('GIT_BINARY', '/usr/bin/git'));
         $wrapper->setPrivateKey($this->privateKeyPath());
+        // dd($wrapper);
         return $wrapper;
     }
 

@@ -31,6 +31,9 @@ Route::get('/refresh/{token}', function($token)
         return response()->json("The specified refresh key is invalid.", 400);
     }
 
+    $repo->status = 4;
+    $repo->save();
+
     dispatch(new UpdateRepository($repo));
 
     return response()->json("success", 200);

@@ -10,14 +10,20 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s12 right-align">
-                    <a class="waves-effect waves-light btn indigo accent-2" href="{{ action('EnvironmentController@new', $repo->id) }}">New Environment</a>
+                <div class="col s12 m12">
+                    Deploy Key:<br />
+                    <pre>{{ $repo->public_key }}</pre>
                 </div>
             </div>
             <div class="row">
                 <div class="col s12 m12">
                     Web hook refresh URL:<br />
                     <pre>{{ env('APP_URL') }}/api/refresh/{{ e($repo->secret_key) }}</pre>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 right-align">
+                    <a class="waves-effect waves-light btn indigo accent-2" href="{{ action('EnvironmentController@new', $repo->id) }}">New Environment</a>
                 </div>
             </div>
             <div class="row">

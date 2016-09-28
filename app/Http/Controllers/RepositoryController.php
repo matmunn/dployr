@@ -79,15 +79,15 @@ class RepositoryController extends Controller
         // $repo->save();
     }
 
-    public function details($repo)
-    {
-        if(!$repo = Auth::user()->repositories->find($repo))
-        {
-            return redirect()->action('HomeController@dashboard');
-        }
-        // dd(Storage::url('keys/repo/'.$repo->id));
-        return view('repository.details')->with(compact('repo'));
-    }
+    // public function details($repo)
+    // {
+    //     if(!$repo = Auth::user()->repositories->find($repo))
+    //     {
+    //         return redirect()->action('HomeController@dashboard');
+    //     }
+    //     // dd(Storage::url('keys/repo/'.$repo->id));
+    //     return view('repository.details')->with(compact('repo'));
+    // }
 
     // public function clone($repo)
     // {

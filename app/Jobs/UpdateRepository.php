@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Jobs\FileDeployer;
 use App\Models\Repository;
 use Illuminate\Bus\Queueable;
 use App\Events\UpdateComplete;
@@ -53,6 +54,11 @@ class UpdateRepository implements ShouldQueue
             {
                 preg_match('/([ACDMR]{1})\s(.+)/', $file, $matches);
                 $changedFiles[] = [$matches[1], $matches[2]];
+            }
+
+            if(!empty($changedFiles))
+            {
+                dispatch(new FileDeployer($environment, $files));
             }
         }
 

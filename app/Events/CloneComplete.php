@@ -14,7 +14,7 @@ class CloneComplete
 {
     use InteractsWithSockets, SerializesModels;
 
-    protected $repository;
+    public $repository;
 
     /**
      * Create a new event instance.

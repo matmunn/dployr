@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Jobs\FtpDeployer;
 use App\Models\Environment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -20,7 +21,7 @@ class FileDeployer implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Environment $env, $files)
+    public function __construct(Environment $env, array $files)
     {
         //
         $this->files = $files;
@@ -35,9 +36,15 @@ class FileDeployer implements ShouldQueue
     public function handle()
     {
         //
-        foreach($this->environment->servers as $server)
+        if($this->environment->deploy_mode === 2)
         {
-            
+            foreach($this->environment->servers as $server)
+            {
+                if($server->type == "ftp")
+                {
+                    dispatch(new FtpDeployer($server, $this->files));
+                }
+            }
         }
     }
 }

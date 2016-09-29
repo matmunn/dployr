@@ -31,14 +31,14 @@
         <script src="{{ elixir('js/app.js') }}"></script>
     </head>
 
-    <body class="indigo lighten-5">
+    <body>
 
-    <nav class="indigo darken-4" role="navigation">
+    <nav class="nav-header-part" role="navigation">
         <div class="nav-wrapper container">
             <a id="logo-container" href="/" class="brand-logo">
                 <img src="/img/logo.svg" alt="dployr" class="logo">
             </a>
-            <ul class="right hide-on-med-and-down">
+            <ul class="right black-text">
                 @if(Auth::user())
                     <li
                         @if(request()->is('myaccount'))

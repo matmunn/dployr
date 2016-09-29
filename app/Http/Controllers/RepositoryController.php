@@ -22,8 +22,6 @@ class RepositoryController extends Controller
     public function list()
     {
         $repositories = Auth::user()->repositories;
-        // dd($repositories);
-        // dd(count($repositories));
 
         return view('repository.list')->with(compact('repositories'));
     }
@@ -74,9 +72,7 @@ class RepositoryController extends Controller
 
         dispatch(new CloneRepository($repo));
 
-        // dd($repo);
         return redirect()->action('RepositoryController@list');
-        // $repo->save();
     }
 
     // public function details($repo)
@@ -101,40 +97,40 @@ class RepositoryController extends Controller
     //     $git = $repo->getGitInstance()->clone($repo->url, $repo->repositoryPath);
     // }
 
-    public function branches($repo)
-    {
-        if(!$repo = Auth::user()->repositories->find($repo))
-        {
-            return redirect()->action('HomeController@dashboard');
-        }
+    // public function branches($repo)
+    // {
+    //     if(!$repo = Auth::user()->repositories->find($repo))
+    //     {
+    //         return redirect()->action('HomeController@dashboard');
+    //     }
 
-        $branches = $repo->getBranches('');
+    //     $branches = $repo->getBranches('');
 
-        dd($branches);
-    }
+    //     dd($branches);
+    // }
 
-    public function changedFiles($repo)
-    {
-        if(!$repo = Auth::user()->repositories->find($repo))
-        {
-            return redirect()->action('HomeController@dashboard');
-        }
+    // public function changedFiles($repo)
+    // {
+    //     if(!$repo = Auth::user()->repositories->find($repo))
+    //     {
+    //         return redirect()->action('HomeController@dashboard');
+    //     }
 
-        $branches = $repo->changedFiles();
+    //     $branches = $repo->changedFiles();
 
-        dd($branches);
-    }
+    //     dd($branches);
+    // }
 
-    public function testing($repo)
-    {
-        if(!$repo = Auth::user()->repositories->find($repo))
-        {
-            return redirect()->action('HomeController@dashboard');
-        }
+    // public function testing($repo)
+    // {
+    //     if(!$repo = Auth::user()->repositories->find($repo))
+    //     {
+    //         return redirect()->action('HomeController@dashboard');
+    //     }
 
-        $branches = $repo->getCurrentBranch();
-        var_dump($branches);
-        $repo->changeBranch('site');
-        dd($repo->getCurrentBranch());
-    }
+    //     $branches = $repo->getCurrentBranch();
+    //     var_dump($branches);
+    //     $repo->changeBranch('site');
+    //     dd($repo->getCurrentBranch());
+    // }
 }

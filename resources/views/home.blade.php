@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('fill')
     <div class="section no-pad-bot" id="index-banner">
         <div class="container">
@@ -69,6 +68,17 @@
                 </ul>
             </div>
         </nav>
+    @endif
+
+    @if(Session::has('message'))
+        <div class="card-panel green center-align">
+            {{ Session::pull('message') }}
+        </div>
+    @endif
+    @if(Session::has('error'))
+        <div class="card-panel red center-align deep-orange-text text-accent-4">
+            {{ Session::pull('error') }}
+        </div>
     @endif
 
     @yield('fill')

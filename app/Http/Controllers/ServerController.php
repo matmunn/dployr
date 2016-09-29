@@ -15,12 +15,13 @@ class ServerController extends Controller
     {
         if(!$repo = Environment::find($environment)->repository)
         {
-            dd("Couldn't find the repository for this environment");
+            return redirect()->action("HomeController@dashboard")->with("error", "Couldn't get the repository for the given environment");
+            
         }
 
         if(!Auth::user()->repositories->contains($repo))
         {
-            dd('No matching environment could be found for this user.');
+            return redirect()->action("HomeController@dashboard")->with("error", "No matching repository could be found for your account");
         }
 
         return view('server.new.'.$server)->with(compact('environment', 'server'));
@@ -40,7 +41,7 @@ class ServerController extends Controller
 
         if(!$environment = Auth::user()->environments->find($request->environment))
         {
-            dd("No matching environment could be found for this user.");
+            return redirect()->action('HomeController@dashboard')->with("error", "A matching environment couldn't be found for your user.");
         }
 
         $server = new Server([
@@ -54,7 +55,7 @@ class ServerController extends Controller
 
         if(!$environment->servers()->save($server))
         {
-            dd("Couldn't save the server");
+            return redirect()->action("EnvironmentController@manage", $environment)->with("error", "The server couldn't be saved. Please try again later");
         }
 
         return redirect()->action('ServerController@manage', $server->id);
@@ -65,7 +66,7 @@ class ServerController extends Controller
         $server = Server::find($server);
         if(!$server || !Auth::user()->environments->contains($server->environment) )
         {
-            dd("Couldn't find the given server");
+            return redirect()->action("HomeController@dashboard")->with("error", "The specified server couldn't be found");
         }
 
         return view('server.manage')->with(compact('server'));

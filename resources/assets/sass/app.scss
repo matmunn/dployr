@@ -9,12 +9,23 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "node_modules/materialize-css/dist/css/materialize";
 
+$bg-color: #E7F3EF;
+
 .logo {
     width: 120px;
+    vertical-align: middle;
+}
+
+body {
+  background-color: $bg-color;
+}
+
+.nav-header-part {
+  background-color: darken($bg-color, 5%);
 }
 
 // .spinner {
-//   width: 22px;
+//   width: #22px;
 //   height: 22px;
 //   background-color: $logo-blue;
 //   float: left;

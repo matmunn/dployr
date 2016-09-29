@@ -18,7 +18,7 @@ class EnvironmentController extends Controller
     {
         if(!$env = Auth::user()->environments->find($environment))
         {
-            dd("Couldn't find the environment for the logged in user.");
+            return redirect()->action('HomeController@dashboard', $repo)->with('error', "The specified evironment couldn't be found for.");
         }
 
         return view('environment.manage')->with(compact('env'));
@@ -28,7 +28,7 @@ class EnvironmentController extends Controller
     {
         if(!$repo = Auth::user()->repositories->find($repo))
         {
-            return redirect()->action('HomeController@dashboard');
+            return redirect()->action('HomeController@dashboard')->with('error', "The repository couldn't be found for your account.");
         }
 
         return view('environment.new')->with(compact('repo'));
@@ -44,12 +44,12 @@ class EnvironmentController extends Controller
 
         if(!$repo = Auth::user()->repositories->find($request->repo))
         {
-            dd("No repository could be found for your account.");
+            return redirect()->action('HomeController@dashboard')->with('error', "The specified repository couldn't be found for your account.");
         }
 
         if($repo->environments->where('branch', $request->branch)->first())
         {
-            dd("There is already an environment tracking this branch for this repository.");
+            return redirect()->action('RepositoryController@manage', $repo)->with('error', "There is already an environment tracking this branch for this repository.");
         }
 
         $env = $repo->environments()->create([

@@ -15,17 +15,19 @@ class FileDeployer implements ShouldQueue
 
     protected $files;
     protected $environment;
+    protected $branch;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Environment $env, array $files)
+    public function __construct(Environment $env, array $files, string $branch)
     {
         //
         $this->files = $files;
         $this->environment = $env;
+        $this->branch = $branch;
     }
 
     /**
@@ -42,7 +44,7 @@ class FileDeployer implements ShouldQueue
             {
                 if($server->type == "ftp")
                 {
-                    dispatch(new FtpDeployer($server, $this->files));
+                    dispatch(new FtpDeployer($server, $this->files, $this->branch));
                 }
             }
         }

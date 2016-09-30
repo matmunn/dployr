@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Touki\FTP\FTPFactory;
 use Touki\FTP\FTPWrapper;
 use Touki\FTP\Connection\Connection;
 use Illuminate\Support\Facades\Crypt;
@@ -14,6 +15,10 @@ class Server extends Model
     //
     use SoftDeletes;
 
+    protected $casts = [
+        'server_passive' => 'boolean',
+    ];
+
     protected $fillable = [
         'name',
         'type',
@@ -21,11 +26,14 @@ class Server extends Model
         'server_username',
         'server_password',
         'server_path',
+        'server_port',
+        'server_timeout',
+        'server_passive',
     ];
 
     public function returnFtpConnection()
     {
-        $connection = new Connection($this->server_name, $this->server_username, $this->server_password);
+        $connection = new Connection($this->server_name, $this->server_username, $this->server_password, $this->server_port, $this->server_timeout, $this->server_passive);
         try
         {
             $connection->open();
@@ -35,14 +43,16 @@ class Server extends Model
             return false;
         }
 
-        return new FTPWrapper($connection);
+        $factory = new FTPFactory;
+
+        return [$factory, $connection];
     }
 
     public function returnConnection()
     {
         if($this->type == "ftp")
         {
-            $connection = $this->getFtpConnection();
+            $connection = $this->returnFtpConnection();
         }
 
         if($connection)

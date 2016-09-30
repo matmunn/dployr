@@ -46,7 +46,7 @@ class Repository extends Model
             $commit2 = $commit1 . "~1";
         }
         $git = $this->getGitInstance()->workingCopy($this->repositoryPath);
-        $output = $git->run(['diff', '--name-only', $commit1, $commit2]);
+        $output = $git->run(['diff', '--name-status', $commit1, $commit2]);
 
         return $output;
     }

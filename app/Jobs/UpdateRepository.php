@@ -46,7 +46,7 @@ class UpdateRepository implements ShouldQueue
             }
 
             $this->repository->changeBranch($environment->branch);
-            $files = explode("\n", $git->git('diff --name-status'));
+            $files = explode("\n", $this->repository->changedFiles());
             $files = array_filter($files);
             // var_dump($files);
             $changedFiles = [];
@@ -58,7 +58,7 @@ class UpdateRepository implements ShouldQueue
 
             if(!empty($changedFiles))
             {
-                dispatch(new FileDeployer($environment, $files));
+                dispatch(new FileDeployer($environment, $changedFiles, $environment->branch));
             }
         }
 

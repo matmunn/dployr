@@ -6895,16 +6895,6 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   .picker--time .picker__box {
     margin-bottom: 5em; } }
 
-.logo {
-  width: 120px;
-  vertical-align: middle; }
-
-body {
-  background-color: #E7F3EF; }
-
-.nav-header-part {
-  background-color: #d6ebe4; }
-
 .sk-folding-cube {
   width: 22px;
   height: 22px;
@@ -6986,5 +6976,27 @@ body {
     -webkit-transform: perspective(140px) rotateY(180deg);
     transform: perspective(140px) rotateY(180deg);
     opacity: 0; } }
+
+.logo {
+  width: 120px;
+  vertical-align: middle; }
+
+body {
+  background-color: #E7F3EF;
+  color: #000000; }
+
+.nav-header-part {
+  background-color: #d6ebe4 !important; }
+
+.font-serif {
+  font-family: 'Arvo', serif; }
+
+.dployr-brown {
+  color: #8C6429 !important; }
+
+.large-logo {
+  max-width: 600px;
+  width: 50vw;
+  display: inline-block; }
 
 /*# sourceMappingURL=app.css.map */

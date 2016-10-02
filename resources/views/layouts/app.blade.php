@@ -13,9 +13,11 @@
 
         <title>{{ config('app.name') }}</title>
         
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+        <link href="//fonts.googleapis.com/css?family=Arvo:400,400i,700,700i" rel="stylesheet">
+
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 
         <!-- Scripts -->
         <script>
@@ -25,7 +27,7 @@
         </script>
 
 
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- Bootstrap core CSS -->
         <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
         <script src="{{ elixir('js/app.js') }}"></script>
@@ -44,10 +46,10 @@
                         @if(request()->is('myaccount'))
                             class="active"
                         @endif
-                    ><a href="{{ action('HomeController@dashboard') }}">My Account</a>
-                    <li><a href="/logout">Logout</a>
+                    ><a class="black-text" href="{{ action('HomeController@dashboard') }}">My Account</a>
+                    <li><a class="black-text" href="/logout">Logout</a>
                 @else
-                    <li><a href="/login">Login</a></li>
+                    <li><a class="black-text" href="/login">Login</a></li>
                 @endif
             </ul>
         </div>
@@ -55,37 +57,37 @@
 
     @yield('content')
 
-    <footer class="page-footer indigo darken-3">
+    <footer class="page-footer nav-header-part">
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
-                    <h5 class="white-text">Company Bio</h5>
-                    <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+                    <h5 class="black-text">Company Bio</h5>
+                    <p class="black-text">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
 
 
                 </div>
                 <div class="col l3 s12">
-                    <h5 class="white-text">Settings</h5>
+                    <h5 class="black-text">Settings</h5>
                     <ul>
-                        <li><a class="white-text" href="#!">Link 1</a></li>
-                        <li><a class="white-text" href="#!">Link 2</a></li>
-                        <li><a class="white-text" href="#!">Link 3</a></li>
-                        <li><a class="white-text" href="#!">Link 4</a></li>
+                        <li><a class="black-text" href="#!">Link 1</a></li>
+                        <li><a class="black-text" href="#!">Link 2</a></li>
+                        <li><a class="black-text" href="#!">Link 3</a></li>
+                        <li><a class="black-text" href="#!">Link 4</a></li>
                     </ul>
                 </div>
                 <div class="col l3 s12">
-                    <h5 class="white-text">Connect</h5>
+                    <h5 class="black-text">Connect</h5>
                     <ul>
-                        <li><a class="white-text" href="#!">Link 1</a></li>
-                        <li><a class="white-text" href="#!">Link 2</a></li>
-                        <li><a class="white-text" href="#!">Link 3</a></li>
-                        <li><a class="white-text" href="#!">Link 4</a></li>
+                        <li><a class="black-text" href="#!">Link 1</a></li>
+                        <li><a class="black-text" href="#!">Link 2</a></li>
+                        <li><a class="black-text" href="#!">Link 3</a></li>
+                        <li><a class="black-text" href="#!">Link 4</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="footer-copyright">
-            <div class="container">
+            <div class="container black-text">
                 &copy; 2016 Mat Munn.
             </div>
         </div>

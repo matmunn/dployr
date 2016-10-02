@@ -2,11 +2,13 @@
 
 @section('fill')
     <div class="section no-pad-bot" id="index-banner">
-        <div class="container">
+        <div class="container text-center">
             <br><br>
-            <h1 class="header center orange-text">Starter Template</h1>
+            <div class="center-align">
+                <img src="img/logo.svg" class="large-logo">
+            </div>
             <div class="row center">
-                <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+                <h5 class="header col s12 light font-serif dployr-brown">Automatic site deployment made easy</h5>
             </div>
             <div class="row center">
                 <a href="{{ action('HomeController@pricing') }}" id="download-button" class="btn-large waves-effect waves-light orange">See our pricing</a>

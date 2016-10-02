@@ -45,20 +45,29 @@ class UpdateRepository implements ShouldQueue
                 return response()->json("Your environment is configured incorrectly.", 400);
             }
 
-            $this->repository->changeBranch($environment->branch);
-            $files = explode("\n", $this->repository->changedFiles());
-            $files = array_filter($files);
-            // var_dump($files);
-            $changedFiles = [];
-            foreach($files as $file)
+            // dd($environment);
+            try
             {
-                preg_match('/([ACDMR]{1})\s(.+)/', $file, $matches);
-                $changedFiles[] = [$matches[1], $matches[2]];
-            }
+                $this->repository->changeBranch($environment->branch);
+                $git->git("pull origin ".$environment->branch);
+                $files = explode("\n", $this->repository->changedFiles());
+                $files = array_filter($files);
+                // var_dump($files);
+                $changedFiles = [];
+                foreach($files as $file)
+                {
+                    preg_match('/([ACDMR]{1})\s(.+)/', $file, $matches);
+                    $changedFiles[] = [$matches[1], $matches[2]];
+                }
 
-            if(!empty($changedFiles))
+                if(!empty($changedFiles))
+                {
+                    dispatch(new FileDeployer($environment, $changedFiles, $environment->branch));
+                }
+            }
+            catch(\Exception $e)
             {
-                dispatch(new FileDeployer($environment, $changedFiles, $environment->branch));
+                continue;
             }
         }
 

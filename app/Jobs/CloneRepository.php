@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use Exception;
 use App\Models\Repository;
+use GitWrapper\GitException;
 use App\Events\CloneComplete;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -40,9 +41,17 @@ class CloneRepository implements ShouldQueue
         Storage::makeDirectory('repos/'.$this->repository->id);
 
         $git = $this->repository->getGitInstance();
-        $git->clone($this->repository->url, $this->repository->repositoryPath);
+        try
+        {
+            $git->clone($this->repository->url, $this->repository->repositoryPath);
+            event(new CloneComplete($this->repository));
+        }
+        catch(GitException $e)
+        {
+            $this->repository->status = 16;
+            $this->repository->save();
+        }
 
-        event(new CloneComplete($this->repository));
     }
 
     /**

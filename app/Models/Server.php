@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use UCSDMath\Sftp\Sftp;
 use Touki\FTP\FTPFactory;
 use Touki\FTP\FTPWrapper;
+use Illuminate\Support\Facades\Log;
 use Touki\FTP\Connection\Connection;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +33,28 @@ class Server extends Model
         'server_passive',
     ];
 
-    public function returnFtpConnection()
+    protected function returnSftpConnection()
+    {
+        $sftp = new Sftp();
+        $connectionOptions = [
+            'account_host' => $this->server_name,
+            'account_username' => $this->server_username,
+            'account_password' => $this->server_password,
+            'default_directory' => $this->server_path,
+        ];
+        try
+        {
+            $conn = $sftp->connect($connectionOptions);
+        }
+        catch(\Exception $e)
+        {
+            Log::error($e);
+        }
+
+        return $conn;
+    }
+
+    protected function returnFtpConnection()
     {
         $connection = new Connection($this->server_name, $this->server_username, $this->server_password, $this->server_port, $this->server_timeout, $this->server_passive);
         try
@@ -53,6 +76,11 @@ class Server extends Model
         if($this->type == "ftp")
         {
             $connection = $this->returnFtpConnection();
+        }
+
+        if($this->type == "sftp")
+        {
+            $connection = $this->returnSftpConnection();
         }
 
         if($connection)

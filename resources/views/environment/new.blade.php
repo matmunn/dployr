@@ -21,6 +21,7 @@
                         <select name="type">
                             <option selected disabled>--</option>
                             <option value="ftp">FTP</option>
+                            <option value="sftp">SFTP</option>
                         </select>
                         <label>Environment Type</label>
                     </div>
@@ -33,7 +34,20 @@
                         </select>
                         <label>Branch</label>
                     </div>
-                    <input type="submit" class="btn green" value="Save">
+                    <div class="input-field">
+                        Deployments
+                        <p>
+                            <input name="deploy_mode" type="radio" value="2" checked id="auto">
+                            <label for="auto">Automatic</label>
+                        </p>
+                        <p>
+                            <input name="deploy_mode" type="radio" value="1" id="manual">
+                            <label for="manual">Manual</label>
+                        </p>
+                    </div>
+                    <div class="input-field">
+                        <input type="submit" class="btn green" value="Save">
+                    </div>
                 </form>
             </div>
         </div>

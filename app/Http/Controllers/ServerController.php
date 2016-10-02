@@ -56,7 +56,7 @@ class ServerController extends Controller
 
         if($request->has('port'))
         {
-            $server['server_port'] = $request->port;
+            $server->server_port = $request->port;
         }
 
         if(!$environment->servers()->save($server))

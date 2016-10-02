@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Jobs\FtpDeployer;
+use App\Jobs\SftpDeployer;
 use App\Models\Environment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -45,6 +46,10 @@ class FileDeployer implements ShouldQueue
                 if($server->type == "ftp")
                 {
                     dispatch(new FtpDeployer($server, $this->files, $this->branch));
+                }
+                if($server->type == "sftp")
+                {
+                    dispatch(new SftpDeployer($server, $this->files, $this->branch));
                 }
             }
         }

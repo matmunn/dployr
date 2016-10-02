@@ -3,16 +3,14 @@
 namespace App\Jobs;
 
 use App\Models\Server;
-use Touki\FTP\Model\File;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
-use Touki\FTP\Model\Directory;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class FtpDeployer implements ShouldQueue
+class SftpDeployer implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
@@ -41,14 +39,11 @@ class FtpDeployer implements ShouldQueue
     public function handle()
     {
         //
-        // dd($this->files);
+        // dd($this->server->returnConnection());
         if(!$ftp = $this->server->returnConnection())
         {
             return false;
         }
-
-        $factory = $ftp[0];
-        $ftp = $factory->build($ftp[1]);
 
         $repo = $this->server->environment->repository;
         $repo->status = 8;
@@ -69,17 +64,17 @@ class FtpDeployer implements ShouldQueue
             $serverPath .= '/';
         }
 
-        $factory->getWrapper()->chdir($serverPath);
+        $ftp->changeDirectory($serverPath);
         foreach($this->files as $file)
         {
-            Log::info("Uploading ".$file);
             $parts = explode("/", $file[1]);
             $filename = array_pop($parts);
             $remotePath = implode("/", $parts);
 
+            // dd([$serverPath.$file[1], $path.$file[1]]);
             try
             {
-                $ftp->create(new Directory($serverPath.$remotePath));
+                $ftp->createDirectory($serverPath.$remotePath);
             }
             catch(\Exception $e)
             {
@@ -88,7 +83,7 @@ class FtpDeployer implements ShouldQueue
 
             if(in_array($file[0], ["A", "M"]))
             {
-                $ftp->upload(new File($serverPath.$file[1]), $path.$file[1]);
+                $ftp->uploadFile($serverPath.$file[1], $path.$file[1]);
 
             }
 
@@ -96,7 +91,7 @@ class FtpDeployer implements ShouldQueue
             {
                 try
                 {
-                    $ftp->delete(new File($serverPath.$file[1]));
+                    $ftp->deleteFile($serverPath.$file[1]);
                 }
                 catch(\Exception $e)
                 {

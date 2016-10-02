@@ -40,6 +40,7 @@ class EnvironmentController extends Controller
             'name' => 'required|string',
             'type' => 'required',
             'branch' => 'required',
+            'deploy_mode' => 'integer'
         ]);
 
         if(!$repo = Auth::user()->repositories->find($request->repo))
@@ -57,7 +58,12 @@ class EnvironmentController extends Controller
             'branch' => $request->branch,
         ]);
 
-        // return view('server.new.'.$request->type);
+        if($request->has('deploy_mode'))
+        {
+            $env->deploy_mode = $request->deploy_mode;
+            $env->save();
+        }
+
         return redirect()->action('ServerController@new', [$env->id, $request->type]);
     }
 }

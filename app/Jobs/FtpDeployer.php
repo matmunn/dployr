@@ -103,5 +103,8 @@ class FtpDeployer implements ShouldQueue
                 }
             }
         }
+
+        $repo->status = 1;
+        $repo->save();
     }
 }

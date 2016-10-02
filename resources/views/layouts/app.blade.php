@@ -40,7 +40,7 @@
             <a id="logo-container" href="/" class="brand-logo">
                 <img src="/img/logo.svg" alt="dployr" class="logo">
             </a>
-            <ul class="right black-text">
+            <ul class="right black-text hide-on-med-and-down">
                 @if(Auth::user())
                     <li
                         @if(request()->is('myaccount'))
@@ -49,6 +49,7 @@
                     ><a class="black-text" href="{{ action('HomeController@dashboard') }}">My Account</a>
                     <li><a class="black-text" href="/logout">Logout</a>
                 @else
+                    <li><a class="black-text" href="/register">Register</a></li>
                     <li><a class="black-text" href="/login">Login</a></li>
                 @endif
             </ul>
@@ -58,7 +59,7 @@
     @yield('content')
 
     <footer class="page-footer nav-header-part">
-        <div class="container">
+{{--         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
                     <h5 class="black-text">Company Bio</h5>
@@ -85,7 +86,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="footer-copyright">
             <div class="container black-text">
                 &copy; 2016 Mat Munn.

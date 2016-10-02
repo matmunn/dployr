@@ -53,6 +53,11 @@ class RepositoryController extends Controller
             return redirect()->action('RepositoryController@new')->withInput()->with('error', 'That repository URL already exists');
         }
 
+        if(Auth::user()->plan->repository_limit > 0 && Auth::user()->repositories->count() == Auth::user()->plan->repository_limit)
+        {
+            return redirect()->action('RepositoryController@list')->with("error", "You are at your repository limit, please disconnect a repository before trying to connect another one.");
+        }
+
         $repo = new Repository(['name' => $request->name, 'url' => $request->url]);
 
         $rsa = new RSA();
@@ -72,7 +77,7 @@ class RepositoryController extends Controller
 
         dispatch(new CloneRepository($repo));
 
-        return redirect()->action('RepositoryController@list');
+        return redirect()->action('RepositoryController@list')->with("message", "Your repository has been connected.");
     }
 
     // public function details($repo)

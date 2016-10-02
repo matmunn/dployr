@@ -27,13 +27,14 @@
                 <div class="col s12 m4">
                     <div class="icon-block">
                         <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
-                        <h5 class="center">Speeds up development</h5>
+                        <h5 class="center">Speeds up deployment</h5>
 
-                        <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+                        <p class="light">No more worrying about FTP account details and trying to keep track of which files you changed, dployr will take care of all the leg work in the background to ensure that as soon as you push to your repository your changes are reflected on your site.
+                        </p>
                     </div>
                 </div>
 
-                <div class="col s12 m4">
+{{--                 <div class="col s12 m4">
                     <div class="icon-block">
                         <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
                         <h5 class="center">User Experience Focused</h5>
@@ -49,7 +50,7 @@
 
                         <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
         </div>

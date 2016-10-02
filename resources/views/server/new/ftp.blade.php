@@ -19,6 +19,10 @@
                         <label>Server Name</label>
                     </div>
                     <div class="input-field">
+                        <input type="text" name="port" value="{{ old('port', 21) }}">
+                        <label>Server Port</label>
+                    </div>
+                    <div class="input-field">
                         <input type="text" name="url" value="{{ old('url') }}">
                         <label>Server URL</label>
                     </div>

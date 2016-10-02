@@ -37,6 +37,7 @@ class ServerController extends Controller
             'password' => 'required|string',
             'path' => 'required|string',
             'environment' => 'required|integer',
+            'port' => 'integer'
         ]);
 
         if(!$environment = Auth::user()->environments->find($request->environment))
@@ -52,6 +53,11 @@ class ServerController extends Controller
             'server_password' => $request->password,
             'server_path' => $request->path,
         ]);
+
+        if($request->has('port'))
+        {
+            $server['server_port'] = $request->port;
+        }
 
         if(!$environment->servers()->save($server))
         {

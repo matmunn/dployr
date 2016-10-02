@@ -12,13 +12,13 @@
             <div class="row">
                 <div class="col s12 m12">
                     Deploy Key:<br />
-                    <pre>{{ $repo->public_key }}</pre>
+                    <div class="monospace code">{{ $repo->public_key }}</div>
                 </div>
             </div>
             <div class="row">
                 <div class="col s12 m12">
                     Web hook refresh URL:<br />
-                    <pre>{{ env('APP_URL') }}/api/refresh/{{ e($repo->secret_key) }}</pre>
+                    <div class="monospace code">{{ env('APP_URL') }}/api/refresh/{{ e($repo->secret_key) }}</div>
                 </div>
             </div>
             <div class="row">

@@ -73,6 +73,36 @@ class Server extends Model
         return Crypt::decrypt($value);
     }
 
+    public function setServerPasswordAttribute($value)
+    {
+        $this->attributes['server_password'] = Crypt::encrypt($value);
+    }
+
+    public function getServerPasswordAttribute($value)
+    {
+        return Crypt::decrypt($value);
+    }
+
+    public function setServerUsernameAttribute($value)
+    {
+        $this->attributes['server_username'] = Crypt::encrypt($value);
+    }
+
+    public function getServerUsernameAttribute($value)
+    {
+        return Crypt::decrypt($value);
+    }
+
+    public function setServerPathAttribute($value)
+    {
+        $this->attributes['server_path'] = Crypt::encrypt($value);
+    }
+
+    public function getServerPathAttribute($value)
+    {
+        return Crypt::decrypt($value);
+    }
+
     public function environment()
     {
         return $this->belongsTo('App\Models\Environment');

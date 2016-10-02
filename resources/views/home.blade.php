@@ -29,7 +29,7 @@
                         <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
                         <h5 class="center">Speeds up deployment</h5>
 
-                        <p class="light">No more worrying about FTP account details and trying to keep track of which files you changed, dployr will take care of all the leg work in the background to ensure that as soon as you push to your repository your changes are reflected on your site.
+                        <p class="light">No more worrying about FTP account details and trying to keep track of which files you changed, dployr will take care of all the legwork in the background to ensure that as soon as you push to your repository your changes are reflected on your site.
                         </p>
                     </div>
                 </div>

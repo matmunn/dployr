@@ -10,7 +10,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s12 right-align">
+                <div class="col s6">
+                    <a class="waves-effect waves-light btn btn-color-normal" href="{{ action('RepositoryController@manage', $env->repository) }}">Back to Repository</a>
+                </div>
+                <div class="col s6 right-align">
                     {{-- <a class="waves-effect waves-light btn" href="{{ action('EnvironmentController@new', $env->id) }}">New Server</a> --}}
                     <div class="fixed-action-btn horizontal">
                         <a class="btn">

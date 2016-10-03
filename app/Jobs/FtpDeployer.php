@@ -105,6 +105,9 @@ class FtpDeployer implements ShouldQueue
             }
         }
 
+        $this->server->environment->current_commit = $repo->currentCommit();
+        $this->server->environment->save();
+
         $repo->status = 1;
         $repo->save();
     }

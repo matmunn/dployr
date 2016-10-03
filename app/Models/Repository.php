@@ -51,6 +51,14 @@ class Repository extends Model
         return $output;
     }
 
+    public function currentCommit()
+    {
+        $git = $this->getGitInstance()->workingCopy($this->repositoryPath);
+        $output = $git->run(['rev-parse', 'HEAD']);
+
+        return $output;
+    }
+
     public function privateKeyPath($absolute = true)
     {
         $path = 'keys/repos/'.$this->id;

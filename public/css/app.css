@@ -7007,6 +7007,9 @@ body {
   background-color: #E8F5F7;
   border: 1px solid #b4dacd; }
 
+.font-bold {
+  font-weight: 700; }
+
 .monospace {
   font-family: monospace, monospace; }
 

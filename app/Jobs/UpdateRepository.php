@@ -49,20 +49,24 @@ class UpdateRepository implements ShouldQueue
             try
             {
                 $this->repository->changeBranch($environment->branch);
+                $currentCommit = $this->environment->current_commit;
                 $git->git("pull origin ".$environment->branch);
-                $files = explode("\n", $this->repository->changedFiles());
-                $files = array_filter($files);
-                // var_dump($files);
-                $changedFiles = [];
-                foreach($files as $file)
+                if($currentCommit !== $this->repository->currentCommit())
                 {
-                    preg_match('/([ACDMR]{1})\s(.+)/', $file, $matches);
-                    $changedFiles[] = [$matches[1], $matches[2]];
-                }
+                    $files = explode("\n", $this->repository->changedFiles());
+                    $files = array_filter($files);
+                    // var_dump($files);
+                    $changedFiles = [];
+                    foreach($files as $file)
+                    {
+                        preg_match('/([ACDMR]{1})\s(.+)/', $file, $matches);
+                        $changedFiles[] = [$matches[1], $matches[2]];
+                    }
 
-                if(!empty($changedFiles))
-                {
-                    dispatch(new FileDeployer($environment, $changedFiles, $environment->branch));
+                    if(!empty($changedFiles))
+                    {
+                        dispatch(new FileDeployer($environment, $changedFiles, $environment->branch));
+                    }
                 }
             }
             catch(\Exception $e)

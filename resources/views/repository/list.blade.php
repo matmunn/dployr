@@ -11,7 +11,7 @@
             </div>
             <div class="row">
                 <div class="col s12 right-align">
-                    <a class="waves-effect waves-light btn" href="{{ action('RepositoryController@new') }}">Connect Repository</a>
+                    <a class="waves-effect waves-light btn btn-color-normal" href="{{ action('RepositoryController@new') }}">Connect Repository</a>
                 </div>
             </div>
             <div class="row">

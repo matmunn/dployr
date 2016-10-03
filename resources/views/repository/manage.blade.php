@@ -23,7 +23,7 @@
             </div>
             <div class="row">
                 <div class="col s12 right-align">
-                    <a class="waves-effect waves-light btn indigo accent-2" href="{{ action('EnvironmentController@new', $repo->id) }}">New Environment</a>
+                    <a class="waves-effect waves-light btn btn-color-normal" href="{{ action('EnvironmentController@new', $repo->id) }}">New Environment</a>
                 </div>
             </div>
             <div class="row">

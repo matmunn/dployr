@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use GitWrapper\GitException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,6 +30,15 @@ class EnvironmentController extends Controller
         if(!$repo = Auth::user()->repositories->find($repo))
         {
             return redirect()->action('HomeController@dashboard')->with('error', "The repository couldn't be found for your account.");
+        }
+
+        try
+        {
+            $repo->getBranches('remote');
+        }
+        catch(GitException $e)
+        {
+            return redirect()->action('RepositoryController@manage', $repo)->with('error', "Couldn't get remote branches for your repository.");
         }
 
         return view('environment.new')->with(compact('repo'));

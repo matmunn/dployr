@@ -63,23 +63,14 @@
 @endsection
 
 @section('content')
-    @if(Auth::user())
-        <nav class="indigo darken-2" role="navigation">
-            <div class="nav-wrapper container">
-                <ul class="hide-on-med-and-down">
-                    <li><a href="{{ action('RepositoryController@list') }}">Repositories</a></li>
-                </ul>
-            </div>
-        </nav>
-    @endif
 
     @if(Session::has('message'))
-        <div class="card-panel green center-align">
+        <div class="card-panel btn-color-success center-align">
             {{ Session::pull('message') }}
         </div>
     @endif
     @if(Session::has('error'))
-        <div class="card-panel red center-align deep-orange-text text-accent-4">
+        <div class="card-panel btn-color-error center-align red-text text-lighten-2">
             {{ Session::pull('error') }}
         </div>
     @endif

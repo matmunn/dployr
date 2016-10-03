@@ -34,23 +34,35 @@
     </head>
 
     <body>
+    
+    @if(!Request::is('/'))
+        <nav class="nav-header-part" role="navigation">
+            <div class="nav-wrapper container">
+                <a id="logo-container" href="/" class="brand-logo">
+                    <img src="/img/logo.svg" alt="dployr" class="logo">
+                </a>
+            </div>
+        </nav>
+    @endif
 
-    <nav class="nav-header-part" role="navigation">
+    <nav class="navbar" role="navigation">
         <div class="nav-wrapper container">
-            <a id="logo-container" href="/" class="brand-logo">
-                <img src="/img/logo.svg" alt="dployr" class="logo">
-            </a>
-            <ul class="right black-text hide-on-med-and-down">
+            @if(Auth::user())
+                <ul class="hide-on-med-and-down">
+                    <li><a href="{{ action('RepositoryController@list') }}">Repositories</a></li>
+                </ul>
+            @endif
+            <ul class="right hide-on-med-and-down">
                 @if(Auth::user())
                     <li
                         @if(request()->is('myaccount'))
                             class="active"
                         @endif
-                    ><a class="black-text" href="{{ action('HomeController@dashboard') }}">My Account</a>
-                    <li><a class="black-text" href="/logout">Logout</a>
+                    ><a class="" href="{{ action('HomeController@dashboard') }}">My Account</a>
+                    <li><a class="" href="/logout">Logout</a>
                 @else
-                    <li><a class="black-text" href="/register">Register</a></li>
-                    <li><a class="black-text" href="/login">Login</a></li>
+                    <li><a class="" href="/register">Register</a></li>
+                    <li><a class="" href="/login">Login</a></li>
                 @endif
             </ul>
         </div>

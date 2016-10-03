@@ -11,7 +11,7 @@
 
 @import "css-animation";
 
-$bg-color: #E7F3EF;
+$bg-color: #F9F9F9;
 
 .logo {
     width: 120px;
@@ -46,10 +46,26 @@ body {
     white-space: pre-wrap;
     word-wrap: break-word;
     padding: 5px;
-    background-color: darken($bg-color, 5%);
-    border: 1px solid darken($bg-color, 15%);
+    background-color: #E8F5F7;
+    border: 1px solid #b4dacd;
 }
 
 .monospace {
     font-family: monospace, monospace;
+}
+
+.navbar {
+    background-color: #303030 !important;
+}
+
+.btn-color-normal {
+    background-color: $btn-color-normal !important;
+}
+
+.btn-color-success {
+    background-color: $btn-color-success !important;
+}
+
+.btn-color-error {
+    background-color: $btn-color-error !important;
 }

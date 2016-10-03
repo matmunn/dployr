@@ -6982,11 +6982,11 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   vertical-align: middle; }
 
 body {
-  background-color: #E7F3EF;
+  background-color: #F9F9F9;
   color: #000000; }
 
 .nav-header-part {
-  background-color: #d6ebe4 !important; }
+  background-color: #ececec !important; }
 
 .font-serif {
   font-family: 'Arvo', serif; }
@@ -7004,10 +7004,22 @@ body {
   white-space: pre-wrap;
   word-wrap: break-word;
   padding: 5px;
-  background-color: #d6ebe4;
+  background-color: #E8F5F7;
   border: 1px solid #b4dacd; }
 
 .monospace {
   font-family: monospace, monospace; }
+
+.navbar {
+  background-color: #303030 !important; }
+
+.btn-color-normal {
+  background-color: #00A6C1 !important; }
+
+.btn-color-success {
+  background-color: #00af79 !important; }
+
+.btn-color-error {
+  background-color: #ce1d00 !important; }
 
 /*# sourceMappingURL=app.css.map */

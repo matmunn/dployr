@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('fill')
-    <div class="section no-pad-bot" id="index-banner">
+    <div class="section no-pad-bot laptop-image" id="index-banner">
         <div class="container text-center">
             <br><br>
             <div class="center-align">
                 <img src="img/logo.svg" class="large-logo">
             </div>
             <div class="row center">
-                <h5 class="header col s12 light font-serif dployr-brown">Automatic site deployment made easy</h5>
+                <h5 class="header col s12 light font-serif dployr-brown">Spend less time deploying, more time developing</h5>
             </div>
             <div class="row center">
                 <a href="{{ action('HomeController@pricing') }}" id="download-button" class="btn-large waves-effect waves-light orange">See our pricing</a>

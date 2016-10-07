@@ -4,7 +4,7 @@
     <div class="section no-pad-bot" id="index-banner">
         <div class="container">
             <br><br>
-            <h1 class="header center orange-text">Pricing</h1>
+            <h1 class="header center dployr-blue font-serif">Pricing</h1>
             <br><br>
 
         </div>

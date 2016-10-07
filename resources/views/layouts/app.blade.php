@@ -99,7 +99,7 @@
         </div> --}}
         <div class="footer-copyright">
             <div class="container black-text">
-                &copy; 2016 Mat Munn.
+                &copy; 2016 Mat Munn. <a href="{{ action('HomeController@about') }}">About</a>
             </div>
         </div>
     </footer>

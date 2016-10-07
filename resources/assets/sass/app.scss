@@ -31,6 +31,10 @@ body {
     color: #8C6429 !important;
 }
 
+.dployr-blue {
+    color: #00A6C1 !important;
+}
+
 .large-logo {
     max-width: 600px;
     width: 50vw;
@@ -68,4 +72,11 @@ body {
 
 .btn-color-error {
     background-color: $btn-color-error !important;
+}
+
+.section.laptop-image {
+    // background-image: url('https://images.unsplash.com/reserve/6HJtLkJSDqjqlE2NipEu_macbook.jpg');
+    // background-size: cover;
+    // background-position: center top;
+    // height: 450px;
 }

@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
 
 Route::get('myaccount', 'HomeController@dashboard');
+Route::get('about', 'HomeController@about');
 
 Route::group(['prefix' => 'repository'], function()
 {

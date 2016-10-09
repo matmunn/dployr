@@ -51,22 +51,33 @@ class UpdateRepository implements ShouldQueue
                 $this->repository->changeBranch($environment->branch);
                 $currentCommit = $this->environment->current_commit;
                 $git->git("pull origin ".$environment->branch);
-                if($currentCommit !== $this->repository->currentCommit())
+                $changedFiles = [];
+                if(!empty($currentCommit))
                 {
-                    $files = explode("\n", $this->repository->changedFiles());
-                    $files = array_filter($files);
-                    // var_dump($files);
-                    $changedFiles = [];
+                    if($currentCommit !== $this->repository->currentCommit())
+                    {
+                        $files = explode("\n", $this->repository->changedFiles());
+                        $files = array_filter($files);
+                        // var_dump($files);
+                        foreach($files as $file)
+                        {
+                            preg_match('/([ACDMR]{1})\s(.+)/', $file, $matches);
+                            $changedFiles[] = [$matches[1], $matches[2]];
+                        }
+                    }
+                }
+                else
+                {
+                    $files = array_slice(scandir('/path/to/directory/'), 2);
                     foreach($files as $file)
                     {
-                        preg_match('/([ACDMR]{1})\s(.+)/', $file, $matches);
-                        $changedFiles[] = [$matches[1], $matches[2]];
+                        $changedFiles[] = ["A", $file];
                     }
+                }
 
-                    if(!empty($changedFiles))
-                    {
-                        dispatch(new FileDeployer($environment, $changedFiles, $environment->branch));
-                    }
+                if(!empty($changedFiles))
+                {
+                    dispatch(new FileDeployer($environment, $changedFiles, $environment->branch));
                 }
             }
             catch(\Exception $e)

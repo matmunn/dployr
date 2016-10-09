@@ -20,6 +20,17 @@ class Repository extends Model
      * 16 = Error
      *
      */
+
+    /*
+     * Repository statuses
+     *
+     */
+    const STATUS_IDLE = 1;
+    const STATUS_INITIALISING = 2;
+    const STATUS_UPDATING = 4;
+    const STATUS_DEPLOYING = 8;
+    const STATUS_ERROR = 16;
+
     protected $fillable = [
         'name',
         'url',

@@ -28,7 +28,7 @@ class CloneCompleteListener
     {
         //
         $repo = $event->repository;
-        $repo->status = 1;
+        $repo->status = $repo::STATUS_IDLE;
         $repo->save();
     }
 }

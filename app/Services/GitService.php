@@ -10,14 +10,14 @@ use Illuminate\Http\Request;
 
 class GitService
 {
-    protected $repo;
+    protected $repository;
 
     /**
      * @param App\Models\Repository $repository An instance of our repository
      */ 
     public function __construct(Repository $repository)
     {
-        $this->repo = $repository;
+        $this->repository = $repository;
     }
 
     /**
@@ -28,7 +28,7 @@ class GitService
     public function getGitInstance()
     {
         $wrapper = new GitWrapper(env('GIT_BINARY', '/usr/bin/git'));
-        $wrapper->setPrivateKey($this->repo->privateKeyPath());
+        $wrapper->setPrivateKey($this->repository->privateKeyPath());
         // dd($wrapper);
         return $wrapper;
     }
@@ -46,7 +46,7 @@ class GitService
         {
             $commit2 = $commit1 . "~1";
         }
-        $git = $this->getGitInstance()->workingCopy($this->repo->repositoryPath);
+        $git = $this->getGitInstance()->workingCopy($this->repository->repositoryPath);
         $output = $git->run(['diff', '--name-status', $commit1, $commit2]);
 
         return $output;
@@ -59,7 +59,7 @@ class GitService
      */
     public function currentCommit()
     {
-        $git = $this->getGitInstance()->workingCopy($this->repo->repositoryPath);
+        $git = $this->getGitInstance()->workingCopy($this->repository->repositoryPath);
         $output = $git->run(['rev-parse', 'HEAD']);
 
         return $output;
@@ -73,7 +73,7 @@ class GitService
      */
     public function privateKeyPath($absolute = true)
     {
-        $path = 'keys/repos/'.$this->repo->id;
+        $path = 'keys/repos/'.$this->repository->id;
         if($absolute)
         {
             return storage_path('app/'.$path);
@@ -89,7 +89,7 @@ class GitService
      */
     public function getCurrentBranch()
     {
-        $git = $this->getGitInstance()->workingCopy($this->repo->repositoryPath);
+        $git = $this->getGitInstance()->workingCopy($this->repository->repositoryPath);
         return $git->getBranches()->head();
     }
 
@@ -106,7 +106,7 @@ class GitService
             return false;
         }
 
-        $git = $this->getGitInstance()->workingCopy($this->repo->repositoryPath);
+        $git = $this->getGitInstance()->workingCopy($this->repository->repositoryPath);
 
         $git->checkout($newBranch);
         $git->pull('origin', $newBranch);
@@ -121,7 +121,7 @@ class GitService
      */
     public function getBranches($type = null)
     {
-        $git = $this->getGitInstance()->workingCopy($this->repo->repositoryPath);
+        $git = $this->getGitInstance()->workingCopy($this->repository->repositoryPath);
 
         if($type == 'remote')
         {
@@ -152,5 +152,15 @@ class GitService
         $branches = array_filter($branches);
 
         return $branches;
+    }
+
+    /**
+     * Get the underlying repository
+     * 
+     * @return App\Models\Repository The underlying repository
+     */
+    public function getRepository()
+    {
+        return $this->repository;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use Exception;
 use App\Models\Repository;
+use App\Services\GitService;
 use GitWrapper\GitException;
 use App\Events\CloneComplete;
 use Illuminate\Bus\Queueable;
@@ -16,17 +17,17 @@ class CloneRepository implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $repository;
+    protected $git;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Repository $repository)
+    public function __construct(GitService $git)
     {
         //
-        $this->repository = $repository;
+        $this->git = $git;
     }
 
     /**
@@ -38,18 +39,19 @@ class CloneRepository implements ShouldQueue
     {
         //
         
-        Storage::makeDirectory('repos/'.$this->repository->id);
+        $repo = $this->git->getRepository();
 
-        $git = $this->repository->getGitInstance();
+        Storage::makeDirectory('repos/'.$repo->id);
+
         try
         {
-            $git->clone($this->repository->url, $this->repository->repositoryPath);
-            event(new CloneComplete($this->repository));
+            $this->git->clone($repo->url, $repo->repositoryPath);
+            event(new CloneComplete($repo));
         }
         catch(GitException $e)
         {
-            $this->repository->status = 16;
-            $this->repository->save();
+            $repo->status = $repo::STATUS_ERROR;
+            $repo->save();
         }
 
     }
@@ -62,7 +64,8 @@ class CloneRepository implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        $this->repository->status = 16;
-        $this->repository->save();
+        $repo = $this->git->getRepository();
+        $repo->status = $repo::STATUS_ERROR;
+        $repo->save();
     }
 }

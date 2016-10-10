@@ -14,17 +14,17 @@ class UpdateRepository implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $repository;
+    protected $git;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Repository $repository)
+    public function __construct(GitService $git)
     {
         //
-        $this->repository = $repository;
+        $this->git = $git;
     }
 
     /**
@@ -35,10 +35,10 @@ class UpdateRepository implements ShouldQueue
     public function handle()
     {
         //
-        $remoteBranches = $this->repository->getBranches('remote');
-        $git = $this->repository->getGitInstance();
+        $remoteBranches = $this->git->getBranches('remote');
+        $repo = $this->git->getRepository();
 
-        foreach($this->repository->environments as $environment)
+        foreach($repo->environments as $environment)
         {
             if(!in_array($environment->branch, $remoteBranches))
             {
@@ -48,15 +48,15 @@ class UpdateRepository implements ShouldQueue
             // dd($environment);
             try
             {
-                $this->repository->changeBranch($environment->branch);
+                $this->git->changeBranch($environment->branch);
                 $currentCommit = $this->environment->current_commit;
-                $git->git("pull origin ".$environment->branch);
+                $this->git->git("pull origin ".$environment->branch);
                 $changedFiles = [];
                 if(!empty($currentCommit))
                 {
-                    if($currentCommit !== $this->repository->currentCommit())
+                    if($currentCommit !== $this->git->currentCommit())
                     {
-                        $files = explode("\n", $this->repository->changedFiles());
+                        $files = explode("\n", $this->git->changedFiles());
                         $files = array_filter($files);
                         // var_dump($files);
                         foreach($files as $file)
@@ -68,7 +68,7 @@ class UpdateRepository implements ShouldQueue
                 }
                 else
                 {
-                    $files = array_slice(scandir('/path/to/directory/'), 2);
+                    $files = array_slice(scandir($repo->repositoryPath), 2);
                     foreach($files as $file)
                     {
                         $changedFiles[] = ["A", $file];
@@ -86,6 +86,6 @@ class UpdateRepository implements ShouldQueue
             }
         }
 
-        event(new UpdateComplete($this->repository));
+        event(new UpdateComplete($repo));
     }
 }

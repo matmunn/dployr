@@ -7,6 +7,7 @@ use App\Http\Requests;
 use phpseclib\Crypt\RSA;
 use App\Models\Repository;
 use GitWrapper\GitWrapper;
+use App\Services\GitService;
 use Illuminate\Http\Request;
 use App\Jobs\CloneRepository;
 use Illuminate\Support\Facades\Auth;
@@ -72,10 +73,10 @@ class RepositoryController extends Controller
         Storage::put($repo->privateKeyPath(false), $keys['privatekey']);
         chmod($repo->privateKeyPath(), 0600);
 
-        $repo->status = 2;
+        $repo->status = $repo::STATUS_INITIALISING;
         $repo->save();
 
-        dispatch(new CloneRepository($repo));
+        dispatch(new CloneRepository(new GitService($repo)));
 
         return redirect()->action('RepositoryController@list')->with("message", "Your repository has been connected.");
     }

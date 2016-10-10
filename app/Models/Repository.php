@@ -9,21 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 class Repository extends Model
 {
-    /**
-     *
-     * Repository Statuses
-     * 
-     * 1 = Idle
-     * 2 = Initialising
-     * 4 = Updating
-     * 8 = Deploying
-     * 16 = Error
-     *
-     */
-
     /*
      * Repository statuses
-     *
      */
     const STATUS_IDLE = 1;
     const STATUS_INITIALISING = 2;
@@ -46,7 +33,6 @@ class Repository extends Model
     {
         return storage_path('app/repos/'.$this->id);
     }
-
 
     public function user()
     {

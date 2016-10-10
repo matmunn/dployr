@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Server;
 use Illuminate\Support\Str;
+use App\Services\GitService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
@@ -46,12 +47,14 @@ class SftpDeployer implements ShouldQueue
         }
 
         $repo = $this->server->environment->repository;
-        $repo->status = 8;
+        $repo->status = $repo::STATUS_DEPLOYING;
         $repo->save();
 
         // dd($this->files);
 
-        $repo->changeBranch($this->branch);
+        $git = new GitService($repo);
+
+        $git->changeBranch($this->branch);
 
         $path = $repo->repositoryPath;
         if(!Str::endsWith($path, "/"))
@@ -103,7 +106,7 @@ class SftpDeployer implements ShouldQueue
         $this->server->environment->current_commit = $repo->currentCommit();
         $this->server->environment->save();
 
-        $repo->status = 1;
+        $repo->status = $repo::STATUS_IDLE;
         $repo->save();
     }
 }

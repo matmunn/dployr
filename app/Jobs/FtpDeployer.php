@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Server;
 use Touki\FTP\Model\File;
 use Illuminate\Support\Str;
+use App\Services\GitService;
 use Illuminate\Bus\Queueable;
 use Touki\FTP\Model\Directory;
 use Illuminate\Support\Facades\Log;
@@ -51,12 +52,13 @@ class FtpDeployer implements ShouldQueue
         $ftp = $factory->build($ftp[1]);
 
         $repo = $this->server->environment->repository;
-        $repo->status = 8;
+        $repo->status = $repo::STATUS_DEPLOYING;
         $repo->save();
 
         // dd($this->files);
+        $git = new GitService($repo);
 
-        $repo->changeBranch($this->branch);
+        $git->changeBranch($this->branch);
 
         $path = $repo->repositoryPath;
         if(!Str::endsWith($path, "/"))
@@ -108,7 +110,7 @@ class FtpDeployer implements ShouldQueue
         $this->server->environment->current_commit = $repo->currentCommit();
         $this->server->environment->save();
 
-        $repo->status = 1;
+        $repo->status = $repo::STATUS_IDLE;
         $repo->save();
     }
 }

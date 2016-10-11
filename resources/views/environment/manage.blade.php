@@ -59,6 +59,53 @@
                     </table>
                 </div>
             </div>
+            <div class="row">
+                <div class="col s12 m12">
+                    <h4>Notifiers</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12">
+                    <table class="bordered striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Notifier Type
+                                </th>
+                                <th>
+                                    Notification
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(count($env->notifierSlack) == 0) {{-- This line will need to count email notifiers too --}}
+                                <tr>
+                                    <td colspan="2" class="center-align">
+                                        This environment has no notifiers
+                                    </td>
+                                </tr>
+                            @else
+                                @foreach($env->notifierSlack as $notify)
+                                    <tr>
+                                        <td>Slack</td>
+                                        {{-- <td><a href="{{ action('ServerController@manage', $server) }}">{{ $server->name }}</a></td> --}}
+                                        {{-- <td>{{ strtoupper($server->type) }} - {{ $server->server_name }}</td> --}}
+                                        <td>Endpoint: {{ $notify->endpoint }}</td>
+                                    </tr>
+                                @endforeach
+                                @foreach($env->notifierEmail as $notify)
+                                    <tr>
+                                        <td>Email</td>
+                                        {{-- <td><a href="{{ action('ServerController@manage', $server) }}">{{ $server->name }}</a></td> --}}
+                                        {{-- <td>{{ strtoupper($server->type) }} - {{ $server->server_name }}</td> --}}
+                                        <td>Recipients: {{ $notify->recipients }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

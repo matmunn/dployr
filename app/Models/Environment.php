@@ -29,4 +29,9 @@ class Environment extends Model
     {
         return $this->hasMany('App\Models\Server');
     }
+
+    public function notifierSlack()
+    {
+        return $this->hasMany('App\Models\NotifierSlack');
+    }
 }

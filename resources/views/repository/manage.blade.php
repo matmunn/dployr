@@ -9,10 +9,18 @@
                     <h4>{{ $repo->name }}</h4>
                 </div>
             </div>
+            @if($repo->status == $repo::STATUS_ERROR && $repo->last_action == "clone")
+                <div class="row">
+                    <div class="col s12 m12" style="text-align:center">
+                        <div class="message-error">This repository has been unable to initialise.{{-- <br /> --}} Click <a href="{{ action('RepositoryController@initialise', $repo) }}">here</a> to reinitialise it.</div>
+                    </div>
+                </div>
+            @endif
             <div class="row">
                 <div class="col s12 m12">
                     Deploy Key:<br />
                     <div class="monospace code">{{ $repo->public_key }}</div>
+                    or download as a file by clicking <a href="{{ action('RepositoryController@key', $repo) }}">here</a>.
                 </div>
             </div>
             <div class="row">

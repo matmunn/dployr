@@ -37,6 +37,10 @@ class UpdateRepository implements ShouldQueue
         //
         $remoteBranches = $this->git->getBranches('remote');
         $repo = $this->git->getRepository();
+        
+        $repo->status = $repo::STATUS_UPDATING;
+        $repo->last_action = "update";
+        $repo->save();
 
         foreach($repo->environments as $environment)
         {
@@ -87,5 +91,18 @@ class UpdateRepository implements ShouldQueue
         }
 
         event(new UpdateComplete($repo));
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @param Exception $exception
+     * @return void
+     */
+    public function failed(Exception $exception)
+    {
+        $repo = $this->git->getRepository();
+        $repo->status = $repo::STATUS_ERROR;
+        $repo->save();
     }
 }

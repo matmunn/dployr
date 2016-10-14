@@ -30,9 +30,11 @@ Route::group(['prefix' => 'repository'], function()
     Route::get('{repo}', 'RepositoryController@manage');
     // Route::get('{repo}/details', 'RepositoryController@details');
     // Route::get('{repo}/clone', 'RepositoryController@clone');
-    Route::get('{repo}/branches', 'RepositoryController@branches');
-    Route::get('{repo}/files', 'RepositoryController@changedFiles');
-    Route::get('{repo}/test', 'RepositoryController@testing');
+    // Route::get('{repo}/branches', 'RepositoryController@branches');
+    // Route::get('{repo}/files', 'RepositoryController@changedFiles');
+    // Route::get('{repo}/test', 'RepositoryController@testing');
+    Route::get('{repo}/initialise', 'RepositoryController@initialise');
+    Route::get('{repo}/key', 'RepositoryController@key');
 });
 
 Route::group(['prefix' => 'environment'], function()

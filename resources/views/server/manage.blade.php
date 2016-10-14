@@ -30,6 +30,8 @@
                                 <td>
                                     @if(!empty($server->server_password))
                                         *****
+                                    @else
+                                        (empty)
                                     @endif
                                 </td>
                             </tr>

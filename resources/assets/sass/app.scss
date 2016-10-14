@@ -74,9 +74,20 @@ body {
     background-color: $btn-color-error !important;
 }
 
+.border-color-normal {
+    border-bottom: 1px solid $btn-color-normal !important;
+    box-shadow: 0 1px 0 0 $btn-color-normal !important;
+}
+
 .section.laptop-image {
     // background-image: url('https://images.unsplash.com/reserve/6HJtLkJSDqjqlE2NipEu_macbook.jpg');
     // background-size: cover;
     // background-position: center top;
     // height: 450px;
+}
+
+.message-error {
+    background-color: $bg-color-error;
+    border: 1px solid $btn-color-error;
+    padding: 5px;
 }

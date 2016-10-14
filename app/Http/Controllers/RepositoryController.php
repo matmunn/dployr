@@ -6,10 +6,10 @@ use Storage;
 use App\Http\Requests;
 use phpseclib\Crypt\RSA;
 use App\Models\Repository;
-use GitWrapper\GitWrapper;
 use App\Services\GitService;
 use Illuminate\Http\Request;
 use App\Jobs\CloneRepository;
+use App\Jobs\UpdateRepository;
 use Illuminate\Support\Facades\Auth;
 
 class RepositoryController extends Controller
@@ -74,11 +74,42 @@ class RepositoryController extends Controller
         chmod($repo->privateKeyPath(), 0600);
 
         $repo->status = $repo::STATUS_INITIALISING;
+        $repo->last_action = "clone";
         $repo->save();
 
         dispatch(new CloneRepository(new GitService($repo)));
 
         return redirect()->action('RepositoryController@list')->with("message", "Your repository has been connected.");
+    }
+
+    public function initialise($repo)
+    {
+        if(!$repo = Auth::user()->repositories->find($repo))
+        {
+            return redirect()->action('RepositoryController@list')->with('error', "Couldn't find the repository for your account.");
+        }
+
+        if($repo->status == $repo::STATUS_IDLE)
+        {
+            return redirect()->action('RepositoryController@manage', $repo)->with('message', "Your repository is already initialised.");
+        }
+
+        $repo->last_action = "initialise";
+        $repo->save();
+
+        dispatch(new CloneRepository(new GitService($repo)));
+
+        return redirect()->action('RepositoryController@manage', $repo)->with('message', "Your repository has been marked for initialisation.");
+    }
+
+    public function key($repo)
+    {
+        if(!$repo = Auth::user()->repositories->find($repo))
+        {
+            return redirect()->action('RepositoryController@list')->with('error', "Couldn't find the repository for your account.");
+        }
+
+        return response($repo->public_key)->header("Content-Type", "text/plain")->header('Content-disposition', 'attachment; filename="'. $repo->name .'_key.txt"');
     }
 
     // public function details($repo)

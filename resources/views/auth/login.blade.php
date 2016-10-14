@@ -23,8 +23,8 @@
                 <label for="remember">Remember Me</label>
             </div>
             <div class="row">
-                <button class="btn waves-effect waves-light" type="submit" name="action">Login</button>
-                <a class="btn btn-link" href="{{ url('/password/reset') }}">
+                <button class="btn waves-effect waves-light btn-color-normal" type="submit" name="action">Login</button>
+                <a class="btn btn-link btn-color-normal" href="{{ url('/password/reset') }}">
                     Forgot Your Password?
                 </a>
             </div>

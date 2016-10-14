@@ -63,11 +63,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'site_name' => $data['site_name'],
         ]);
+
+        // For now we just want to associate the default plan
+        $plan = Plan::find(1);
+        $plan->users()->save($user);
+        return $user;
     }
 }

@@ -98,6 +98,9 @@ body {
 .dployr-brown {
   color: #8C6429 !important; }
 
+.dployr-blue {
+  color: #00A6C1 !important; }
+
 .large-logo {
   max-width: 600px;
   width: 50vw;
@@ -128,5 +131,14 @@ body {
 
 .btn-color-error {
   background-color: #ce1d00 !important; }
+
+.border-color-normal {
+  border-bottom: 1px solid #00A6C1 !important;
+  box-shadow: 0 1px 0 0 #00A6C1 !important; }
+
+.message-error {
+  background-color: #f7d5d5;
+  border: 1px solid #ce1d00;
+  padding: 5px; }
 
 /*# sourceMappingURL=app.css.map */

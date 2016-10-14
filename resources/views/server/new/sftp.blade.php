@@ -5,7 +5,7 @@
     <div class="section">
         <div class="row">
             <div class="col s12">
-                <h4>Create New FTP Server</h4>
+                <h4>Create New SFTP Server</h4>
             </div>
         </div>
         <div class="row">
@@ -34,7 +34,7 @@
                         <input type="text" name="path">
                         <label>FTP Path</label>
                     </div>
-                    <input type="submit" class="btn green" value="Save">
+                    <input type="submit" class="btn btn-color-success" value="Save">
                 </form>
             </div>
         </div>

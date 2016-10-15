@@ -74,7 +74,7 @@
             </div>
             <div class="row">
                 <div class="col s12 m12 right-align">
-                    <a class="waves-effect waves-light btn btn-color-error delete-button" href="{{-- action('RepositoryController@c', $repo->id) --}}#">Delete Repository</a>
+                    <a class="waves-effect waves-light btn btn-color-error delete-button" href="#">Delete Repository</a>
                 </div>
             </div>
         </div>
@@ -89,7 +89,6 @@
               input: "text",
               showCancelButton: true,
               closeOnConfirm: false,
-              inputPlaceholder: "Write something",
               type: "error",
               confirmButtonClass: "btn-color-error"
             }).then(function(inputValue) {

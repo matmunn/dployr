@@ -43,6 +43,7 @@ Route::group(['prefix' => 'environment'], function()
     Route::get('{repo}/new', 'EnvironmentController@new');
     Route::post('new', 'EnvironmentController@save');
     Route::get('{environment}', 'EnvironmentController@manage');
+    Route::delete('{environment}', 'EnvironmentController@delete');
 });
 
 Route::group(['prefix' => 'server'], function()

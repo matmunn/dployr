@@ -6,7 +6,9 @@ use App\Http\Requests;
 use App\Services\GitService;
 use GitWrapper\GitException;
 use Illuminate\Http\Request;
+use App\Jobs\DeleteEnvironment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class EnvironmentController extends Controller
 {
@@ -20,7 +22,7 @@ class EnvironmentController extends Controller
     {
         if(!$env = Auth::user()->environments->find($environment))
         {
-            return redirect()->action('HomeController@dashboard', $repo)->with('error', "The specified evironment couldn't be found for.");
+            return redirect()->action('HomeController@dashboard', $repo)->with('error', "The specified evironment couldn't be found.");
         }
 
         return view('environment.manage')->with(compact('env'));
@@ -77,5 +79,18 @@ class EnvironmentController extends Controller
         }
 
         return redirect()->action('ServerController@new', [$env->id, $request->type]);
+    }
+
+    public function delete($environment)
+    {
+        if(!$env = Auth::user()->environments->find($environment))
+        {
+            return respose()->json("false", 403);
+        }
+
+        dispatch(new DeleteEnvironment($env));
+
+        Session::flash('message', "Environment deleted successfully.");
+        return response()->json("true", 200);
     }
 }

@@ -27,5 +27,11 @@ class UpdateCompleteListener
     public function handle(UpdateComplete $event)
     {
         //
+        $repo = $event->repository;
+        if($repo->status == $repo::STATUS_UPDATING && $repo->status != $repo::STATUS_ERROR)
+        {
+            $repo->status = $repo::STATUS_IDLE;
+            $repo->save();
+        }
     }
 }

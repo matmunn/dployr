@@ -47,6 +47,7 @@ class SftpDeployer implements ShouldQueue
         }
 
         $repo = $this->server->environment->repository;
+        $repo->last_action = 'deploy';
         $repo->status = $repo::STATUS_DEPLOYING;
         $repo->save();
 
@@ -81,12 +82,19 @@ class SftpDeployer implements ShouldQueue
             }
             catch(\Exception $e)
             {
-                
+                // Log::error($e);
             }
 
             if(in_array($file[0], ["A", "M"]))
             {
-                $ftp->uploadFile($serverPath.$file[1], $path.$file[1]);
+                try
+                {
+                    $ftp->uploadFile($serverPath.$file[1], $path.$file[1]);
+                }
+                catch(\Exception $e)
+                {
+                    // Log::error($e);
+                }
 
             }
 
@@ -98,7 +106,7 @@ class SftpDeployer implements ShouldQueue
                 }
                 catch(\Exception $e)
                 {
-                    
+                    // Log::error($e);
                 }
             }
         }

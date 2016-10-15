@@ -16,9 +16,9 @@ use App\Jobs\UpdateRepository;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:api');
 
 Route::post('/deploy/{env_id}/{token}', function($env_id, $token)
 {

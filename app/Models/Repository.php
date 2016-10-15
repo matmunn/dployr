@@ -23,12 +23,39 @@ class Repository extends Model
         'url',
     ];
 
+    /**
+     * Generate a secret key for the repository
+     *
+     * @return void
+     */
     public function generateSecretKey()
     {
         $this->secret_key = hash("sha256", $this->user->name . $this->name . microtime());
         $this->save();
     }
 
+    /**
+     * Get the path to the private key for the current repository
+     *
+     * @param bool $absolute Whether to return absolute or relative path
+     * @return string Path to the current repository's private key
+     */
+    public function privateKeyPath($absolute = true)
+    {
+        $path = 'keys/repos/'.$this->id;
+        if($absolute)
+        {
+            return storage_path('app/'.$path);
+        }
+
+        return $path;
+    }
+
+    /**
+     * Get the storage path for the repository
+     *
+     * @return string
+     */
     public function getRepositoryPathAttribute()
     {
         return storage_path('app/repos/'.$this->id);

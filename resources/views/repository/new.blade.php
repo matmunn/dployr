@@ -20,7 +20,7 @@
                             <input id="url" type="text" class="validate" name="url">
                             <label for="url">Repository URL</label>
                         </div>
-                        <input type="submit" class="btn green" value="Save">
+                        <input type="submit" class="btn btn-color-success" value="Save">
                     </form>
                 </div>
             </div>

@@ -28,7 +28,7 @@
                     <div class="input-field">
                         <select name="branch">
                             <option selected disabled>--</option>
-                            @foreach($repo->getBranches('remote') as $branch)
+                            @foreach($branches as $branch)
                                 <option value="{{ $branch }}">{{ $branch}}</option>
                             @endforeach
                         </select>

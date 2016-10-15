@@ -12,7 +12,7 @@
                         {{ Auth::user()->plan->repository_limit }}
                     @endif)
                     <br />
-                    You are currently using {{ Auth::user()->repositories->count() }} repositories of your allocation.
+                    You are currently using {{ Auth::user()->repositories->count() }} repositories out of your allocation.
                 </div>
             </div>
         </div>

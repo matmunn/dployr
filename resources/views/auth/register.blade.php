@@ -2,6 +2,16 @@
 
 @section('content')
 <div class="section">
+@if(count($errors) > 0)
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
     <div class="row">
         <form class="col s6 offset-s3" role="form" method="POST" action="{{ url('/register') }}">
             {{ csrf_field() }}

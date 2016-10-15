@@ -31,7 +31,7 @@ class RepositoryController extends Controller
     {
         if(!$repo = Auth::user()->repositories()->where('id', $repo)->with('environments')->first())
         {
-            return "The repo couldn't be found for this user";
+            return redirect()->action('RepositoryController@list')->with('error', "The repo couldn't be found for this user");
         }
         
         return view('repository.manage')->with(compact('repo'));
@@ -68,10 +68,11 @@ class RepositoryController extends Controller
         $pubKey = str_replace('phpseclib-generated-key', str_replace(" ", "", $repo->name).'@Dployr', $pubKey);
         $repo->public_key = $pubKey;
         Auth::user()->repositories()->save($repo);
+        $repo->save();
         $repo->generateSecretKey();
 
         Storage::put($repo->privateKeyPath(false), $keys['privatekey']);
-        chmod($repo->privateKeyPath(), 0600);
+        chmod($repo->privateKeyPath(), 0777);
 
         $repo->status = $repo::STATUS_INITIALISING;
         $repo->last_action = "clone";
@@ -109,65 +110,6 @@ class RepositoryController extends Controller
             return redirect()->action('RepositoryController@list')->with('error', "Couldn't find the repository for your account.");
         }
 
-        return response($repo->public_key)->header("Content-Type", "text/plain")->header('Content-disposition', 'attachment; filename="'. $repo->name .'_key.txt"');
+        return response($repo->public_key)->header("Content-Type", "text/plain")->header('Content-disposition', 'attachment; filename="'. str_replace(' ', '_', $repo->name) .'_key.txt"');
     }
-
-    // public function details($repo)
-    // {
-    //     if(!$repo = Auth::user()->repositories->find($repo))
-    //     {
-    //         return redirect()->action('HomeController@dashboard');
-    //     }
-    //     // dd(Storage::url('keys/repo/'.$repo->id));
-    //     return view('repository.details')->with(compact('repo'));
-    // }
-
-    // public function clone($repo)
-    // {
-    //     if(!$repo = Auth::user()->repositories->find($repo))
-    //     {
-    //         return redirect()->action('HomeController@dashboard');
-    //     }
-
-    //     Storage::makeDirectory('repos/'.$repo->id);
-
-    //     $git = $repo->getGitInstance()->clone($repo->url, $repo->repositoryPath);
-    // }
-
-    // public function branches($repo)
-    // {
-    //     if(!$repo = Auth::user()->repositories->find($repo))
-    //     {
-    //         return redirect()->action('HomeController@dashboard');
-    //     }
-
-    //     $branches = $repo->getBranches('');
-
-    //     dd($branches);
-    // }
-
-    // public function changedFiles($repo)
-    // {
-    //     if(!$repo = Auth::user()->repositories->find($repo))
-    //     {
-    //         return redirect()->action('HomeController@dashboard');
-    //     }
-
-    //     $branches = $repo->changedFiles();
-
-    //     dd($branches);
-    // }
-
-    // public function testing($repo)
-    // {
-    //     if(!$repo = Auth::user()->repositories->find($repo))
-    //     {
-    //         return redirect()->action('HomeController@dashboard');
-    //     }
-
-    //     $branches = $repo->getCurrentBranch();
-    //     var_dump($branches);
-    //     $repo->changeBranch('site');
-    //     dd($repo->getCurrentBranch());
-    // }
 }

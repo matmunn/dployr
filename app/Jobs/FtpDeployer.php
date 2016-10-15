@@ -42,7 +42,6 @@ class FtpDeployer implements ShouldQueue
     public function handle()
     {
         //
-        // dd($this->files);
         if(!$ftp = $this->server->returnConnection())
         {
             return false;
@@ -52,6 +51,7 @@ class FtpDeployer implements ShouldQueue
         $ftp = $factory->build($ftp[1]);
 
         $repo = $this->server->environment->repository;
+        $repo->last_action = 'deploy';
         $repo->status = $repo::STATUS_DEPLOYING;
         $repo->save();
 
@@ -72,10 +72,11 @@ class FtpDeployer implements ShouldQueue
         }
 
         $factory->getWrapper()->chdir($serverPath);
+
         foreach($this->files as $file)
         {
-            Log::info("Uploading ".$file);
             $parts = explode("/", $file[1]);
+            // Log::info("Uploading ".$file[1]);
             $filename = array_pop($parts);
             $remotePath = implode("/", $parts);
 
@@ -85,12 +86,20 @@ class FtpDeployer implements ShouldQueue
             }
             catch(\Exception $e)
             {
-                
+                // Log::error($e); 
             }
 
             if(in_array($file[0], ["A", "M"]))
             {
-                $ftp->upload(new File($serverPath.$file[1]), $path.$file[1]);
+                // Log::info('Attempting path '.$path.$file[1]);
+                try
+                {
+                    $ftp->upload(new File($serverPath.$file[1]), $path.$file[1]);
+                }
+                catch(\Exception $e)
+                {
+                    // Log::error($e);
+                }
 
             }
 
@@ -102,12 +111,12 @@ class FtpDeployer implements ShouldQueue
                 }
                 catch(\Exception $e)
                 {
-                    
+                    // Log::error($e);
                 }
             }
         }
 
-        $this->server->environment->current_commit = $repo->currentCommit();
+        $this->server->environment->current_commit = $git->currentCommit();
         $this->server->environment->save();
 
         $repo->status = $repo::STATUS_IDLE;

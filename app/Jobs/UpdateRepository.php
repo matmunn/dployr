@@ -4,8 +4,10 @@ namespace App\Jobs;
 
 use App\Jobs\FileDeployer;
 use App\Models\Repository;
+use App\Services\GitService;
 use Illuminate\Bus\Queueable;
 use App\Events\UpdateComplete;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,6 +27,40 @@ class UpdateRepository implements ShouldQueue
     {
         //
         $this->git = $git;
+    }
+
+    // protected function dir_scan($folder)
+    // {
+    //     $files = glob($folder.'/{,.}[!.,!..,!.git]*',GLOB_BRACE);
+    //     foreach ($files as $f)
+    //     {
+    //         if(is_dir($f))
+    //         {
+    //             $files = array_merge($files, $this->dir_scan($f)); // scan subfolder
+    //         }
+    //     }
+    //     return $files;
+    // }
+
+    protected function dir_scan($folder)
+    {
+        $foundFiles = [];
+        $files = array_slice(scandir($folder), 2);
+
+        foreach($files as $file)
+        {
+            if(is_dir($folder.'/'.$file) && $file != '.git')
+            {
+                $foundFiles = array_merge($foundFiles, $this->dir_scan($folder.'/'.$file));
+            }
+
+            if(is_file($folder.'/'.$file))
+            {
+                $foundFiles[] = $folder.'/'.$file;
+            }
+        }
+
+        return $foundFiles;
     }
 
     /**
@@ -49,12 +85,11 @@ class UpdateRepository implements ShouldQueue
                 return response()->json("Your environment is configured incorrectly.", 400);
             }
 
-            // dd($environment);
             try
             {
                 $this->git->changeBranch($environment->branch);
-                $currentCommit = $this->environment->current_commit;
-                $this->git->git("pull origin ".$environment->branch);
+                $currentCommit = $environment->current_commit;
+                $this->git->getGitInstance()->pull("origin", $environment->branch);
                 $changedFiles = [];
                 if(!empty($currentCommit))
                 {
@@ -72,10 +107,15 @@ class UpdateRepository implements ShouldQueue
                 }
                 else
                 {
-                    $files = array_slice(scandir($repo->repositoryPath), 2);
+                    $files = $this->dir_scan($repo->repositoryPath);
+                    Log::info(json_encode($files));
                     foreach($files as $file)
                     {
-                        $changedFiles[] = ["A", $file];
+                        if(is_file($file))
+                        {
+                            $file = str_replace($repo->repositoryPath.'/', '', $file);
+                            $changedFiles[] = ["A", $file];
+                        }
                     }
                 }
 
@@ -86,6 +126,10 @@ class UpdateRepository implements ShouldQueue
             }
             catch(\Exception $e)
             {
+                // dd($e);
+                Log::error($e);
+                $repo->status = $repo::STATUS_ERROR;
+                $repo->save();
                 continue;
             }
         }

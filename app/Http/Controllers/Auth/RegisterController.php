@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
 use Validator;
+use App\Models\Plan;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -27,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/myaccount';
 
     /**
      * Create a new controller instance.
@@ -51,7 +52,7 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:8|confirmed',
-            'site_name' => 'required|string',
+            // 'site_name' => 'required|string',
         ]);
     }
 
@@ -67,7 +68,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'site_name' => $data['site_name'],
+            'site_name' => "",
         ]);
 
         // For now we just want to associate the default plan

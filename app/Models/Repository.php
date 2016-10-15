@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Repository extends Model
 {
-    /*
+    /**
      * Repository statuses
      */
     const STATUS_IDLE = 1;
@@ -69,10 +69,5 @@ class Repository extends Model
     public function environments()
     {
         return $this->hasMany('App\Models\Environment');
-    }
-
-    public function deployments()
-    {
-        return $this->hasMany('App\Models\Deployments');
     }
 }

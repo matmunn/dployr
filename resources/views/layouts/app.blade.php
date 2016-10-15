@@ -17,6 +17,9 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/5.3.1/sweetalert2.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/5.3.1/sweetalert2.min.js"></script>
+
         <!-- Scripts -->
         <script>
             window.Laravel = <?php echo json_encode([

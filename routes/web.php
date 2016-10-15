@@ -35,6 +35,7 @@ Route::group(['prefix' => 'repository'], function()
     // Route::get('{repo}/test', 'RepositoryController@testing');
     Route::get('{repo}/initialise', 'RepositoryController@initialise');
     Route::get('{repo}/key', 'RepositoryController@key');
+    Route::delete('{repo}', 'RepositoryController@delete');
 });
 
 Route::group(['prefix' => 'environment'], function()

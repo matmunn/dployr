@@ -9,8 +9,10 @@ use App\Models\Repository;
 use App\Services\GitService;
 use Illuminate\Http\Request;
 use App\Jobs\CloneRepository;
+use App\Jobs\DeleteRepository;
 use App\Jobs\UpdateRepository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class RepositoryController extends Controller
 {
@@ -111,5 +113,18 @@ class RepositoryController extends Controller
         }
 
         return response($repo->public_key)->header("Content-Type", "text/plain")->header('Content-disposition', 'attachment; filename="'. str_replace(' ', '_', $repo->name) .'_key.txt"');
+    }
+
+    public function delete($repo)
+    {
+        if(!$repo = Auth::user()->repositories->find($repo))
+        {
+            return respose()->json("false", 403);
+        }
+
+        dispatch(new DeleteRepository($repo));
+
+        Session::flash('message', "Repository deleted successfully.");
+        return response()->json("true", 200);
     }
 }

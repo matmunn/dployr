@@ -135,4 +135,9 @@ class Server extends Model
     {
         return $this->belongsTo('App\Models\Environment');
     }
+
+    public function deployments()
+    {
+        return $this->hasMany('App\Models\Deployments');
+    }
 }

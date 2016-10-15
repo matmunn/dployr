@@ -72,6 +72,37 @@
                     </table>
                 </div>
             </div>
+            <div class="row">
+                <div class="col s12 m12 right-align">
+                    <a class="waves-effect waves-light btn btn-color-error delete-button" href="{{-- action('RepositoryController@c', $repo->id) --}}#">Delete Repository</a>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        $('.delete-button').on('click', function()
+        {
+            swal({
+              title: "Delete repository",
+              text: "Are you sure you want to delete this repository?<br /><br /><strong>This can't be undone!</strong><br /><br />Type the repository name <div class='monospace code'>{{ $repo->name }}</div> below to confirm deletion.",
+              input: "text",
+              showCancelButton: true,
+              closeOnConfirm: false,
+              inputPlaceholder: "Write something",
+              type: "error",
+              confirmButtonClass: "btn-color-error"
+            }).then(function(inputValue) {
+                if(inputValue === '{{ $repo->name }}')
+                {
+                    // window.location = '{{ action('RepositoryController@delete', $repo) }}';
+                    $.post('{{ action('RepositoryController@delete', $repo) }}', {"_method": "DELETE", "_token": "{{ csrf_token() }}"}, function(data)
+                    {
+                        // Redirect to repostiory list
+                        window.location = '{{ action('RepositoryController@list') }}';
+                    });
+                }
+            }).done();
+        });
+    </script>
 @endsection

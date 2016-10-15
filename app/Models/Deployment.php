@@ -8,8 +8,8 @@ class Deployment extends Model
 {
     //
 
-    public function repository()
+    public function server()
     {
-        return $this->belongsTo('App\Models\Repository');
+        return $this->belongsTo('App\Models\Server');
     }
 }

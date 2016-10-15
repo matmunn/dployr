@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Auth;
 class ServerController extends Controller
 {
     //
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function new($environment, $server)
     {
         if(!$repo = Environment::find($environment)->repository)

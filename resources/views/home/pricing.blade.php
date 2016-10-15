@@ -14,43 +14,11 @@
 
         <div class="section">
             <div class="row">
-                <div class="col s12 m3 card">
-                    <div class="icon-block">
-                        <h5 class="center">Free</h5>
-
-                        <ul>
-                            <li>5 repositories</li>
-                            <li>Unlimited deployments</li>
-                        </ul>
-                        <br><br>
-                        Free!
-                    </div>
-                </div>
-                <div class="col m1 hidden-on-sm"></div>
-                <div class="col s12 m3 card">
-                    <div class="icon-block">
-                        <h5 class="center">Basic</h5>
-
-                        <ul>
-                            <li>20 repositories</li>
-                            <li>Unlimited deployments</li>
-                        </ul>
-                        <br><br>
-                        10 bucks
-                    </div>
-                </div>
-                <div class="col m1 hidden-on-sm"></div>
-                <div class="col s12 m3 card">
-                    <div class="icon-block">
-                        <h5 class="center">Professional</h5>
-
-                        <ul>
-                            <li>Unlimited repositories</li>
-                            <li>Unlimited deployments</li>
-                        </ul>
-                        <br><br>
-                        tree fiddys
-                    </div>
+                <div class="center-align">
+                    <h5 class="font-serif dployr-grey"><strong>While we trial dployr it's free!</strong></h5>
+                    <p class="dployr-grey font-serif">
+                        While we work on dployr we'd love for you to trial it, break it, and tell us what's wrong with it so we can make it better for everyone.
+                    </p>
                 </div>
             </div>
         </div>

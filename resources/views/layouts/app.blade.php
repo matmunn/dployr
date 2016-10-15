@@ -35,6 +35,24 @@
     </head>
 
     <body>
+
+    <!-- Piwik -->
+    <script type="text/javascript">
+    	var _paq = _paq || [];
+      	_paq.push(["setDomains", ["*.dployr.io","*.dployr.io","*.dployr.testbed.ml"]]);
+      	_paq.push(['trackPageView']);
+      	_paq.push(['enableLinkTracking']);
+      	(function() {
+        	var u="//analytics.savi.com.au/";
+        	_paq.push(['setTrackerUrl', u+'piwik.php']);
+        	_paq.push(['setSiteId', '1']);
+        	var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        	g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      	})();
+    </script>
+    <noscript><p><img src="//analytics.savi.com.au/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+    <!-- End Piwik Code -->
+
     
     @if(!Request::is('/'))
         <nav class="nav-header-part" role="navigation">

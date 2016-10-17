@@ -124,6 +124,14 @@
                         window.location = '{{ action('RepositoryController@manage', $env->repository) }}';
                     });
                 }
+                else
+                {
+                    swal({
+                        title: 'Oops...',
+                        text: "The environment name didn't match",
+                        type: 'error',
+                        confirmButtonClass: 'btn-color-success'});
+                }
             }).done();
         });
 

@@ -92,7 +92,7 @@ class GitService
     public function getCommitMessage($commit)
     {
         $git = $this->getGitInstance();
-        $output = $git->run(['log', '--format=%B', '-n', '1', $commit]);
+        $output = $git->getWrapper()->git('log --format=%B -n 1 '. $commit);
 
         return $output;
     }

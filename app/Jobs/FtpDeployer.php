@@ -125,8 +125,8 @@ class FtpDeployer implements ShouldQueue
         $repo->status = $repo::STATUS_IDLE;
         $repo->save();
 
-        $thisDeployment->commit_hash = $this->server->environemnt->current_commit;
-        $thisDeployment->commit_message = $get->getCommitMessage($this->server->environemnt->current_commit);
+        $thisDeployment->commit_hash = $this->server->environment->current_commit;
+        $thisDeployment->commit_message = $git->getCommitMessage($this->server->environment->current_commit);
         $thisDeployment->finished_at = Carbon::now();
         $thisDeployment->save();
     }

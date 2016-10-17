@@ -138,6 +138,6 @@ class Server extends Model
 
     public function deployments()
     {
-        return $this->hasMany('App\Models\Deployments');
+        return $this->hasMany('App\Models\Deployment');
     }
 }

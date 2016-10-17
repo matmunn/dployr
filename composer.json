@@ -18,7 +18,8 @@
         "ucsdmath/database": "^1.9",
         "guzzlehttp/guzzle": "~4.0",
         "maknz/slack": "^1.7",
-        "league/tactician": "^1.0"
+        "league/tactician": "^1.0",
+        "laravel/cashier": "~7.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -108,7 +108,7 @@ class UpdateRepository implements ShouldQueue
                 else
                 {
                     $files = $this->dir_scan($repo->repositoryPath);
-                    Log::info(json_encode($files));
+                    // Log::info(json_encode($files));
                     foreach($files as $file)
                     {
                         if(is_file($file))

@@ -101,6 +101,14 @@
                         window.location = '{{ action('RepositoryController@list') }}';
                     });
                 }
+                else
+                {
+                    swal({
+                        title: 'Oops...',
+                        text: "The repository name didn't match",
+                        type: 'error',
+                        confirmButtonClass: 'btn-color-success'});
+                }
             }).done();
         });
     </script>

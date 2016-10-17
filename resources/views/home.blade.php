@@ -65,12 +65,12 @@
 @section('content')
 
     @if(Session::has('message'))
-        <div class="card-panel btn-color-success center-align">
+        <div class="card-panel btn-color-success white-text center-align">
             {{ Session::pull('message') }}
         </div>
     @endif
     @if(Session::has('error'))
-        <div class="card-panel btn-color-error center-align red-text text-lighten-2">
+        <div class="card-panel btn-color-error center-align white-text text-lighten-2">
             {{ Session::pull('error') }}
         </div>
     @endif

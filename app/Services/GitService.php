@@ -84,6 +84,20 @@ class GitService
     }
 
     /**
+     * Get commit message of git commit
+     *
+     * @param string SHA1 hash of commit
+     * @return string
+     */
+    public function getCommitMessage($commit)
+    {
+        $git = $this->getGitInstance();
+        $output = $git->run(['log', '--format=%B', '-n', '1', $commit]);
+
+        return $output;
+    }
+
+    /**
      * Get the current branch of the repository
      *
      * @return string Current branch name

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Carbon\Carbon;
 use App\Models\Server;
 use Touki\FTP\Model\File;
 use Illuminate\Support\Str;
@@ -46,6 +47,8 @@ class FtpDeployer implements ShouldQueue
         {
             return false;
         }
+
+        $thisDeployment = $this->server->deployments()->create(['started_at' => Carbon::now()]);
 
         $factory = $ftp[0];
         $ftp = $factory->build($ftp[1]);
@@ -121,5 +124,10 @@ class FtpDeployer implements ShouldQueue
 
         $repo->status = $repo::STATUS_IDLE;
         $repo->save();
+
+        $thisDeployment->commit_hash = $this->server->environemnt->current_commit;
+        $thisDeployment->commit_message = $get->getCommitMessage($this->server->environemnt->current_commit);
+        $thisDeployment->finished_at = Carbon::now();
+        $thisDeployment->save();
     }
 }

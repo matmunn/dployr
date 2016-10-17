@@ -48,7 +48,6 @@ class FtpDeployer implements ShouldQueue
             return false;
         }
 
-        $thisDeployment = $this->server->deployments()->create(['started_at' => Carbon::now()]);
 
         $factory = $ftp[0];
         $ftp = $factory->build($ftp[1]);
@@ -58,6 +57,7 @@ class FtpDeployer implements ShouldQueue
         $repo->status = $repo::STATUS_DEPLOYING;
         $repo->save();
 
+        $thisDeployment = $this->server->deployments()->create(['started_at' => Carbon::now()]);
         // dd($this->files);
         $git = new GitService($repo);
 
@@ -128,6 +128,7 @@ class FtpDeployer implements ShouldQueue
         $thisDeployment->commit_hash = $this->server->environment->current_commit;
         $thisDeployment->commit_message = $git->getCommitMessage($this->server->environment->current_commit);
         $thisDeployment->finished_at = Carbon::now();
+        $thisDeployment->file_count = count($this->files);
         $thisDeployment->save();
     }
 }

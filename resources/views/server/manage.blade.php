@@ -43,6 +43,34 @@
                     </table>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <h4>Deployments</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12">
+                    <table class="bordered striped">
+                        <thead>
+                            <th>Commit Message</th>
+                            <th>Started at</th>
+                            <th>Finished at</th>
+                            <th>Files deployed</th>
+                        </thead>
+                        <tbody>
+                            @foreach($server->deployments as $deployment)
+                                <tr>
+                                    <td>{!! str_replace("\n", "<br />", htmlentities($deployment->commit_message)) !!}</td>
+                                    <td valign="top">{{ $deployment->started_at }}</td>
+                                    <td valign="top">{{ $deployment->finished_at }}</td>
+                                    <td valign="top">{{ $deployment->file_count }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

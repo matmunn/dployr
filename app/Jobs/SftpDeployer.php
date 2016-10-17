@@ -46,11 +46,13 @@ class SftpDeployer implements ShouldQueue
             return false;
         }
 
+
         $repo = $this->server->environment->repository;
         $repo->last_action = 'deploy';
         $repo->status = $repo::STATUS_DEPLOYING;
         $repo->save();
 
+        $thisDeployment = $this->server->deployments()->create(['started_at' => Carbon::now()]);
         // dd($this->files);
 
         $git = new GitService($repo);
@@ -116,5 +118,11 @@ class SftpDeployer implements ShouldQueue
 
         $repo->status = $repo::STATUS_IDLE;
         $repo->save();
+
+        $thisDeployment->commit_hash = $this->server->environment->current_commit;
+        $thisDeployment->commit_message = $git->getCommitMessage($this->server->environment->current_commit);
+        $thisDeployment->finished_at = Carbon::now();
+        $thisDeployment->file_count = count($this->files);
+        $thisDeployment->save();
     }
 }

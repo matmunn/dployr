@@ -61,9 +61,14 @@
                     </table>
                 </div>
             </div>
-{{--}}            <div class="row">
+            <div class="row">
                 <div class="col s12 m12">
                     <h4>Slack Notifiers</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 right-align">
+                    <a class="waves-effect waves-light btn btn-color-normal" href="#">New Slack Notifier</a>
                 </div>
             </div>
             <div class="row">
@@ -74,12 +79,13 @@
                                 <th>
                                     Endpoint
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             @if(count($env->notifierSlack) == 0)
                                 <tr>
-                                    <td class="center-align">
+                                    <td class="center-align" colspan="2">
                                         This environment has no slack notifiers
                                     </td>
                                 </tr>
@@ -88,14 +94,15 @@
                                     <tr>
                                         {{-- <td><a href="{{ action('ServerController@manage', $server) }}">{{ $server->name }}</a></td> --}}
                                         {{-- <td>{{ strtoupper($server->type) }} - {{ $server->server_name }}</td> --}}
-                                        {{-- <td>{{ $notify->endpoint }}</td>
+                                        <td>{{ $notify->endpoint }}</td>
+                                        <td>Delete</td>
                                     </tr>
                                 @endforeach
                             @endif
                         </tbody>
                     </table>
                 </div>
-            </div>--}}
+            </div>
             <div class="row">
                 <div class="col s12 m12 right-align">
                     <a class="waves-effect waves-light btn btn-color-error delete-button" href="#">Delete Environment</a>

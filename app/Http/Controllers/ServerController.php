@@ -74,7 +74,11 @@ class ServerController extends Controller
 
     public function manage($server)
     {
-        $server = Server::find($server);
+        $server = Server::where('id', $server)
+            ->with(['deployments' => function($query)
+            {
+                $query->orderBy('created_at', 'desc');
+            }])->first();
         if(!$server || !Auth::user()->environments->contains($server->environment) )
         {
             return redirect()->action("HomeController@dashboard")->with("error", "The specified server couldn't be found");

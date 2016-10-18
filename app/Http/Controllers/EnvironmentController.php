@@ -81,6 +81,18 @@ class EnvironmentController extends Controller
         return redirect()->action('ServerController@new', [$env->id, $request->type]);
     }
 
+    public function deploy($environment)
+    {
+        if(!$env = Auth::user()->environments->find($environment))
+        {
+            return redirect()->action('RepositoryController@list')->with('error', "The specified environment couldn't be found.");
+        }
+
+        dispatch(new UpdateRepository(new GitService($env->repo), $env->id));
+
+        return redirect()->action('EnvironmentController@manage', $env)->with('message', "Your environment was successfully queued for deployment.");
+    }
+
     public function delete($environment)
     {
         if(!$env = Auth::user()->environments->find($environment))

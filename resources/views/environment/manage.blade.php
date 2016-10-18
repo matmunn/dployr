@@ -10,24 +10,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s6">
-                    <a class="waves-effect waves-light btn btn-color-normal" href="{{ action('RepositoryController@manage', $env->repository) }}">Back to Repository</a>
-                </div>
-                <div class="col s6 right-align">
-                    {{-- <a class="waves-effect waves-light btn" href="{{ action('EnvironmentController@new', $env->id) }}">New Server</a> --}}
-                    {{-- <div class="fixed-action-btn horizontal">
-                        <a class="btn">
-                            New Server
-                        </a>
-                        <ul>
-                            <li>
-                                <a class="btn-floating red" href="{{ action('ServerController@new', [$env->id, 'ftp']) }}">FTP</a>
-                            </li>
-                        </ul>
-                    </div> --}}
-                    {{-- <a class="waves-effect waves-light btn btn-color-normal" href="{{ action('ServerController@new', [$env->id, 'ftp']) }}">New Server</a> --}}
-                    <a class="waves-effect waves-light btn btn-color-normal new-server-button" href="#">New Server</a>
-                </div>
+                <a class="waves-effect waves-light btn btn-color-normal col s12 m5 l3" href="{{ action('RepositoryController@manage', $env->repository) }}">Back to Repository</a>
+                <a class="waves-effect waves-light btn btn-color-normal new-server-button col s12 m5 offset-m2 l3 offset-l6" href="#">New Server</a>
             </div>
             <div class="row">
                 <div class="col s12 m12">
@@ -68,7 +52,7 @@
             </div>
             <div class="row">
                 <div class="col s12 right-align">
-                    <a class="waves-effect waves-light btn btn-color-normal" href="#">New Slack Notifier</a>
+                    <a class="waves-effect waves-light btn btn-color-normal col s12 m5 offset-m7 l3 offset-l9" href="#">New Slack Notifier</a>
                 </div>
             </div>
             <div class="row">
@@ -104,9 +88,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s12 m12 right-align">
-                    <a class="waves-effect waves-light btn btn-color-error delete-button" href="#">Delete Environment</a>
-                </div>
+                <a class="waves-effect waves-light btn btn-color-error delete-button col s12 m5 offset-m7 l3 offset-l9" href="#">Delete Environment</a>
             </div>
         </div>
     </div>

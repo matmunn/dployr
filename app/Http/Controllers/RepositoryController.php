@@ -33,7 +33,7 @@ class RepositoryController extends Controller
     {
         if(!$repo = Auth::user()->repositories()->where('id', $repo)->with('environments')->first())
         {
-            return redirect()->action('RepositoryController@list')->with('error', "The repo couldn't be found for this user");
+            return redirect()->action('RepositoryController@list')->with('error', "The specified repository couldn't be found.");
         }
         
         return view('repository.manage')->with(compact('repo'));
@@ -53,7 +53,7 @@ class RepositoryController extends Controller
 
         if($repo = Auth::user()->repositories->where('url', $request->url)->first())
         {
-            return redirect()->action('RepositoryController@new')->withInput()->with('error', 'That repository URL already exists');
+            return redirect()->action('RepositoryController@new')->withInput()->with('error', 'You have already connected that repository.');
         }
 
         if(Auth::user()->plan->repository_limit > 0 && Auth::user()->repositories->count() == Auth::user()->plan->repository_limit)
@@ -82,14 +82,14 @@ class RepositoryController extends Controller
 
         dispatch(new CloneRepository(new GitService($repo)));
 
-        return redirect()->action('RepositoryController@list')->with("message", "Your repository has been connected.");
+        return redirect()->action('RepositoryController@list')->with("message", "Your repository has been queued for initialisation.");
     }
 
     public function initialise($repo)
     {
         if(!$repo = Auth::user()->repositories->find($repo))
         {
-            return redirect()->action('RepositoryController@list')->with('error', "Couldn't find the repository for your account.");
+            return redirect()->action('RepositoryController@list')->with('error', "Couldn't find the specified repository.");
         }
 
         if($repo->status == $repo::STATUS_IDLE)
@@ -102,14 +102,14 @@ class RepositoryController extends Controller
 
         dispatch(new CloneRepository(new GitService($repo)));
 
-        return redirect()->action('RepositoryController@manage', $repo)->with('message', "Your repository has been marked for initialisation.");
+        return redirect()->action('RepositoryController@manage', $repo)->with('message', "Your repository has been queued for initialisation.");
     }
 
     public function key($repo)
     {
         if(!$repo = Auth::user()->repositories->find($repo))
         {
-            return redirect()->action('RepositoryController@list')->with('error', "Couldn't find the repository for your account.");
+            return redirect()->action('RepositoryController@list')->with('error', "Couldn't find the specified repository.");
         }
 
         return response($repo->public_key)->header("Content-Type", "text/plain")->header('Content-disposition', 'attachment; filename="'. str_replace(' ', '_', $repo->name) .'_key.txt"');
@@ -124,7 +124,7 @@ class RepositoryController extends Controller
 
         dispatch(new DeleteRepository($repo));
 
-        Session::flash('message', "Repository queued for deletion.");
+        Session::flash('message', "Repository successfully queued for deletion.");
         return response()->json("true", 200);
     }
 }

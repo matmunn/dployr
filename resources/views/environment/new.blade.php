@@ -46,8 +46,8 @@
                         </p>
                     </div>
                     <div class="input-field">
-                        <input type="submit" class="btn btn-color-success" value="Save">
-                        <a class="btn btn-color-error" href="{{ action('RepositoryController@manage', $repo) }}">Cancel</a>
+                        <input type="submit" class="btn btn-color-success col s12 m5 l3" value="Save">
+                        <a class="btn btn-color-error col s12 m5 offset-m2 l3 offset-l6" href="{{ action('RepositoryController@manage', $repo) }}">Cancel</a>
                     </div>
                 </form>
             </div>

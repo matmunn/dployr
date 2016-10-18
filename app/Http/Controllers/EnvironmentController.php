@@ -90,7 +90,7 @@ class EnvironmentController extends Controller
 
         dispatch(new DeleteEnvironment($env));
 
-        Session::flash('message', "Environment deleted successfully.");
+        Session::flash('message', "Environment successfully queued for deletion.");
         return response()->json("true", 200);
     }
 }

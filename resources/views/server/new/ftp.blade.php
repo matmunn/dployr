@@ -61,12 +61,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s12 m6">
-                    <input type="submit" class="btn btn-color-success" value="Save">
-                </div>
-                <div class="col s12 m6 right-align">
-                    <a class="btn btn-color-error" href="{{ action('EnvironmentController@manage', $environment) }}">Cancel</a>
-                </div>
+                <input type="submit" class="btn btn-color-success col s12 m5 l3" value="Save">
+                <a class="btn btn-color-error col s12 m5 offset-m2 l3 offset-l6" href="{{ action('EnvironmentController@manage', $environment) }}">Cancel</a>
             </div>
         </form>
     </div>

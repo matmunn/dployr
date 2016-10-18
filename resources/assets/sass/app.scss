@@ -91,9 +91,9 @@ body {
 }
 
 .message-error {
+    @extend .code;
     background-color: $bg-color-error;
     border: 1px solid $btn-color-error;
-    padding: 5px;
 }
 
 .delete-button {

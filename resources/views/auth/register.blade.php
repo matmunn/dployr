@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="row">
-                <button class="btn waves-effect waves-light btn-color-normal" type="submit" name="action">Register</button>
+                <button class="btn waves-effect waves-light btn-color-success col s12 m5 l3" type="submit" name="action">Register</button>
             </div>
         </form>
     </div>

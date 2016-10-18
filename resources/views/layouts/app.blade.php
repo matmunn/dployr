@@ -67,11 +67,11 @@
     <nav class="navbar" role="navigation">
         <div class="nav-wrapper container">
             @if(Auth::user())
-                <ul class="hide-on-med-and-down">
+                <ul>
                     <li><a href="{{ action('RepositoryController@list') }}">Repositories</a></li>
                 </ul>
             @endif
-            <ul class="right hide-on-med-and-down">
+            <ul class="right">
                 @if(Auth::user())
                     <li
                         @if(request()->is('myaccount'))

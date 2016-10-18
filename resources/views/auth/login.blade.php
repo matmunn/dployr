@@ -17,7 +17,7 @@
     @endif
 
     <div class="row">
-        <form class="col s6 offset-s3" role="form" method="POST" action="{{ url('/login') }}">
+        <form class="col m6 offset-m3 s12" role="form" method="POST" action="{{ url('/login') }}">
             {{ csrf_field() }}
             <div class="row">
                 <div class="input-field">
@@ -37,8 +37,10 @@
                 <label for="remember">Remember Me</label>
             </div>
             <div class="row">
-                <button class="btn waves-effect waves-light btn-color-normal" type="submit" name="action">Login</button>
-                <a class="btn btn-link btn-color-normal" href="{{ url('/password/reset') }}">
+                <button class="btn waves-effect waves-light btn-color-normal col s12 m5" type="submit" name="action">Login</button>
+{{--             </div>
+            <div class="row"> --}}
+                <a class="btn btn-link btn-color-normal col s12 m5 offset-m2" href="{{ url('/password/reset') }}">
                     Forgot Your Password?
                 </a>
             </div>

@@ -9,13 +9,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s12">
-                    <a class="waves-effect waves-light btn btn-color-normal" href="{{ action('EnvironmentController@manage', $server->environment) }}">Back to Environment</a>
-                </div>
+                <a class="waves-effect waves-light btn btn-color-normal col s12 m5 l3" href="{{ action('EnvironmentController@manage', $server->environment) }}">Back to Environment</a>
             </div>
             <div class="row">
                 <div class="col s12 m12">
-                    <table class="bordered striped">
+                    <table class="bordered striped responsive-table">
                         <tbody>
                             <tr>
                                 <td class="font-bold">Server URL</td>
@@ -51,7 +49,7 @@
             </div>
             <div class="row">
                 <div class="col s12 m12">
-                    <table class="bordered striped">
+                    <table class="bordered striped responsive-table">
                         <thead>
                             <th>Commit Message</th>
                             <th>Started at</th>
@@ -61,7 +59,7 @@
                         <tbody>
                             @foreach($server->deployments as $deployment)
                                 <tr>
-                                    <td>{!! str_replace("\n", "<br />", htmlentities($deployment->commit_message)) !!}</td>
+                                    <td class="truncated">{!! str_replace("\n", "<br />", htmlentities($deployment->commit_message)) !!}</td>
                                     <td valign="top">{{ $deployment->started_at }}</td>
                                     <td valign="top">{{ $deployment->finished_at }}</td>
                                     <td valign="top">{{ $deployment->file_count }}</td>

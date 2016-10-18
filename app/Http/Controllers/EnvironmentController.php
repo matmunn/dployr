@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Services\GitService;
 use GitWrapper\GitException;
 use Illuminate\Http\Request;
+use App\Jobs\UpdateRepository;
 use App\Jobs\DeleteEnvironment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -88,7 +89,7 @@ class EnvironmentController extends Controller
             return redirect()->action('RepositoryController@list')->with('error', "The specified environment couldn't be found.");
         }
 
-        dispatch(new UpdateRepository(new GitService($env->repo), $env->id));
+        dispatch(new UpdateRepository(new GitService($env->repository), $env->id));
 
         return redirect()->action('EnvironmentController@manage', $env)->with('message', "Your environment was successfully queued for deployment.");
     }

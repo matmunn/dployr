@@ -47,7 +47,7 @@
             </div>
             @if(count($env->servers) > 0)
                 <div class="row">
-                    <a class="waves-effect waves-light btn btn-color-success col s12 m5 offset-m2 l3 offset-l6" href="#">Deploy Now</a>
+                    <a class="waves-effect waves-light btn btn-color-success col s12 m5 offset-m2 l3 offset-l9" href="{{ action('EnvironmentController@deploy', $env) }}">Deploy Now</a>
                 </div>
             @endif
             <div class="row">

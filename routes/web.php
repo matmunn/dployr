@@ -47,6 +47,12 @@ Route::group(['prefix' => 'environment'], function()
     Route::get('{environment}/deploy', 'EnvironmentController@deploy');
 });
 
+Route::group(['prefix' => 'notifier'], function()
+{
+    Route::get('{environment}/{type}/new', 'NotifierController@new');
+    Route::post('save', 'NotifierController@save');
+});
+
 Route::group(['prefix' => 'server'], function()
 {
     Route::get('{environment}/{server}/new', 'ServerController@new');

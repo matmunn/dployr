@@ -52,12 +52,12 @@
             @endif
             <div class="row">
                 <div class="col s12 m12">
-                    <h4>Slack Notifiers</h4>
+                    <h4>Notifiers</h4>
                 </div>
             </div>
             <div class="row">
                 <div class="col s12 right-align">
-                    <a class="waves-effect waves-light btn btn-color-normal col s12 m5 offset-m7 l3 offset-l9" href="#">New Slack Notifier</a>
+                    <a class="waves-effect waves-light btn btn-color-normal new-notifier-button col s12 m5 offset-m7 l3 offset-l9" href="#">New Notifier</a>
                 </div>
             </div>
             <div class="row">
@@ -66,24 +66,28 @@
                         <thead>
                             <tr>
                                 <th>
-                                    Endpoint
+                                    Type
+                                </th>
+                                <th>
+                                    Contact
                                 </th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if(count($env->notifierSlack) == 0)
+                            @if(count($env->notifiers) == 0)
                                 <tr>
                                     <td class="center-align" colspan="2">
-                                        This environment has no slack notifiers
+                                        This environment has no notifiers
                                     </td>
                                 </tr>
                             @else
-                                @foreach($env->notifierSlack as $notify)
+                                @foreach($env->notifiers as $notify)
                                     <tr>
                                         {{-- <td><a href="{{ action('ServerController@manage', $server) }}">{{ $server->name }}</a></td> --}}
                                         {{-- <td>{{ strtoupper($server->type) }} - {{ $server->server_name }}</td> --}}
-                                        <td>{{ $notify->endpoint }}</td>
+                                        <td>{{ $notify->type == "sms" ? strtoupper($notify->type) : ucfirst($notify->type) }}</td>
+                                        <td>{{ $notify->data1 }}</td>
                                         <td>Delete</td>
                                     </tr>
                                 @endforeach
@@ -134,6 +138,16 @@
             swal({
                 title: "New server",
                 html: "Choose your server type:<br /><br /><a class='btn btn-color-normal' href='{{ action('ServerController@new', [$env->id, 'ftp']) }}'>FTP</a> <a class='btn btn-color-normal' href='{{ action('ServerController@new', [$env->id, 'sftp']) }}'>SFTP</a>",
+                showCancelButton: true ,
+                showConfirmButton: false
+            });
+        });
+
+        $('.new-notifier-button').on('click', function()
+        {
+            swal({
+                title: "New notifier",
+                html: "Choose your notification type:<br /><br /><a class='btn btn-color-normal' href='{{ action('NotifierController@new', [$env->id, 'slack']) }}'>Slack</a> <a class='btn btn-color-normal' href='{{ action('NotifierController@new', [$env->id, 'email']) }}'>Email</a> <a class='btn btn-color-normal disabled' href='#' title='Coming Soon!'>SMS</a>",
                 showCancelButton: true ,
                 showConfirmButton: false
             });

@@ -13,14 +13,17 @@ class DeploymentComplete
 {
     use InteractsWithSockets, SerializesModels;
 
+    public $server;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Server $server)
     {
         //
+        $this->server = $server;
     }
 
     /**

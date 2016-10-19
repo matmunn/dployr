@@ -38,8 +38,6 @@
             </div>
             <div class="row">
                 <button class="btn waves-effect waves-light btn-color-normal col s12 m5" type="submit" name="action">Login</button>
-{{--             </div>
-            <div class="row"> --}}
                 <a class="btn btn-link btn-color-normal col s12 m5 offset-m2" href="{{ url('/password/reset') }}">
                     Forgot Your Password?
                 </a>

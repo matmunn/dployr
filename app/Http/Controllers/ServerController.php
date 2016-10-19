@@ -47,7 +47,7 @@ class ServerController extends Controller
 
         if(!$environment = Auth::user()->environments->find($request->environment))
         {
-            return redirect()->action('HomeController@dashboard')->with("error", "A matching environment couldn't be found for your user.");
+            return redirect()->action('HomeController@dashboard')->with("error", "The specified environment couldn't be found.");
         }
 
         $server = new Server([

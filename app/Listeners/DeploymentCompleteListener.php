@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\DeploymentComplete;
+use App\Notifications\DeploySuccess;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -27,5 +28,8 @@ class DeploymentCompleteListener
     public function handle(DeploymentComplete $event)
     {
         //
+        $server = $event->server;
+
+        $server->environment->notify(new DeploySuccess($server));
     }
 }

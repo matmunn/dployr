@@ -7,18 +7,21 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class EnvironmentDeployed extends Notification
+class DeployFail extends Notification
 {
     use Queueable;
+
+    protected $server;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Server $server)
     {
         //
+        $this->server = $server;
     }
 
     /**
@@ -29,7 +32,7 @@ class EnvironmentDeployed extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'slack'];
     }
 
     /**
@@ -41,6 +44,20 @@ class EnvironmentDeployed extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', 'https://laravel.com')
+                    ->line('Thank you for using our application!');
+    }
+
+    /**
+     * Get the slack representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\SlackMessage
+     */
+    public function toSlack($notifiable)
+    {
+        return (new SlackMessage)
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', 'https://laravel.com')
                     ->line('Thank you for using our application!');

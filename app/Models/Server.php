@@ -14,8 +14,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Server extends Model
 {
-    //
-    use SoftDeletes;
+    /**
+     * Repository statuses
+     */
+    const ERR_CONN_FAILED = 1;
 
     protected $casts = [
         'server_passive' => 'boolean',

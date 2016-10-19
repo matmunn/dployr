@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Services\GitService;
 use Illuminate\Bus\Queueable;
 use Touki\FTP\Model\Directory;
+use App\Events\DeploymentComplete;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -45,6 +46,8 @@ class FtpDeployer implements ShouldQueue
         //
         if(!$ftp = $this->server->returnConnection())
         {
+            // return false;
+            event(new DeploymentFailed($this->server, $this->server::ERR_CONN_FAILED));
             return false;
         }
 
@@ -130,5 +133,7 @@ class FtpDeployer implements ShouldQueue
         $thisDeployment->finished_at = Carbon::now();
         $thisDeployment->file_count = count($this->files);
         $thisDeployment->save();
+
+        event(new DeploymentComplete($this->server));
     }
 }

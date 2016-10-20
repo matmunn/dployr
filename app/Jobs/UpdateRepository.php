@@ -31,19 +31,6 @@ class UpdateRepository implements ShouldQueue
         $this->deployEnvironment = $deployEnvironment;
     }
 
-    // protected function dir_scan($folder)
-    // {
-    //     $files = glob($folder.'/{,.}[!.,!..,!.git]*',GLOB_BRACE);
-    //     foreach ($files as $f)
-    //     {
-    //         if(is_dir($f))
-    //         {
-    //             $files = array_merge($files, $this->dir_scan($f)); // scan subfolder
-    //         }
-    //     }
-    //     return $files;
-    // }
-
     protected function dir_scan($folder)
     {
         $foundFiles = [];
@@ -121,7 +108,7 @@ class UpdateRepository implements ShouldQueue
                     }
                 }
 
-                if(!empty($changedFiles) && ($this->deployEnvironment === $environment->id || $environment->deploy_mode === $this->environment::DEPLOY_MODE_AUTO))
+                if(!empty($changedFiles) && ($this->deployEnvironment === $environment->id || $environment->deploy_mode === $environment::DEPLOY_MODE_AUTO))
                 {
                     dispatch(new FileDeployer($environment, $changedFiles, $environment->branch));
                 }

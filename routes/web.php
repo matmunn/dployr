@@ -51,6 +51,7 @@ Route::group(['prefix' => 'notifier'], function()
 {
     Route::get('{environment}/{type}/new', 'NotifierController@new');
     Route::post('save', 'NotifierController@save');
+    Route::delete('delete', 'NotifierController@delete');
 });
 
 Route::group(['prefix' => 'server'], function()

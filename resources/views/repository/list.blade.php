@@ -63,7 +63,19 @@
                                                 </div>
                                             @endif
                                             @if($repository->status & $repository::STATUS_ERROR)
-                                                <span class="red-text">
+                                                <span class="red-text tooltipped" data-position="top" data-delay="50" data-tooltip="
+                                                @if($repository->last_action == "update")
+                                                    There was a problem updating your repository.
+                                                @endif
+
+                                                @if($repository->last_action == "deploy")
+                                                    There was a problem deploying one of your environments.
+                                                @endif
+
+                                                @if($repository->last_action == "clone")
+                                                    There was a problem initialising your repository.
+                                                @endif
+                                                ">
                                                     <i class="material-icons" style="vertical-align: bottom">clear</i>
                                                     Error
                                                 </span>

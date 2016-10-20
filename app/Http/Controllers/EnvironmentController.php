@@ -45,6 +45,10 @@ class EnvironmentController extends Controller
         {
             return redirect()->action('RepositoryController@manage', $repo)->with('error', "Couldn't get remote branches for your repository.");
         }
+        catch(\ErrorException $e)
+        {
+            return redirect()->action('RepositoryController@manage', $repo)->with('error', "There was a problem with your repository.");   
+        }
 
         return view('environment.new')->with(compact('repo', 'branches'));
     }

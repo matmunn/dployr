@@ -43,6 +43,7 @@ class SftpDeployer implements ShouldQueue
         // dd($this->server->returnConnection());
         if(!$ftp = $this->server->returnConnection())
         {
+            event(new DeploymentFailed($this->server, $this->server::ERR_CONN_FAILED));
             return false;
         }
 
@@ -124,5 +125,7 @@ class SftpDeployer implements ShouldQueue
         $thisDeployment->finished_at = Carbon::now();
         $thisDeployment->file_count = count($this->files);
         $thisDeployment->save();
+
+        event(new DeploymentComplete($this->server));
     }
 }

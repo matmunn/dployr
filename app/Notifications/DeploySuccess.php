@@ -14,6 +14,7 @@ class DeploySuccess extends Notification implements ShouldQueue
     use Queueable;
 
     protected $server;
+    protected $url;
 
     /**
      * Create a new notification instance.
@@ -24,6 +25,7 @@ class DeploySuccess extends Notification implements ShouldQueue
     {
         //
         $this->server = $server;
+        $this->url = action('ServerController@manage', $server);
     }
 
     /**
@@ -45,10 +47,12 @@ class DeploySuccess extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $url = $this->url;
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', 'https://laravel.com')
-                    ->line('Thank you for using our application!');
+                    ->line('')
+                    ->action('View Server Log', $url)
+                    ->line('Thank you for using dployr');
     }
 
 
@@ -60,10 +64,24 @@ class DeploySuccess extends Notification implements ShouldQueue
      */
     public function toSlack($notifiable)
     {
+        $server = $this->server;
+        $url = $this->url;
+
         return (new SlackMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', 'https://laravel.com')
-                    ->line('Thank you for using our application!');
+                    ->success()
+                    ->from("dployr", "https://dployr.io/apple-icon-180x180.png")
+                    ->content($server->environment->repository->name . " has been deployed to " . $server->environment->name)
+                    ->attachment(function($attachment) use ($server, $url)
+                        {
+
+                            $attachment->title('Deployed to ' . $server->name, $url)
+                                       ->fields([
+                                            'Commit Message' => $server->deployments->last()->commit_message,
+                                            'Branch' => $server->environment->branch,
+                                            'Status' => "Success",
+                                            'Deployment Trigger' => $server->environment->deploy_mode == $server->environment::DEPLOY_MODE_AUTO ? "Automatic" : "Manual"
+                                        ]);
+                        });
     }
 
     /**

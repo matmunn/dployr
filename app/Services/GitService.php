@@ -60,7 +60,7 @@ class GitService
      */
     public function changedFiles($commit1 = "HEAD", $commit2 = null)
     {
-        if(!isset($commit2) || is_null($commit2))
+        if(is_null($commit2))
         {
             $commit2 = $commit1 . "~1";
         }

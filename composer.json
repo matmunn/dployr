@@ -4,6 +4,12 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "url": "https://github.com/savimat/framework.git",
+            "type": "git"
+        }
+    ],
     "require": {
         "php": ">=5.6.4",
         "laravel/framework": "5.3.*",

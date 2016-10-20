@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col s12 m4">
                     <div class="icon-block">
-                        <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+                        <h2 class="center dployr-blue"><i class="material-icons">flash_on</i></h2>
                         <h5 class="center">Speeds up deployment</h5>
 
                         <p class="light">No more worrying about FTP account details and trying to keep track of which files you changed, dployr will take care of all the legwork in the background to ensure that as soon as you push to your repository your changes are reflected on your site.
@@ -64,9 +64,9 @@
 
 @section('content')
 
-    @if(Session::has('message'))
+    @if(Session::has('message') || Session::has('status'))
         <div class="card-panel btn-color-success white-text center-align">
-            {{ Session::pull('message') }}
+            {{ !empty(Session::get('message')) ? Session::pull('message') : Session::pull('status') }}
         </div>
     @endif
     @if(Session::has('error'))

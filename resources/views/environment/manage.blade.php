@@ -88,7 +88,7 @@
                                         {{-- <td>{{ strtoupper($server->type) }} - {{ $server->server_name }}</td> --}}
                                         <td>{{ $notify->type == "sms" ? strtoupper($notify->type) : ucfirst($notify->type) }}</td>
                                         <td>{{ $notify->data1 }}</td>
-                                        <td>Delete</td>
+                                        <td><a href="#" data-notifier="{{ $notify->id }}" class="delete-notifier-link">Delete</a></td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -152,5 +152,25 @@
                 showConfirmButton: false
             });
         });
+
+        $('.delete-notifier-link').on('click', function()
+        {
+            var notifier = $(this).data('notifier');
+
+            swal({
+              title: 'Are you sure you want to delete this notifier?',
+              text: "This can't be undone!",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonClass: 'btn-color-error',
+              confirmButtonText: 'Yes, delete it!'
+            }).then(function() {
+                $.post('{{ action('NotifierController@delete') }}', {"_method": "DELETE", "_token": "{{ csrf_token() }}", "notifier": notifier}, function(data)
+                {
+                    location.reload();
+                })
+            })
+        });
+
     </script>
 @endsection

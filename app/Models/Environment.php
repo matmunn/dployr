@@ -56,7 +56,8 @@ class Environment extends Model
             $recipients[] = $notify->data1;
         }
 
-        return $recipients;
+        // return $recipients;
+        return $this->notifiers->where('type', 'slack')->first()->data1;
     }
 
     public function routeNotificationForPlivo()

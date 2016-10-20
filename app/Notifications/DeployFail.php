@@ -2,10 +2,12 @@
 
 namespace App\Notifications;
 
+use App\Models\Server;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\SlackMessage;
 
 class DeployFail extends Notification
 {
@@ -22,6 +24,7 @@ class DeployFail extends Notification
     {
         //
         $this->server = $server;
+        $this->url = action('ServerController@manage', $server);
     }
 
     /**
@@ -57,10 +60,24 @@ class DeployFail extends Notification
      */
     public function toSlack($notifiable)
     {
+        $server = $this->server;
+        $url = $this->url;
+
         return (new SlackMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', 'https://laravel.com')
-                    ->line('Thank you for using our application!');
+                    ->error()
+                    ->from("dployr", "https://dployr.io/apple-icon-180x180.png")
+                    ->content($server->environment->repository->name . " failed while deploying to " . $server->environment->name)
+                    ->attachment(function($attachment) use ($server, $url)
+                        {
+
+                            $attachment->title('Failed to deploy to ' . $server->name, $url)
+                                       ->fields([
+                                            'Commit Message' => $server->deployments->last()->commit_message,
+                                            'Branch' => $server->environment->branch,
+                                            'Status' => "Failure",
+                                            'Deployment Trigger' => $server->environment->deploy_mode == $server->environment::DEPLOY_MODE_AUTO ? "Automatic" : "Manual"
+                                        ]);
+                        });
     }
 
     /**

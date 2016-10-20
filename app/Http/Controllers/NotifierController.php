@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Models\Notifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class NotifierController extends Controller
 {
@@ -66,5 +67,22 @@ class NotifierController extends Controller
         $environment->notifiers()->create($notifier);
 
         return redirect()->action('EnvironmentController@manage', $environment)->with('message', "Your notifier was saved successfully.");
+    }
+
+    public function delete(Request $request)
+    {
+        if(!$notifier = Notifier::find($request->notifier))
+        {
+            return response()->json("Couldn't find the given notifier.", 400);
+        }
+        
+        if(!Auth::user()->environments->contains($notifier->environment))
+        {
+            return response()->json("Couldn't find the given notifier.", 400);
+        }
+
+        $notifier->delete();
+
+        Session::flash('message', "Notifier successfully deleted.");
     }
 }

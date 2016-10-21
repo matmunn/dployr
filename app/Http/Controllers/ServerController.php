@@ -47,7 +47,7 @@ class ServerController extends Controller
 
         if(!$environment = Auth::user()->environments->find($request->environment))
         {
-            return redirect()->action('HomeController@dashboard')->with("error", "A matching environment couldn't be found for your user.");
+            return redirect()->action('HomeController@dashboard')->with("error", "The specified environment couldn't be found.");
         }
 
         $server = new Server([
@@ -74,7 +74,11 @@ class ServerController extends Controller
 
     public function manage($server)
     {
-        $server = Server::find($server);
+        $server = Server::where('id', $server)
+            ->with(['deployments' => function($query)
+            {
+                $query->orderBy('created_at', 'desc');
+            }])->first();
         if(!$server || !Auth::user()->environments->contains($server->environment) )
         {
             return redirect()->action("HomeController@dashboard")->with("error", "The specified server couldn't be found");

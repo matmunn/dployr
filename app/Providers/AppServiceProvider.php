@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Laravel\Cashier\Cashier;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        Cashier::useCurrency('aud', '$');
     }
 
     /**

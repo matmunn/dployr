@@ -39,8 +39,8 @@ class FileDeployer implements ShouldQueue
     public function handle()
     {
         //
-        if($this->environment->deploy_mode === $this->environment::DEPLOY_MODE_AUTO)
-        {
+        // if($this->environment->deploy_mode === $this->environment::DEPLOY_MODE_AUTO)
+        // {
             foreach($this->environment->servers as $server)
             {
                 if($server->type == "ftp")
@@ -52,6 +52,6 @@ class FileDeployer implements ShouldQueue
                     dispatch(new SftpDeployer($server, $this->files, $this->branch));
                 }
             }
-        }
+        // }
     }
 }

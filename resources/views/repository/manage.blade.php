@@ -31,7 +31,7 @@
             </div>
             <div class="row">
                 <div class="col s12 right-align">
-                    <a class="waves-effect waves-light btn btn-color-normal" href="{{ action('EnvironmentController@new', $repo->id) }}">New Environment</a>
+                    <a class="waves-effect waves-light btn btn-color-normal col s12 m5 offset-m7 l3 offset-l9" href="{{ action('EnvironmentController@new', $repo->id) }}">New Environment</a>
                 </div>
             </div>
             <div class="row">
@@ -74,7 +74,7 @@
             </div>
             <div class="row">
                 <div class="col s12 m12 right-align">
-                    <a class="waves-effect waves-light btn btn-color-error delete-button" href="#">Delete Repository</a>
+                    <a class="waves-effect waves-light btn btn-color-error delete-button col s12 m5 offset-m7 l3 offset-l9" href="#">Delete Repository</a>
                 </div>
             </div>
         </div>

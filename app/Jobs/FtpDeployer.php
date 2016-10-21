@@ -2,12 +2,14 @@
 
 namespace App\Jobs;
 
+use Carbon\Carbon;
 use App\Models\Server;
 use Touki\FTP\Model\File;
 use Illuminate\Support\Str;
 use App\Services\GitService;
 use Illuminate\Bus\Queueable;
 use Touki\FTP\Model\Directory;
+use App\Events\DeploymentComplete;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -44,8 +46,11 @@ class FtpDeployer implements ShouldQueue
         //
         if(!$ftp = $this->server->returnConnection())
         {
+            // return false;
+            event(new DeploymentFailed($this->server, $this->server::ERR_CONN_FAILED));
             return false;
         }
+
 
         $factory = $ftp[0];
         $ftp = $factory->build($ftp[1]);
@@ -55,6 +60,7 @@ class FtpDeployer implements ShouldQueue
         $repo->status = $repo::STATUS_DEPLOYING;
         $repo->save();
 
+        $thisDeployment = $this->server->deployments()->create(['started_at' => Carbon::now()]);
         // dd($this->files);
         $git = new GitService($repo);
 
@@ -121,5 +127,13 @@ class FtpDeployer implements ShouldQueue
 
         $repo->status = $repo::STATUS_IDLE;
         $repo->save();
+
+        $thisDeployment->commit_hash = $this->server->environment->current_commit;
+        $thisDeployment->commit_message = $git->getCommitMessage($this->server->environment->current_commit);
+        $thisDeployment->finished_at = Carbon::now();
+        $thisDeployment->file_count = count($this->files);
+        $thisDeployment->save();
+
+        event(new DeploymentComplete($this->server));
     }
 }

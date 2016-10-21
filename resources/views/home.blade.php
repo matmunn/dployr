@@ -11,7 +11,7 @@
                 <h5 class="header col s12 font-serif dployr-grey">Spend less time deploying, more time developing</h5>
             </div>
             <div class="row center">
-                <a href="{{ action('HomeController@pricing') }}" id="download-button" class="btn-large waves-effect waves-light orange">See our pricing</a>
+                <a href="{{ action('HomeController@pricing') }}" id="download-button" class="btn-large waves-effect waves-light btn-color-normal">See our pricing</a>
             </div>
             <br><br>
 
@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col s12 m4">
                     <div class="icon-block">
-                        <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+                        <h2 class="center dployr-blue"><i class="material-icons">flash_on</i></h2>
                         <h5 class="center">Speeds up deployment</h5>
 
                         <p class="light">No more worrying about FTP account details and trying to keep track of which files you changed, dployr will take care of all the legwork in the background to ensure that as soon as you push to your repository your changes are reflected on your site.
@@ -64,14 +64,14 @@
 
 @section('content')
 
-    @if(Session::has('message'))
+    @if(session()->has('message') || session()->has('status'))
         <div class="card-panel btn-color-success white-text center-align">
-            {{ Session::pull('message') }}
+            {{ !empty(session('message')) ? session()->pull('message') : session()->pull('status') }}
         </div>
     @endif
-    @if(Session::has('error'))
+    @if(session()->has('error'))
         <div class="card-panel btn-color-error center-align white-text text-lighten-2">
-            {{ Session::pull('error') }}
+            {{ session()->pull('error') }}
         </div>
     @endif
 

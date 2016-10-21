@@ -28,11 +28,11 @@ body {
 }
 
 .dployr-grey {
-    color: #303030 !important;
+    color: $logo-color-grey !important;
 }
 
 .dployr-blue {
-    color: #00A6C1 !important;
+    color: $btn-color-normal !important;
 }
 
 .large-logo {
@@ -59,7 +59,7 @@ body {
 }
 
 .navbar {
-    background-color: #303030 !important;
+    background-color: $logo-color-grey !important;
 }
 
 .btn-color-normal {
@@ -91,9 +91,9 @@ body {
 }
 
 .message-error {
+    @extend .code;
     background-color: $bg-color-error;
     border: 1px solid $btn-color-error;
-    padding: 5px;
 }
 
 .delete-button {

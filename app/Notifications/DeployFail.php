@@ -51,6 +51,7 @@ class DeployFail extends Notification
         $url = $this->url;
 
         return (new MailMessage)
+                    ->error()
                     ->line('Your deployment failed.')
                     ->action('View Server Log', $url)
                     ->line($server->environment->repository->name . " failed to deploy to " . $server->environment->name)

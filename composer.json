@@ -4,6 +4,12 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "url": "https://github.com/savimat/framework.git",
+            "type": "git"
+        }
+    ],
     "require": {
         "php": ">=5.6.4",
         "laravel/framework": "5.3.*",
@@ -18,7 +24,8 @@
         "ucsdmath/database": "^1.9",
         "guzzlehttp/guzzle": "~4.0",
         "maknz/slack": "^1.7",
-        "league/tactician": "^1.0"
+        "league/tactician": "^1.0",
+        "laravel/cashier": "~7.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

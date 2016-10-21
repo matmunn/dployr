@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => 'hello@example.com',
-        'name' => 'Example',
+        'address' => 'support@dployr.io',
+        'name' => 'dployr',
     ],
 
     /*

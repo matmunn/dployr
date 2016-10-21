@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Server;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -13,14 +14,17 @@ class DeploymentComplete
 {
     use InteractsWithSockets, SerializesModels;
 
+    public $server;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Server $server)
     {
         //
+        $this->server = $server;
     }
 
     /**

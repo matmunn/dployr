@@ -8,15 +8,19 @@
                 <h4>Create New Environment</h4>
             </div>
         </div>
-        <div class="row">
-            <div class="col s12 m12">
-                <form action="{{ action('EnvironmentController@save') }}" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" value="{{ $repo->id }}" name="repo" />
+        <form action="{{ action('EnvironmentController@save') }}" method="POST">
+            {{ csrf_field() }}
+            <input type="hidden" value="{{ $repo->id }}" name="repo" />
+            <div class="row">
+                <div class="col s12 m12">
                     <div class="input-field">
                         <input type="text" class="validate" name="name">
                         <label>Environment name</label>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
                     <div class="input-field">
                         <select name="type">
                             <option selected disabled>--</option>
@@ -25,6 +29,10 @@
                         </select>
                         <label>Environment Type</label>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
                     <div class="input-field">
                         <select name="branch">
                             <option selected disabled>--</option>
@@ -34,6 +42,10 @@
                         </select>
                         <label>Branch</label>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
                     <div class="input-field">
                         Deployments
                         <p>
@@ -45,9 +57,13 @@
                             <label for="manual">Manual</label>
                         </p>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
                     <div class="input-field">
-                        <input type="submit" class="btn btn-color-success" value="Save">
-                        <a class="btn btn-color-error" href="{{ action('RepositoryController@manage', $repo) }}">Cancel</a>
+                        <input type="submit" class="btn btn-color-success col s12 m5 l3" value="Save">
+                        <a class="btn btn-color-error col s12 m5 offset-m2 l3 offset-l6" href="{{ action('RepositoryController@manage', $repo) }}">Cancel</a>
                     </div>
                 </form>
             </div>

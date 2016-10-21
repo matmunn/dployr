@@ -10,24 +10,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s6">
-                    <a class="waves-effect waves-light btn btn-color-normal" href="{{ action('RepositoryController@manage', $env->repository) }}">Back to Repository</a>
-                </div>
-                <div class="col s6 right-align">
-                    {{-- <a class="waves-effect waves-light btn" href="{{ action('EnvironmentController@new', $env->id) }}">New Server</a> --}}
-                    {{-- <div class="fixed-action-btn horizontal">
-                        <a class="btn">
-                            New Server
-                        </a>
-                        <ul>
-                            <li>
-                                <a class="btn-floating red" href="{{ action('ServerController@new', [$env->id, 'ftp']) }}">FTP</a>
-                            </li>
-                        </ul>
-                    </div> --}}
-                    {{-- <a class="waves-effect waves-light btn btn-color-normal" href="{{ action('ServerController@new', [$env->id, 'ftp']) }}">New Server</a> --}}
-                    <a class="waves-effect waves-light btn btn-color-normal new-server-button" href="#">New Server</a>
-                </div>
+                <a class="waves-effect waves-light btn btn-color-normal col s12 m5 l3" href="{{ action('RepositoryController@manage', $env->repository) }}">Back to Repository</a>
+                <a class="waves-effect waves-light btn btn-color-normal new-server-button col s12 m5 offset-m2 l3 offset-l6" href="#">New Server</a>
             </div>
             <div class="row">
                 <div class="col s12 m12">
@@ -61,9 +45,19 @@
                     </table>
                 </div>
             </div>
-{{--}}            <div class="row">
+            @if(count($env->servers) > 0)
+                <div class="row">
+                    <a class="waves-effect waves-light btn btn-color-success col s12 m5 offset-m2 l3 offset-l9" href="{{ action('EnvironmentController@deploy', $env) }}">Deploy Now</a>
+                </div>
+            @endif
+            <div class="row">
                 <div class="col s12 m12">
-                    <h4>Slack Notifiers</h4>
+                    <h4>Notifiers</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 right-align">
+                    <a class="waves-effect waves-light btn btn-color-normal new-notifier-button col s12 m5 offset-m7 l3 offset-l9" href="#">New Notifier</a>
                 </div>
             </div>
             <div class="row">
@@ -72,34 +66,38 @@
                         <thead>
                             <tr>
                                 <th>
-                                    Endpoint
+                                    Type
                                 </th>
+                                <th>
+                                    Contact
+                                </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if(count($env->notifierSlack) == 0)
+                            @if(count($env->notifiers) == 0)
                                 <tr>
-                                    <td class="center-align">
-                                        This environment has no slack notifiers
+                                    <td class="center-align" colspan="2">
+                                        This environment has no notifiers
                                     </td>
                                 </tr>
                             @else
-                                @foreach($env->notifierSlack as $notify)
+                                @foreach($env->notifiers as $notify)
                                     <tr>
                                         {{-- <td><a href="{{ action('ServerController@manage', $server) }}">{{ $server->name }}</a></td> --}}
                                         {{-- <td>{{ strtoupper($server->type) }} - {{ $server->server_name }}</td> --}}
-                                        {{-- <td>{{ $notify->endpoint }}</td>
+                                        <td>{{ $notify->type == "sms" ? strtoupper($notify->type) : ucfirst($notify->type) }}</td>
+                                        <td>{{ $notify->data1 }}</td>
+                                        <td><a href="#" data-notifier="{{ $notify->id }}" class="delete-notifier-link">Delete</a></td>
                                     </tr>
                                 @endforeach
                             @endif
                         </tbody>
                     </table>
                 </div>
-            </div>--}}
+            </div>
             <div class="row">
-                <div class="col s12 m12 right-align">
-                    <a class="waves-effect waves-light btn btn-color-error delete-button" href="#">Delete Environment</a>
-                </div>
+                <a class="waves-effect waves-light btn btn-color-error delete-button col s12 m5 offset-m7 l3 offset-l9" href="#">Delete Environment</a>
             </div>
         </div>
     </div>
@@ -124,6 +122,14 @@
                         window.location = '{{ action('RepositoryController@manage', $env->repository) }}';
                     });
                 }
+                else
+                {
+                    swal({
+                        title: 'Oops...',
+                        text: "The environment name didn't match",
+                        type: 'error',
+                        confirmButtonClass: 'btn-color-success'});
+                }
             }).done();
         });
 
@@ -136,5 +142,35 @@
                 showConfirmButton: false
             });
         });
+
+        $('.new-notifier-button').on('click', function()
+        {
+            swal({
+                title: "New notifier",
+                html: "Choose your notification type:<br /><br /><a class='btn btn-color-normal' href='{{ action('NotifierController@new', [$env->id, 'slack']) }}'>Slack</a> <a class='btn btn-color-normal' href='{{ action('NotifierController@new', [$env->id, 'email']) }}'>Email</a> <a class='btn btn-color-normal disabled' href='#' title='Coming Soon!'>SMS</a>",
+                showCancelButton: true ,
+                showConfirmButton: false
+            });
+        });
+
+        $('.delete-notifier-link').on('click', function()
+        {
+            var notifier = $(this).data('notifier');
+
+            swal({
+              title: 'Are you sure you want to delete this notifier?',
+              text: "This can't be undone!",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonClass: 'btn-color-error',
+              confirmButtonText: 'Yes, delete it!'
+            }).then(function() {
+                $.post('{{ action('NotifierController@delete') }}', {"_method": "DELETE", "_token": "{{ csrf_token() }}", "notifier": notifier}, function(data)
+                {
+                    location.reload();
+                })
+            })
+        });
+
     </script>
 @endsection

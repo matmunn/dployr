@@ -17,30 +17,19 @@ class UpdateRepository implements ShouldQueue
     use InteractsWithQueue, Queueable, SerializesModels;
 
     protected $git;
+    protected $deployEnvironment;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(GitService $git)
+    public function __construct(GitService $git, int $deployEnvironment = 0)
     {
         //
         $this->git = $git;
+        $this->deployEnvironment = $deployEnvironment;
     }
-
-    // protected function dir_scan($folder)
-    // {
-    //     $files = glob($folder.'/{,.}[!.,!..,!.git]*',GLOB_BRACE);
-    //     foreach ($files as $f)
-    //     {
-    //         if(is_dir($f))
-    //         {
-    //             $files = array_merge($files, $this->dir_scan($f)); // scan subfolder
-    //         }
-    //     }
-    //     return $files;
-    // }
 
     protected function dir_scan($folder)
     {
@@ -95,7 +84,7 @@ class UpdateRepository implements ShouldQueue
                 {
                     if($currentCommit !== $this->git->currentCommit())
                     {
-                        $files = explode("\n", $this->git->changedFiles());
+                        $files = explode("\n", $this->git->changedFiles('HEAD', $environment->current_commit));
                         $files = array_filter($files);
                         // var_dump($files);
                         foreach($files as $file)
@@ -108,7 +97,7 @@ class UpdateRepository implements ShouldQueue
                 else
                 {
                     $files = $this->dir_scan($repo->repositoryPath);
-                    Log::info(json_encode($files));
+                    // Log::info(json_encode($files));
                     foreach($files as $file)
                     {
                         if(is_file($file))
@@ -119,7 +108,7 @@ class UpdateRepository implements ShouldQueue
                     }
                 }
 
-                if(!empty($changedFiles))
+                if(!empty($changedFiles) && ($this->deployEnvironment === $environment->id || $environment->deploy_mode === $environment::DEPLOY_MODE_AUTO))
                 {
                     dispatch(new FileDeployer($environment, $changedFiles, $environment->branch));
                 }

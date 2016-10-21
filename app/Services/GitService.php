@@ -60,7 +60,7 @@ class GitService
      */
     public function changedFiles($commit1 = "HEAD", $commit2 = null)
     {
-        if(!isset($commit2) || is_null($commit2))
+        if(is_null($commit2))
         {
             $commit2 = $commit1 . "~1";
         }
@@ -79,6 +79,20 @@ class GitService
     {
         $git = $this->getGitInstance();
         $output = $git->run(['rev-parse', 'HEAD']);
+
+        return $output;
+    }
+
+    /**
+     * Get commit message of git commit
+     *
+     * @param string SHA1 hash of commit
+     * @return string
+     */
+    public function getCommitMessage($commit)
+    {
+        $git = $this->getGitInstance();
+        $output = $git->getWrapper()->git('log --format=%B -n 1 '. $commit, $git->getDirectory());
 
         return $output;
     }

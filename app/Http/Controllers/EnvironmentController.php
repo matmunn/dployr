@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Services\GitService;
 use GitWrapper\GitException;
 use Illuminate\Http\Request;
+use App\Jobs\UpdateRepository;
 use App\Jobs\DeleteEnvironment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -44,6 +45,10 @@ class EnvironmentController extends Controller
         {
             return redirect()->action('RepositoryController@manage', $repo)->with('error', "Couldn't get remote branches for your repository.");
         }
+        catch(\ErrorException $e)
+        {
+            return redirect()->action('RepositoryController@manage', $repo)->with('error', "There was a problem with your repository.");   
+        }
 
         return view('environment.new')->with(compact('repo', 'branches'));
     }
@@ -81,6 +86,18 @@ class EnvironmentController extends Controller
         return redirect()->action('ServerController@new', [$env->id, $request->type]);
     }
 
+    public function deploy($environment)
+    {
+        if(!$env = Auth::user()->environments->find($environment))
+        {
+            return redirect()->action('RepositoryController@list')->with('error', "The specified environment couldn't be found.");
+        }
+
+        dispatch(new UpdateRepository(new GitService($env->repository), $env->id));
+
+        return redirect()->action('EnvironmentController@manage', $env)->with('message', "Your environment was successfully queued for deployment.");
+    }
+
     public function delete($environment)
     {
         if(!$env = Auth::user()->environments->find($environment))
@@ -90,7 +107,7 @@ class EnvironmentController extends Controller
 
         dispatch(new DeleteEnvironment($env));
 
-        Session::flash('message', "Environment deleted successfully.");
+        Session::flash('message', "Environment successfully queued for deletion.");
         return response()->json("true", 200);
     }
 }

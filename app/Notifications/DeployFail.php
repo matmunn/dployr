@@ -35,7 +35,7 @@ class DeployFail extends Notification
      */
     public function via($notifiable)
     {
-        return ['slack'];
+        return ['mail'];
         // return ['mail', 'slack'];
     }
 
@@ -47,10 +47,15 @@ class DeployFail extends Notification
      */
     public function toMail($notifiable)
     {
+        $server = $this->server;
+        $url = $this->url;
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', 'https://laravel.com')
-                    ->line('Thank you for using our application!');
+                    ->line('Your deployment failed.')
+                    ->action('View Server Log', $url)
+                    ->line($server->environment->repository->name . " failed to deploy to " . $server->environment->name)
+                    ->line('The commit message was "' . $server->deployments->last()->commit_message.'"')
+                    ->line('Deployment of branch \'' . $server->environment->branch .  '\' is set to '. ($server->environment->deploy_mode == $server->environment::DEPLOY_MODE_AUTO ? "automatic" : "manual") . ' deployment.' );
     }
 
     /**

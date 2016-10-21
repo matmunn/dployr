@@ -6,6 +6,7 @@ use Validator;
 use App\Models\Plan;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -72,8 +73,30 @@ class RegisterController extends Controller
         ]);
 
         // For now we just want to associate the default plan
-        $plan = Plan::find(1);
+        if(!$plan = Plan::find(session()->pull('signup_plan')))
+        {
+            return redirect()->url('/pricing')->with('error', "We were unable to associate you with your chosen plan. Your registration was unsuccessful.");
+        }
+        
         $plan->users()->save($user);
         return $user;
+    }
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        // This is for local only,
+
+        if(!session()->has('signup_plan'))
+        {
+            // Probably need to change this once we go live, set it to the ID of the free plan
+            session(['signup_plan' => 1]);
+        }
+
+        return view('auth.register');
     }
 }

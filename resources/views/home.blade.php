@@ -64,14 +64,14 @@
 
 @section('content')
 
-    @if(Session::has('message') || Session::has('status'))
+    @if(session()->has('message') || session()->has('status'))
         <div class="card-panel btn-color-success white-text center-align">
-            {{ !empty(Session::get('message')) ? Session::pull('message') : Session::pull('status') }}
+            {{ !empty(session('message')) ? session()->pull('message') : session()->pull('status') }}
         </div>
     @endif
-    @if(Session::has('error'))
+    @if(session()->has('error'))
         <div class="card-panel btn-color-error center-align white-text text-lighten-2">
-            {{ Session::pull('error') }}
+            {{ session()->pull('error') }}
         </div>
     @endif
 

@@ -36,7 +36,7 @@ class DeploySuccess extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['slack'];
+        return ['mail'];
         // return ['mail', 'slack'];
     }
 
@@ -48,12 +48,15 @@ class DeploySuccess extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $server = $this->server;
         $url = $this->url;
 
         return (new MailMessage)
-                    ->line('')
+                    ->line('Your deployment was successful.')
                     ->action('View Server Log', $url)
-                    ->line('Thank you for using dployr');
+                    ->line($server->environment->repository->name . " has been deployed to " . $server->environment->name)
+                    ->line('The commit message was "' . $server->deployments->last()->commit_message.'"')
+                    ->line('Deployment of branch \'' . $server->environment->branch .  '\' is set to '. ($server->environment->deploy_mode == $server->environment::DEPLOY_MODE_AUTO ? "automatic" : "manual") . ' deployment.' );
     }
 
 

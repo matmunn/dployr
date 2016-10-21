@@ -124,7 +124,7 @@ class RepositoryController extends Controller
 
         dispatch(new DeleteRepository($repo));
 
-        Session::flash('message', "Repository successfully queued for deletion.");
+        session()->flash('message', "Repository successfully queued for deletion.");
         return response()->json("true", 200);
     }
 }

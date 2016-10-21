@@ -83,6 +83,6 @@ class NotifierController extends Controller
 
         $notifier->delete();
 
-        Session::flash('message', "Notifier successfully deleted.");
+        session()->flash('message', "Notifier successfully deleted.");
     }
 }

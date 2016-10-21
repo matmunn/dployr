@@ -8,6 +8,7 @@ use App\Services\GitService;
 use GitWrapper\GitException;
 use App\Events\CloneComplete;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
@@ -54,6 +55,7 @@ class CloneRepository implements ShouldQueue
         }
         catch(GitException $e)
         {
+            Log::error($e);
             $repo->status = $repo::STATUS_ERROR;
             $repo->save();
         }
@@ -68,6 +70,7 @@ class CloneRepository implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
+        Log::error($exception);
         $repo = $this->git->getRepository();
         $repo->status = $repo::STATUS_ERROR;
         $repo->save();

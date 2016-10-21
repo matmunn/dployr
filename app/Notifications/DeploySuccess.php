@@ -36,7 +36,8 @@ class DeploySuccess extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', 'slack'];
+        return ['slack'];
+        // return ['mail', 'slack'];
     }
 
     /**
@@ -69,7 +70,7 @@ class DeploySuccess extends Notification implements ShouldQueue
 
         return (new SlackMessage)
                     ->success()
-                    ->from("dployr", "https://dployr.io/apple-icon-180x180.png")
+                    ->from("dployr", config('dployr.site.slack_icon_url'))
                     ->content($server->environment->repository->name . " has been deployed to " . $server->environment->name)
                     ->attachment(function($attachment) use ($server, $url)
                         {

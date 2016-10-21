@@ -35,7 +35,8 @@ class DeployFail extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'slack'];
+        return ['slack'];
+        // return ['mail', 'slack'];
     }
 
     /**
@@ -65,7 +66,7 @@ class DeployFail extends Notification
 
         return (new SlackMessage)
                     ->error()
-                    ->from("dployr", "https://dployr.io/apple-icon-180x180.png")
+                    ->from("dployr", config('dployr.site.slack_icon_url'))
                     ->content($server->environment->repository->name . " failed while deploying to " . $server->environment->name)
                     ->attachment(function($attachment) use ($server, $url)
                         {

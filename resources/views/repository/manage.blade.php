@@ -18,7 +18,7 @@
             @endif
             <div class="row">
                 <div class="col s12 m12">
-                    Deploy Key:<br />
+                    Deploy Key (set this up as a read only key on your repository):<br />
                     <div class="monospace code">{{ $repo->public_key }}</div>
                     or <a href="{{ action('RepositoryController@key', $repo) }}">download this key as a file.</a>
                 </div>

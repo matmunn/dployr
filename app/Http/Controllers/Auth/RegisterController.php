@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Validator;
 use App\Models\Plan;
 use App\Models\User;
+use App\Notifications\Registered;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -79,6 +80,7 @@ class RegisterController extends Controller
         }
         
         $plan->users()->save($user);
+        $user->notify(new Registered($user));
         return $user;
     }
 

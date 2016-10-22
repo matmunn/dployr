@@ -4,6 +4,11 @@
     <div class="container">
         <div class="section">
             <div class="row">
+                <div class="col s12">
+                    <h4>My Account</h4>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col s12 m12">
                     Your current plan: {{ Auth::user()->plan->name }} (Max repositories: 
                     @if(Auth::user()->plan->repository_limit == 0)

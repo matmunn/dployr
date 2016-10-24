@@ -41,17 +41,14 @@ class FileDeployer implements ShouldQueue
         //
         // if($this->environment->deploy_mode === $this->environment::DEPLOY_MODE_AUTO)
         // {
-            foreach($this->environment->servers as $server)
-            {
-                if($server->type == "ftp")
-                {
-                    dispatch(new FtpDeployer($server, $this->files, $this->branch));
-                }
-                if($server->type == "sftp")
-                {
-                    dispatch(new SftpDeployer($server, $this->files, $this->branch));
-                }
+        foreach ($this->environment->servers as $server) {
+            if ($server->type == "ftp") {
+                dispatch(new FtpDeployer($server, $this->files, $this->branch));
             }
+            if ($server->type == "sftp") {
+                dispatch(new SftpDeployer($server, $this->files, $this->branch));
+            }
+        }
         // }
     }
 }

@@ -44,8 +44,7 @@ class FtpDeployer implements ShouldQueue
     public function handle()
     {
         //
-        if(!$ftp = $this->server->returnConnection())
-        {
+        if (!$ftp = $this->server->returnConnection()) {
             // return false;
             event(new DeploymentFailed($this->server, $this->server::ERR_CONN_FAILED));
             return false;
@@ -67,56 +66,41 @@ class FtpDeployer implements ShouldQueue
         $git->changeBranch($this->branch);
 
         $path = $repo->repositoryPath;
-        if(!Str::endsWith($path, "/"))
-        {
+        if (!Str::endsWith($path, "/")) {
             $path .= '/';
         }
         $serverPath = $this->server->server_path;
-        if(!Str::endsWith($serverPath, "/"))
-        {
+        if (!Str::endsWith($serverPath, "/")) {
             $serverPath .= '/';
         }
 
         $factory->getWrapper()->chdir($serverPath);
 
-        foreach($this->files as $file)
-        {
+        foreach ($this->files as $file) {
             $parts = explode("/", $file[1]);
             // Log::info("Uploading ".$file[1]);
             $filename = array_pop($parts);
             $remotePath = implode("/", $parts);
 
-            try
-            {
+            try {
                 $ftp->create(new Directory($serverPath.$remotePath));
-            }
-            catch(\Exception $e)
-            {
-                // Log::error($e); 
+            } catch (\Exception $e) {
+                // Log::error($e);
             }
 
-            if(in_array($file[0], ["A", "M"]))
-            {
+            if (in_array($file[0], ["A", "M"])) {
                 // Log::info('Attempting path '.$path.$file[1]);
-                try
-                {
+                try {
                     $ftp->upload(new File($serverPath.$file[1]), $path.$file[1]);
-                }
-                catch(\Exception $e)
-                {
+                } catch (\Exception $e) {
                     // Log::error($e);
                 }
-
             }
 
-            if($file[0] == "D")
-            {
-                try
-                {
+            if ($file[0] == "D") {
+                try {
                     $ftp->delete(new File($serverPath.$file[1]));
-                }
-                catch(\Exception $e)
-                {
+                } catch (\Exception $e) {
                     // Log::error($e);
                 }
             }

@@ -24,24 +24,23 @@ class Environment extends Model
 
     public function repository()
     {
-        return $this->belongsTo('App\Models\Repository');
+        return $this->belongsTo(\App\Models\Repository::class);
     }
 
     public function servers()
     {
-        return $this->hasMany('App\Models\Server');
+        return $this->hasMany(\App\Models\Server::class);
     }
 
     public function notifiers()
     {
-        return $this->hasMany('App\Models\Notifier');
+        return $this->hasMany(\App\Models\Notifier::class);
     }
 
     public function routeNotificationForMail()
     {
         $recipients = [];
-        foreach($this->notifiers->where('type', 'email')->all() as $notify)
-        {
+        foreach ($this->notifiers->where('type', 'email')->all() as $notify) {
             $recipients[] = $notify->data1;
         }
 
@@ -51,8 +50,7 @@ class Environment extends Model
     public function routeNotificationForSlack()
     {
         $recipients = [];
-        foreach($this->notifiers->where('type', 'slack')->all() as $notify)
-        {
+        foreach ($this->notifiers->where('type', 'slack')->all() as $notify) {
             $recipients[] = $notify->data1;
         }
 
@@ -63,15 +61,10 @@ class Environment extends Model
     public function routeNotificationForPlivo()
     {
         $recipients = [];
-        foreach($this->notifiers->where('type', 'sms')->all() as $notify)
-        {
+        foreach ($this->notifiers->where('type', 'sms')->all() as $notify) {
             $recipients[] = $notify->data1;
         }
 
         return implode("<", $recipients);
     }
-    // public function notifierEmail()
-    // {
-    //     return $this->hasMany('App\Models\NotifierEmail');
-    // }
 }

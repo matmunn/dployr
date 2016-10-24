@@ -40,10 +40,8 @@ class NotifySlack implements ShouldQueue
         $time = $env->updated_at;
 
         $notifiers = $env->notifierSlack;
-        if($notifiers->count() > 0)
-        {
-            foreach($notifier as $notify)
-            {
+        if ($notifiers->count() > 0) {
+            foreach ($notifier as $notify) {
                 $client = new Client($notify->endpoint, ['username' => 'dployr.io']);
                 $client->attach([
                     'fallback' => "Commit deployed to $env->name",

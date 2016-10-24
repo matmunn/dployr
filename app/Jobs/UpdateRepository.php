@@ -31,20 +31,17 @@ class UpdateRepository implements ShouldQueue
         $this->deployEnvironment = $deployEnvironment;
     }
 
-    protected function dir_scan($folder)
+    protected function dirScan($folder)
     {
         $foundFiles = [];
         $files = array_slice(scandir($folder), 2);
 
-        foreach($files as $file)
-        {
-            if(is_dir($folder.'/'.$file) && $file != '.git')
-            {
-                $foundFiles = array_merge($foundFiles, $this->dir_scan($folder.'/'.$file));
+        foreach ($files as $file) {
+            if (is_dir($folder.'/'.$file) && $file != '.git') {
+                $foundFiles = array_merge($foundFiles, $this->dirScan($folder.'/'.$file));
             }
 
-            if(is_file($folder.'/'.$file))
-            {
+            if (is_file($folder.'/'.$file)) {
                 $foundFiles[] = $folder.'/'.$file;
             }
         }
@@ -67,54 +64,44 @@ class UpdateRepository implements ShouldQueue
         $repo->last_action = "update";
         $repo->save();
 
-        foreach($repo->environments as $environment)
-        {
-            if(!in_array($environment->branch, $remoteBranches))
-            {
+        foreach ($repo->environments as $environment) {
+            if (!in_array($environment->branch, $remoteBranches)) {
                 return response()->json("Your environment is configured incorrectly.", 400);
             }
 
-            try
-            {
+            try {
                 $this->git->changeBranch($environment->branch);
                 $currentCommit = $environment->current_commit;
                 $this->git->getGitInstance()->pull("origin", $environment->branch);
                 $changedFiles = [];
-                if(!empty($currentCommit))
-                {
-                    if($currentCommit !== $this->git->currentCommit())
-                    {
-                        $files = explode("\n", $this->git->changedFiles('HEAD', $environment->current_commit));
+                if (!empty($currentCommit)) {
+                    if ($currentCommit !== $this->git->currentCommit()) {
+                        $files = explode("\n", $this->git->changedFiles(
+                            'HEAD',
+                            $environment->current_commit
+                        ));
                         $files = array_filter($files);
                         // var_dump($files);
-                        foreach($files as $file)
-                        {
+                        foreach ($files as $file) {
                             preg_match('/([ACDMR]{1})\s(.+)/', $file, $matches);
                             $changedFiles[] = [$matches[1], $matches[2]];
                         }
                     }
-                }
-                else
-                {
-                    $files = $this->dir_scan($repo->repositoryPath);
+                } else {
+                    $files = $this->dirScan($repo->repositoryPath);
                     // Log::info(json_encode($files));
-                    foreach($files as $file)
-                    {
-                        if(is_file($file))
-                        {
+                    foreach ($files as $file) {
+                        if (is_file($file)) {
                             $file = str_replace($repo->repositoryPath.'/', '', $file);
                             $changedFiles[] = ["A", $file];
                         }
                     }
                 }
 
-                if(!empty($changedFiles) && ($this->deployEnvironment === $environment->id || $environment->deploy_mode === $environment::DEPLOY_MODE_AUTO))
-                {
+                if (!empty($changedFiles) && ($this->deployEnvironment === $environment->id || $environment->deploy_mode === $environment::DEPLOY_MODE_AUTO)) {
                     dispatch(new FileDeployer($environment, $changedFiles, $environment->branch));
                 }
-            }
-            catch(\Exception $e)
-            {
+            } catch (\Exception $e) {
                 // dd($e);
                 Log::error($e);
                 $repo->status = $repo::STATUS_ERROR;

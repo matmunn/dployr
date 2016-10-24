@@ -28,8 +28,8 @@ class UpdateCompleteListener
     {
         //
         $repo = $event->repository;
-        if($repo->status == $repo::STATUS_UPDATING && $repo->status != $repo::STATUS_ERROR)
-        {
+        if ($repo->status == $repo::STATUS_UPDATING &&
+            $repo->status != $repo::STATUS_ERROR) {
             $repo->status = $repo::STATUS_IDLE;
             $repo->save();
         }

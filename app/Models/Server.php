@@ -44,12 +44,9 @@ class Server extends Model
             'account_password' => $this->server_password,
             'default_directory' => $this->server_path,
         ];
-        try
-        {
+        try {
             $conn = $sftp->connect($connectionOptions);
-        }
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             Log::error($e);
         }
 
@@ -58,13 +55,17 @@ class Server extends Model
 
     protected function returnFtpConnection()
     {
-        $connection = new Connection($this->server_name, $this->server_username, $this->server_password, $this->server_port, $this->server_timeout, $this->server_passive);
-        try
-        {
+        $connection = new Connection(
+            $this->server_name,
+            $this->server_username,
+            $this->server_password,
+            $this->server_port,
+            $this->server_timeout,
+            $this->server_passive
+        );
+        try {
             $connection->open();
-        }
-        catch(ConnectionException $e)
-        {
+        } catch (ConnectionException $e) {
             return false;
         }
 
@@ -75,18 +76,15 @@ class Server extends Model
 
     public function returnConnection()
     {
-        if($this->type == "ftp")
-        {
+        if ($this->type == "ftp") {
             $connection = $this->returnFtpConnection();
         }
 
-        if($this->type == "sftp")
-        {
+        if ($this->type == "sftp") {
             $connection = $this->returnSftpConnection();
         }
 
-        if($connection)
-        {
+        if ($connection) {
             return $connection;
         }
 
@@ -135,11 +133,11 @@ class Server extends Model
 
     public function environment()
     {
-        return $this->belongsTo('App\Models\Environment');
+        return $this->belongsTo(\App\Models\Environment::class);
     }
 
     public function deployments()
     {
-        return $this->hasMany('App\Models\Deployment');
+        return $this->hasMany(\App\Models\Deployment::class);
     }
 }

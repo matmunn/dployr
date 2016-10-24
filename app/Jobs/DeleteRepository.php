@@ -39,10 +39,8 @@ class DeleteRepository implements ShouldQueue
 
         Storage::deleteDirectory('repos/'.$this->repository->id);
 
-        foreach($this->repository->environments as $environment)
-        {
-            foreach($environment->servers as $server)
-            {
+        foreach ($this->repository->environments as $environment) {
+            foreach ($environment->servers as $server) {
                 $server->deployments()->delete();
             }
         }

@@ -18,15 +18,14 @@ class ServerController extends Controller
     
     public function new($environment, $server)
     {
-        if(!$repo = Environment::find($environment)->repository)
-        {
-            return redirect()->action("HomeController@dashboard")->with("error", "Couldn't get the repository for the given environment");
-            
+        if (!$repo = Environment::find($environment)->repository) {
+            return redirect()->action("HomeController@dashboard")
+                ->with("error", "Couldn't get the repository for the given environment");
         }
 
-        if(!Auth::user()->repositories->contains($repo))
-        {
-            return redirect()->action("HomeController@dashboard")->with("error", "No matching repository could be found for your account");
+        if (!Auth::user()->repositories->contains($repo)) {
+            return redirect()->action("HomeController@dashboard")
+                ->with("error", "No matching repository could be found for your account");
         }
 
         return view('server.new.'.$server)->with(compact('environment', 'server'));
@@ -34,20 +33,23 @@ class ServerController extends Controller
 
     public function save(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string',
-            'type' => 'required|string',
-            'url' => 'required|string',
-            'user' => 'required|string',
-            'password' => 'required|string',
-            'path' => 'required|string',
-            'environment' => 'required|integer',
-            'port' => 'integer'
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|string',
+                'type' => 'required|string',
+                'url' => 'required|string',
+                'user' => 'required|string',
+                'password' => 'required|string',
+                'path' => 'required|string',
+                'environment' => 'required|integer',
+                'port' => 'integer'
+            ]
+        );
 
-        if(!$environment = Auth::user()->environments->find($request->environment))
-        {
-            return redirect()->action('HomeController@dashboard')->with("error", "The specified environment couldn't be found.");
+        if  (!$environment = Auth::user()->environments->find($request->environment)) {
+            return redirect()->action('HomeController@dashboard')
+                ->with("error", "The specified environment couldn't be found.");
         }
 
         $server = new Server([
@@ -59,14 +61,13 @@ class ServerController extends Controller
             'server_path' => $request->path,
         ]);
 
-        if($request->has('port'))
-        {
+        if ($request->has('port')) {
             $server->server_port = $request->port;
         }
 
-        if(!$environment->servers()->save($server))
-        {
-            return redirect()->action("EnvironmentController@manage", $environment)->with("error", "The server couldn't be saved. Please try again later");
+        if (!$environment->servers()->save($server)) {
+            return redirect()->action("EnvironmentController@manage", $environment)
+                ->with("error", "The server couldn't be saved. Please try again later");
         }
 
         return redirect()->action('ServerController@manage', $server->id);
@@ -75,12 +76,10 @@ class ServerController extends Controller
     public function manage($server)
     {
         $server = Server::where('id', $server)
-            ->with(['deployments' => function($query)
-            {
+            ->with(['deployments' => function ($query) {
                 $query->orderBy('created_at', 'desc');
             }])->first();
-        if(!$server || !Auth::user()->environments->contains($server->environment) )
-        {
+        if (!$server || !Auth::user()->environments->contains($server->environment)) {
             return redirect()->action("HomeController@dashboard")->with("error", "The specified server couldn't be found");
         }
 

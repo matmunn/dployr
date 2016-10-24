@@ -52,25 +52,37 @@
         <!-- Bootstrap core CSS -->
         <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
         <script src="{{ elixir('js/app.js') }}"></script>
+
+        <!-- Hotjar Tracking Code for https://dployr.io -->
+        <script>
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:317800,hjsv:5};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+        </script>
+
+        <!-- Piwik -->
+        <script async type="text/javascript">
+            var _paq = _paq || [];
+            _paq.push(["setDomains", ["*.dployr.io","*.dployr.io","*.dployr.testbed.ml"]]);
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function() {
+                var u="//analytics.savi.com.au/";
+                _paq.push(['setTrackerUrl', u+'piwik.php']);
+                _paq.push(['setSiteId', '1']);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+            })();
+        </script>
     </head>
 
     <body>
-
-    <!-- Piwik -->
-    <script type="text/javascript">
-    	var _paq = _paq || [];
-      	_paq.push(["setDomains", ["*.dployr.io","*.dployr.io","*.dployr.testbed.ml"]]);
-      	_paq.push(['trackPageView']);
-      	_paq.push(['enableLinkTracking']);
-      	(function() {
-        	var u="//analytics.savi.com.au/";
-        	_paq.push(['setTrackerUrl', u+'piwik.php']);
-        	_paq.push(['setSiteId', '1']);
-        	var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        	g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-      	})();
-    </script>
-    <noscript><p><img src="//analytics.savi.com.au/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+        <noscript><p><img src="//analytics.savi.com.au/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
     <!-- End Piwik Code -->
 
     

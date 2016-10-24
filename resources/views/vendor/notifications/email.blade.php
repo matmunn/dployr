@@ -71,7 +71,7 @@ $style = [
                     <tr>
                         <td style="{{ $style['email-masthead'] }}">
                             <a style="{{ $fontFamily }} {{ $style['email-masthead_name'] }}" href="{{ url('/') }}" target="_blank">
-                                {{-- config('app.name') --}}{{ config('dployr.site.email_logo_url') }}
+                                {{-- config('app.name') --}}<img src="{{ config('dployr.site.email_logo_url') }}" style="width: 50%">
                             </a>
                         </td>
                     </tr>

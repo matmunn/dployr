@@ -43,6 +43,7 @@ class GitService
     {
         $wrapper = new GitWrapper(env('GIT_BINARY', '/usr/bin/git'));
         $wrapper->setPrivateKey($this->repository->privateKeyPath());
+        $wrapper->setTimeout(env('GIT_TIMEOUT', 600));
         // dd($wrapper);
         if($includeCopy)
         {

@@ -19,6 +19,12 @@ Auth::routes();
 
 Route::get('/logout', 'Auth\LoginController@logout');
 
+Route::get('/test', function()
+{
+    dd(\App\Models\Repository::with('environments')->find(14));
+    dd(App::environment());
+});
+
 Route::get('myaccount', 'HomeController@dashboard');
 Route::get('about', 'HomeController@about');
 

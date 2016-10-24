@@ -84,7 +84,10 @@ class EnvironmentController extends Controller
             $env->save();
         }
 
-        return redirect()->action('ServerController@new', [$env->id, $request->type]);
+        return redirect()->action(
+            'ServerController@new',
+            [$env->id, $request->type]
+        );
     }
 
     public function deploy($environment)

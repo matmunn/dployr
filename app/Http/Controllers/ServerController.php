@@ -47,19 +47,21 @@ class ServerController extends Controller
             ]
         );
 
-        if  (!$environment = Auth::user()->environments->find($request->environment)) {
+        if (!$environment = Auth::user()->environments->find($request->environment)) {
             return redirect()->action('HomeController@dashboard')
                 ->with("error", "The specified environment couldn't be found.");
         }
 
-        $server = new Server([
-            'name'=> $request->name,
-            'type' => $request->type,
-            'server_name' => $request->url,
-            'server_username' => $request->user,
-            'server_password' => $request->password,
-            'server_path' => $request->path,
-        ]);
+        $server = new Server(
+            [
+                'name'=> $request->name,
+                'type' => $request->type,
+                'server_name' => $request->url,
+                'server_username' => $request->user,
+                'server_password' => $request->password,
+                'server_path' => $request->path,
+            ]
+        );
 
         if ($request->has('port')) {
             $server->server_port = $request->port;
@@ -76,9 +78,13 @@ class ServerController extends Controller
     public function manage($server)
     {
         $server = Server::where('id', $server)
-            ->with(['deployments' => function ($query) {
-                $query->orderBy('created_at', 'desc');
-            }])->first();
+            ->with(
+                [
+                    'deployments' => function ($query) {
+                        $query->orderBy('created_at', 'desc');
+                    }
+                ]
+            )->first();
         if (!$server || !Auth::user()->environments->contains($server->environment)) {
             return redirect()->action("HomeController@dashboard")->with("error", "The specified server couldn't be found");
         }

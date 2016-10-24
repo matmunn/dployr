@@ -45,38 +45,49 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data The data to validate.
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:8|confirmed',
-            // 'site_name' => 'required|string',
-        ]);
+        return Validator::make(
+            $data,
+            [
+                'name' => 'required|max:255',
+                'email' => 'required|email|max:255|unique:users',
+                'password' => 'required|min:8|confirmed',
+                // 'site_name' => 'required|string',
+            ]
+        );
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return User
      */
     protected function create(array $data)
     {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'site_name' => "",
-        ]);
+        $user = User::create(
+            [
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+                'site_name' => "",
+            ]
+        );
 
         // For now we just want to associate the default plan
         if (!$plan = Plan::find(session()->pull('signup_plan'))) {
             return redirect()->url('/pricing')
-                ->with('error', "We were unable to associate you with your chosen plan. Your registration was unsuccessful.");
+                ->with(
+                    'error',
+                    "We were unable to associate you with your chosen plan. \
+                    Your registration was unsuccessful."
+                );
         }
         
         $plan->users()->save($user);
@@ -94,7 +105,8 @@ class RegisterController extends Controller
         // This is for local only,
 
         if (!session()->has('signup_plan')) {
-            // Probably need to change this once we go live, set it to the ID of the free plan
+            // Probably need to change this once we go live,
+            // set it to the ID of the free plan
             session(['signup_plan' => 1]);
         }
 

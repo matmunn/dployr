@@ -21,7 +21,7 @@ class CloneCompleteListener
     /**
      * Handle the event.
      *
-     * @param  CloneComplete  $event
+     * @param CloneComplete $event
      * @return void
      */
     public function handle(CloneComplete $event)

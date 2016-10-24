@@ -47,21 +47,29 @@ class RepositoryController extends Controller
 
     public function save(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string',
-            'url' => 'required|string'
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|string',
+                'url' => 'required|string'
+            ]
+        );
 
         if ($repo = Auth::user()->repositories
-                ->where('url', $request->url)->first()) {
+            ->where('url', $request->url)->first()) {
             return redirect()->action('RepositoryController@new')->withInput()
                 ->with('error', 'You have already connected that repository.');
         }
 
         if (Auth::user()->plan->repository_limit > 0 &&
-            Auth::user()->repositories->count() == Auth::user()->plan->repository_limit) {
+            Auth::user()->repositories->count() ==
+            Auth::user()->plan->repository_limit) {
             return redirect()->action('RepositoryController@list')
-                ->with("error", "You are at your repository limit, please disconnect a repository before trying to connect another one.");
+                ->with(
+                    "error",
+                    "You are at your repository limit, please \
+                    disconnect a repository before trying to connect another one."
+                );
         }
 
         $repo = new Repository(['name' => $request->name, 'url' => $request->url]);
@@ -123,8 +131,11 @@ class RepositoryController extends Controller
 
         return response($repo->public_key)
             ->header("Content-Type", "text/plain")
-            ->header('Content-disposition', 'attachment; filename="'.
-                str_replace(' ', '_', $repo->name) .'_key.txt"');
+            ->header(
+                'Content-disposition',
+                'attachment; filename="' . str_replace(' ', '_', $repo->name) .
+                '_key.txt"'
+            );
     }
 
     public function delete($repo)

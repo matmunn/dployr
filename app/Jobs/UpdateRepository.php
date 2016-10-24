@@ -76,10 +76,13 @@ class UpdateRepository implements ShouldQueue
                 $changedFiles = [];
                 if (!empty($currentCommit)) {
                     if ($currentCommit !== $this->git->currentCommit()) {
-                        $files = explode("\n", $this->git->changedFiles(
-                            'HEAD',
-                            $environment->current_commit
-                        ));
+                        $files = explode(
+                            "\n",
+                            $this->git->changedFiles(
+                                'HEAD',
+                                $environment->current_commit
+                            )
+                        );
                         $files = array_filter($files);
                         // var_dump($files);
                         foreach ($files as $file) {
@@ -117,6 +120,7 @@ class UpdateRepository implements ShouldQueue
      * The job failed to process.
      *
      * @param Exception $exception
+     *
      * @return void
      */
     public function failed(Exception $exception)

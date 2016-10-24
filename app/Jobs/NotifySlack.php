@@ -43,25 +43,27 @@ class NotifySlack implements ShouldQueue
         if ($notifiers->count() > 0) {
             foreach ($notifier as $notify) {
                 $client = new Client($notify->endpoint, ['username' => 'dployr.io']);
-                $client->attach([
-                    'fallback' => "Commit deployed to $env->name",
-                    'text' => "Commit deployed to $env->name",
-                    'color' => 'good',
-                    'fields' => [
-                        [
-                            'title' => 'Commit Hash',
-                            'value' => $commit,
-                        ],
-                        [
-                            'title' => 'Deployment Time',
-                            'value' => $time,
-                        ],
-                        [
-                            'title' => 'Servers Deployed',
-                            'value' => $env->servers->count()
+                $client->attach(
+                    [
+                        'fallback' => "Commit deployed to $env->name",
+                        'text' => "Commit deployed to $env->name",
+                        'color' => 'good',
+                        'fields' => [
+                            [
+                                'title' => 'Commit Hash',
+                                'value' => $commit,
+                            ],
+                            [
+                                'title' => 'Deployment Time',
+                                'value' => $time,
+                            ],
+                            [
+                                'title' => 'Servers Deployed',
+                                'value' => $env->servers->count()
+                            ]
                         ]
                     ]
-                ])->send('Deployment succesful');
+                )->send('Deployment succesful');
             }
         }
     }

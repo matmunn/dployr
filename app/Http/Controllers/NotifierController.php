@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Session;
 
 class NotifierController extends Controller
 {
-    //
     public function __construct()
     {
         $this->middleware('auth');
@@ -29,29 +28,38 @@ class NotifierController extends Controller
     public function save(Request $request)
     {
         if ($request->type == "slack") {
-            $this->validate($request, [
-                'type' => 'required|string',
-                'environment' => 'required',
-                'endpoint' => 'required|string',
-            ]);
+            $this->validate(
+                $request,
+                [
+                    'type' => 'required|string',
+                    'environment' => 'required',
+                    'endpoint' => 'required|string',
+                ]
+            );
 
             $notifier = ['type' => 'slack', 'data1' => $request->endpoint];
         }
         if ($request->type == "email") {
-            $this->validate($request, [
-                'type' => 'required|string',
-                'environment' => 'required',
-                'address' => 'required|email',
-            ]);
+            $this->validate(
+                $request,
+                [
+                    'type' => 'required|string',
+                    'environment' => 'required',
+                    'address' => 'required|email',
+                ]
+            );
 
             $notifier = ['type' => 'email', 'data1' => $request->address];
         }
         if ($request->type == "sms") {
-            $this->validate($request, [
-                'type' => 'required|string',
-                'environment' => 'required',
-                'phone' => 'required|string',
-            ]);
+            $this->validate(
+                $request,
+                [
+                    'type' => 'required|string',
+                    'environment' => 'required',
+                    'phone' => 'required|string',
+                ]
+            );
 
             $notifier = ['type' => 'sms', 'data1' => $request->phone];
         }

@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
+use App\Notifications\Channels\SlackImageUrlChannel;
 
 class DeploySuccess extends Notification implements ShouldQueue
 {
@@ -36,8 +37,7 @@ class DeploySuccess extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail'];
-        // return ['mail', 'slack'];
+        return ['mail', SlackImageUrlChannel::class];
     }
 
     /**
@@ -54,9 +54,18 @@ class DeploySuccess extends Notification implements ShouldQueue
         return (new MailMessage)
                     ->line('Your deployment was successful.')
                     ->action('View Server Log', $url)
-                    ->line($server->environment->repository->name . " has been deployed to " . $server->environment->name)
-                    ->line('The commit message was "' . $server->deployments->last()->commit_message.'"')
-                    ->line('Deployment of branch \'' . $server->environment->branch .  '\' is set to '. ($server->environment->deploy_mode == $server->environment::DEPLOY_MODE_AUTO ? "automatic" : "manual") . ' deployment.' );
+                    ->line(
+                        $server->environment->repository->name .
+                        " has been deployed to " . $server->environment->name
+                    )->line(
+                        'The commit message was "' .
+                        $server->deployments->last()->commit_message.'"'
+                    )->line(
+                        'Deployment of branch \'' . $server->environment->branch .
+                        '\' is set to '. ($server->environment->deploy_mode
+                        == $server->environment::DEPLOY_MODE_AUTO ?
+                        "automatic" : "manual") . ' deployment.'
+                    );
     }
 
 
@@ -72,20 +81,25 @@ class DeploySuccess extends Notification implements ShouldQueue
         $url = $this->url;
 
         return (new SlackMessage)
-                    ->success()
-                    ->from("dployr", config('dployr.site.slack_icon_url'))
-                    ->content($server->environment->repository->name . " has been deployed to " . $server->environment->name)
-                    ->attachment(function($attachment) use ($server, $url)
-                        {
-
-                            $attachment->title('Deployed to ' . $server->name, $url)
-                                       ->fields([
-                                            'Commit Message' => $server->deployments->last()->commit_message,
-                                            'Branch' => $server->environment->branch,
-                                            'Status' => "Success",
-                                            'Deployment Trigger' => $server->environment->deploy_mode == $server->environment::DEPLOY_MODE_AUTO ? "Automatic" : "Manual"
-                                        ]);
-                        });
+            ->success()
+            ->from("dployr", config('dployr.site.slack_icon_url'))
+            ->content(
+                $server->environment->repository->name .
+                " has been deployed to " . $server->environment->name
+            )->attachment(
+                function ($attachment) use ($server, $url) {
+                    $attachment->title('Deployed to ' . $server->name, $url)
+                        ->fields(
+                            [
+                                'Commit Message' => $server->deployments->last()->commit_message,
+                                'Branch' => $server->environment->branch,
+                                'Status' => "Success",
+                                'Deployment Trigger' => $server->environment->deploy_mode == $server->environment::DEPLOY_MODE_AUTO ? "Automatic" : "Manual"
+                                
+                            ]
+                        );
+                }
+            );
     }
 
     /**

@@ -22,7 +22,7 @@ class DeploymentCompleteListener
     /**
      * Handle the event.
      *
-     * @param  DeploymentComplete  $event
+     * @param DeploymentComplete $event
      * @return void
      */
     public function handle(DeploymentComplete $event)

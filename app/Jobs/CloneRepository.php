@@ -47,19 +47,15 @@ class CloneRepository implements ShouldQueue
 
         Storage::makeDirectory('repos/'.$repo->id);
 
-        try
-        {
+        try {
             $git = $this->git->getGitInstance(false);
             $git->clone($repo->url, $repo->repositoryPath);
             event(new CloneComplete($repo));
-        }
-        catch(GitException $e)
-        {
+        } catch (GitException $e) {
             Log::error($e);
             $repo->status = $repo::STATUS_ERROR;
             $repo->save();
         }
-
     }
 
     /**

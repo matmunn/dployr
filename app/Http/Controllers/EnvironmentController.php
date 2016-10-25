@@ -21,9 +21,9 @@ class EnvironmentController extends Controller
 
     public function manage($environment)
     {
-        if(!$env = Auth::user()->environments->find($environment))
-        {
-            return redirect()->action('HomeController@dashboard', $repo)->with('error', "The specified evironment couldn't be found.");
+        if (!$env = Auth::user()->environments->find($environment)) {
+            return redirect()->action('HomeController@dashboard', $repo)
+                ->with('error', "The specified evironment couldn't be found.");
         }
 
         return view('environment.manage')->with(compact('env'));
@@ -31,23 +31,20 @@ class EnvironmentController extends Controller
 
     public function new($repo)
     {
-        if(!$repo = Auth::user()->repositories->find($repo))
-        {
-            return redirect()->action('HomeController@dashboard')->with('error', "The repository couldn't be found for your account.");
+        if (!$repo = Auth::user()->repositories->find($repo)) {
+            return redirect()->action('HomeController@dashboard')
+                ->with('error', "The repository couldn't be found for your account.");
         }
 
-        try
-        {
+        try {
             $git = new GitService($repo);
             $branches = $git->getBranches('remote');
-        }
-        catch(GitException $e)
-        {
-            return redirect()->action('RepositoryController@manage', $repo)->with('error', "Couldn't get remote branches for your repository.");
-        }
-        catch(\ErrorException $e)
-        {
-            return redirect()->action('RepositoryController@manage', $repo)->with('error', "There was a problem with your repository.");   
+        } catch (GitException $e) {
+            return redirect()->action('RepositoryController@manage', $repo)
+                ->with('error', "Couldn't get remote branches for your repository.");
+        } catch (\ErrorException $e) {
+            return redirect()->action('RepositoryController@manage', $repo)
+                ->with('error', "There was a problem with your repository.");
         }
 
         return view('environment.new')->with(compact('repo', 'branches'));
@@ -55,53 +52,60 @@ class EnvironmentController extends Controller
 
     public function save(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string',
-            'type' => 'required',
-            'branch' => 'required',
-            'deploy_mode' => 'integer'
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|string',
+                'type' => 'required',
+                'branch' => 'required',
+                'deploy_mode' => 'integer'
+            ]
+        );
 
-        if(!$repo = Auth::user()->repositories->find($request->repo))
-        {
-            return redirect()->action('HomeController@dashboard')->with('error', "The specified repository couldn't be found for your account.");
+        if (!$repo = Auth::user()->repositories->find($request->repo)) {
+            return redirect()->action('HomeController@dashboard')
+                ->with('error', "The specified repository couldn't be found for your account.");
         }
 
-        if($repo->environments->where('branch', $request->branch)->first())
-        {
-            return redirect()->action('RepositoryController@manage', $repo)->with('error', "There is already an environment tracking this branch for this repository.");
+        if ($repo->environments->where('branch', $request->branch)->first()) {
+            return redirect()->action('RepositoryController@manage', $repo)
+                ->with('error', "There is already an environment tracking this branch for this repository.");
         }
 
-        $env = $repo->environments()->create([
-            'name' => $request->name,
-            'branch' => $request->branch,
-        ]);
+        $env = $repo->environments()->create(
+            [
+                'name' => $request->name,
+                'branch' => $request->branch,
+            ]
+        );
 
-        if($request->has('deploy_mode'))
-        {
+        if ($request->has('deploy_mode')) {
             $env->deploy_mode = $request->deploy_mode;
             $env->save();
         }
 
-        return redirect()->action('ServerController@new', [$env->id, $request->type]);
+        return redirect()->action(
+            'ServerController@new',
+            [$env->id, $request->type]
+        );
     }
 
     public function deploy($environment)
     {
-        if(!$env = Auth::user()->environments->find($environment))
-        {
-            return redirect()->action('RepositoryController@list')->with('error', "The specified environment couldn't be found.");
+        if (!$env = Auth::user()->environments->find($environment)) {
+            return redirect()->action('RepositoryController@list')
+                ->with('error', "The specified environment couldn't be found.");
         }
 
         dispatch(new UpdateRepository(new GitService($env->repository), $env->id));
 
-        return redirect()->action('EnvironmentController@manage', $env)->with('message', "Your environment was successfully queued for deployment.");
+        return redirect()->action('EnvironmentController@manage', $env)
+            ->with('message', "Your environment was successfully queued for deployment.");
     }
 
     public function delete($environment)
     {
-        if(!$env = Auth::user()->environments->find($environment))
-        {
+        if (!$env = Auth::user()->environments->find($environment)) {
             return respose()->json("false", 403);
         }
 

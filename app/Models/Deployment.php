@@ -16,6 +16,6 @@ class Deployment extends Model
 
     public function server()
     {
-        return $this->belongsTo('App\Models\Server');
+        return $this->belongsTo(\App\Models\Server::class);
     }
 }

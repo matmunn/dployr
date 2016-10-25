@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
+use App\Notifications\Channels\SlackImageUrlChannel;
 
 class DeployFail extends Notification
 {
@@ -35,8 +36,7 @@ class DeployFail extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
-        // return ['mail', 'slack'];
+        return ['mail', SlackImageUrlChannel::class];
     }
 
     /**

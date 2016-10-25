@@ -33,8 +33,7 @@ class DeleteEnvironment implements ShouldQueue
     public function handle()
     {
         //
-        foreach($this->environment->servers as $server)
-        {
+        foreach ($this->environment->servers as $server) {
             $server->deployments()->delete();
         }
         $this->environment->servers()->delete();

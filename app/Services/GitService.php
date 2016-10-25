@@ -45,8 +45,7 @@ class GitService
         $wrapper->setPrivateKey($this->repository->privateKeyPath());
         $wrapper->setTimeout(env('GIT_TIMEOUT', 600));
         // dd($wrapper);
-        if($includeCopy)
-        {
+        if ($includeCopy) {
             $wrapper = $wrapper->workingCopy($this->repository->repositoryPath);
         }
         return $wrapper;
@@ -61,8 +60,7 @@ class GitService
      */
     public function changedFiles($commit1 = "HEAD", $commit2 = null)
     {
-        if(is_null($commit2))
-        {
+        if (is_null($commit2)) {
             $commit2 = $commit1 . "~1";
         }
         $git = $this->getGitInstance();
@@ -93,7 +91,10 @@ class GitService
     public function getCommitMessage($commit)
     {
         $git = $this->getGitInstance();
-        $output = $git->getWrapper()->git('log --format=%B -n 1 '. $commit, $git->getDirectory());
+        $output = $git->getWrapper()->git(
+            'log --format=%B -n 1 '. $commit,
+            $git->getDirectory()
+        );
 
         return $output;
     }
@@ -117,8 +118,9 @@ class GitService
      */
     public function changeBranch($newBranch)
     {
-        if($newBranch == $this->getCurrentBranch() || !in_array($newBranch, $this->getBranches('remote')))
-        {
+        if ($newBranch == $this->getCurrentBranch()
+            || !in_array($newBranch, $this->getBranches('remote'))
+        ) {
             return false;
         }
 
@@ -139,28 +141,23 @@ class GitService
     {
         $git = $this->getGitInstance();
 
-        if($type == 'remote')
-        {
+        if ($type == 'remote') {
             $branches = $git->getBranches()->remote();
-        }
-        else
-        {
+        } else {
             $branches = $git->getBranches()->all();
-            $branches = array_filter($branches, function($val)
-            {
-                return !preg_match('/^remotes/', $val);
-            });
+            $branches = array_filter(
+                $branches,
+                function ($val) {
+                    return !preg_match('/^remotes/', $val);
+                }
+            );
         }
 
-        for($i = 0; $i < count($branches); $i++)
-        {
+        for ($i = 0; $i < count($branches); $i++) {
             $branch = preg_replace("/(\* |\w+\/)(\w+)( .+)?/", "$2", trim($branches[$i]));
-            if($branch !== "HEAD")
-            {
+            if ($branch !== "HEAD") {
                 $branches[$i] = $branch;
-            }
-            else
-            {
+            } else {
                 $branches[$i] ="";
             }
         }
@@ -172,7 +169,7 @@ class GitService
 
     /**
      * Get the underlying repository
-     * 
+     *
      * @return App\Models\Repository The underlying repository
      */
     public function getRepository()

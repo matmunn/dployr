@@ -18,6 +18,6 @@ class Notifier extends Model
 
     public function environment()
     {
-        return $this->belongsTo('App\Models\Environment');
+        return $this->belongsTo(\App\Models\Environment::class);
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
+use App\Notifications\Channels\SlackImageUrlChannel;
 
 class DeployFail extends Notification
 {
@@ -35,8 +36,7 @@ class DeployFail extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
-        // return ['mail', 'slack'];
+        return ['mail', SlackImageUrlChannel::class];
     }
 
     /**
@@ -54,9 +54,20 @@ class DeployFail extends Notification
                     ->error()
                     ->line('Your deployment failed.')
                     ->action('View Server Log', $url)
-                    ->line($server->environment->repository->name . " failed to deploy to " . $server->environment->name)
-                    ->line('The commit message was "' . $server->deployments->last()->commit_message.'"')
-                    ->line('Deployment of branch \'' . $server->environment->branch .  '\' is set to '. ($server->environment->deploy_mode == $server->environment::DEPLOY_MODE_AUTO ? "automatic" : "manual") . ' deployment.' );
+                    ->line(
+                        $server->environment->repository->name .
+                        " failed to deploy to " . $server->environment->name
+                    )
+                    ->line(
+                        'The commit message was "' .
+                        $server->deployments->last()->commit_message.'"'
+                    )
+                    ->line(
+                        'Deployment of branch \'' . $server->environment->branch .
+                        '\' is set to '. ($server->environment->deploy_mode
+                            == $server->environment::DEPLOY_MODE_AUTO ?
+                            "automatic" : "manual") . ' deployment.'
+                    );
     }
 
     /**
@@ -71,20 +82,29 @@ class DeployFail extends Notification
         $url = $this->url;
 
         return (new SlackMessage)
-                    ->error()
-                    ->from("dployr", config('dployr.site.slack_icon_url'))
-                    ->content($server->environment->repository->name . " failed while deploying to " . $server->environment->name)
-                    ->attachment(function($attachment) use ($server, $url)
-                        {
-
-                            $attachment->title('Failed to deploy to ' . $server->name, $url)
-                                       ->fields([
-                                            'Commit Message' => $server->deployments->last()->commit_message,
-                                            'Branch' => $server->environment->branch,
-                                            'Status' => "Failure",
-                                            'Deployment Trigger' => $server->environment->deploy_mode == $server->environment::DEPLOY_MODE_AUTO ? "Automatic" : "Manual"
-                                        ]);
-                        });
+            ->error()
+            ->from("dployr", config('dployr.site.slack_icon_url'))
+            ->content(
+                $server->environment->repository->name .
+                " failed while deploying to " . $server->environment->name
+            )
+            ->attachment(
+                function ($attachment) use ($server, $url) {
+                    $attachment->title('Failed to deploy to ' . $server->name, $url)
+                        ->fields(
+                            [
+                                'Commit Message' =>
+                                    $server->deployments->last()->commit_message,
+                                'Branch' => $server->environment->branch,
+                                'Status' => "Failure",
+                                'Deployment Trigger' =>
+                                    $server->environment->deploy_mode
+                                    == $server->environment::DEPLOY_MODE_AUTO ?
+                                    "Automatic" : "Manual"
+                            ]
+                        );
+                }
+            );
     }
 
     /**

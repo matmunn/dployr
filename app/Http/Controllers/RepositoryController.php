@@ -31,9 +31,10 @@ class RepositoryController extends Controller
 
     public function manage($repo)
     {
-        if(!$repo = Auth::user()->repositories()->where('id', $repo)->with('environments')->first())
-        {
-            return redirect()->action('RepositoryController@list')->with('error', "The specified repository couldn't be found.");
+        if (!$repo = Auth::user()->repositories()->where('id', $repo)
+            ->with('environments')->first()) {
+            return redirect()->action('RepositoryController@list')
+                ->with('error', "The specified repository couldn't be found.");
         }
         
         return view('repository.manage')->with(compact('repo'));
@@ -46,19 +47,29 @@ class RepositoryController extends Controller
 
     public function save(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string',
-            'url' => 'required|string'
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|string',
+                'url' => 'required|string'
+            ]
+        );
 
-        if($repo = Auth::user()->repositories->where('url', $request->url)->first())
-        {
-            return redirect()->action('RepositoryController@new')->withInput()->with('error', 'You have already connected that repository.');
+        if ($repo = Auth::user()->repositories
+            ->where('url', $request->url)->first()) {
+            return redirect()->action('RepositoryController@new')->withInput()
+                ->with('error', 'You have already connected that repository.');
         }
 
-        if(Auth::user()->plan->repository_limit > 0 && Auth::user()->repositories->count() == Auth::user()->plan->repository_limit)
-        {
-            return redirect()->action('RepositoryController@list')->with("error", "You are at your repository limit, please disconnect a repository before trying to connect another one.");
+        if (Auth::user()->plan->repository_limit > 0 &&
+            Auth::user()->repositories->count() ==
+            Auth::user()->plan->repository_limit) {
+            return redirect()->action('RepositoryController@list')
+                ->with(
+                    "error",
+                    "You are at your repository limit, please \
+                    disconnect a repository before trying to connect another one."
+                );
         }
 
         $repo = new Repository(['name' => $request->name, 'url' => $request->url]);
@@ -67,7 +78,11 @@ class RepositoryController extends Controller
         $rsa->setPublicKeyFormat(RSA::PUBLIC_FORMAT_OPENSSH);
         $keys = $rsa->createKey();
         $pubKey = $keys['publickey'];
-        $pubKey = str_replace('phpseclib-generated-key', str_replace(" ", "", $repo->name).'@Dployr', $pubKey);
+        $pubKey = str_replace(
+            'phpseclib-generated-key',
+            str_replace(" ", "", $repo->name).'@Dployr',
+            $pubKey
+        );
         $repo->public_key = $pubKey;
         Auth::user()->repositories()->save($repo);
         $repo->save();
@@ -82,19 +97,20 @@ class RepositoryController extends Controller
 
         dispatch(new CloneRepository(new GitService($repo)));
 
-        return redirect()->action('RepositoryController@list')->with("message", "Your repository has been queued for initialisation.");
+        return redirect()->action('RepositoryController@list')
+            ->with("message", "Your repository has been queued for initialisation.");
     }
 
     public function initialise($repo)
     {
-        if(!$repo = Auth::user()->repositories->find($repo))
-        {
-            return redirect()->action('RepositoryController@list')->with('error', "Couldn't find the specified repository.");
+        if (!$repo = Auth::user()->repositories->find($repo)) {
+            return redirect()->action('RepositoryController@list')
+                ->with('error', "Couldn't find the specified repository.");
         }
 
-        if($repo->status == $repo::STATUS_IDLE)
-        {
-            return redirect()->action('RepositoryController@manage', $repo)->with('message', "Your repository is already initialised.");
+        if ($repo->status == $repo::STATUS_IDLE) {
+            return redirect()->action('RepositoryController@manage', $repo)
+                ->with('message', "Your repository is already initialised.");
         }
 
         $repo->last_action = "initialise";
@@ -102,23 +118,29 @@ class RepositoryController extends Controller
 
         dispatch(new CloneRepository(new GitService($repo)));
 
-        return redirect()->action('RepositoryController@manage', $repo)->with('message', "Your repository has been queued for initialisation.");
+        return redirect()->action('RepositoryController@manage', $repo)
+            ->with('message', "Your repository has been queued for initialisation.");
     }
 
     public function key($repo)
     {
-        if(!$repo = Auth::user()->repositories->find($repo))
-        {
-            return redirect()->action('RepositoryController@list')->with('error', "Couldn't find the specified repository.");
+        if (!$repo = Auth::user()->repositories->find($repo)) {
+            return redirect()->action('RepositoryController@list')
+                ->with('error', "Couldn't find the specified repository.");
         }
 
-        return response($repo->public_key)->header("Content-Type", "text/plain")->header('Content-disposition', 'attachment; filename="'. str_replace(' ', '_', $repo->name) .'_key.txt"');
+        return response($repo->public_key)
+            ->header("Content-Type", "text/plain")
+            ->header(
+                'Content-disposition',
+                'attachment; filename="' . str_replace(' ', '_', $repo->name) .
+                '_key.txt"'
+            );
     }
 
     public function delete($repo)
     {
-        if(!$repo = Auth::user()->repositories->find($repo))
-        {
+        if (!$repo = Auth::user()->repositories->find($repo)) {
             return respose()->json("false", 403);
         }
 

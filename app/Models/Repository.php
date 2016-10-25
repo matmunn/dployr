@@ -43,8 +43,7 @@ class Repository extends Model
     public function privateKeyPath($absolute = true)
     {
         $path = 'keys/repos/'.$this->id;
-        if($absolute)
-        {
+        if ($absolute) {
             return storage_path('app/'.$path);
         }
 
@@ -63,11 +62,11 @@ class Repository extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     public function environments()
     {
-        return $this->hasMany('App\Models\Environment');
+        return $this->hasMany(\App\Models\Environment::class);
     }
 }

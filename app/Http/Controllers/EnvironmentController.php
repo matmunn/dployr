@@ -33,7 +33,15 @@ class EnvironmentController extends Controller
     {
         if (!$repo = Auth::user()->repositories->find($repo)) {
             return redirect()->action('HomeController@dashboard')
-                ->with('error', "The repository couldn't be found for your account.");
+                ->with(
+                    'error',
+                    "The repository couldn't be found for your account."
+                );
+        }
+
+        if ($repo->status == $repo::STATUS_INITIALISING) {
+            return redirect()->action('RepositoryController@list')
+                ->with('error', "Your repository is still initialising.");
         }
 
         try {
@@ -64,12 +72,19 @@ class EnvironmentController extends Controller
 
         if (!$repo = Auth::user()->repositories->find($request->repo)) {
             return redirect()->action('HomeController@dashboard')
-                ->with('error', "The specified repository couldn't be found for your account.");
+                ->with(
+                    'error',
+                    "The specified repository couldn't be found for your account."
+                );
         }
 
         if ($repo->environments->where('branch', $request->branch)->first()) {
             return redirect()->action('RepositoryController@manage', $repo)
-                ->with('error', "There is already an environment tracking this branch for this repository.");
+                ->with(
+                    'error',
+                    "There is already an environment tracking this branch \
+                        for this repository."
+                );
         }
 
         $env = $repo->environments()->create(
@@ -100,7 +115,10 @@ class EnvironmentController extends Controller
         dispatch(new UpdateRepository(new GitService($env->repository), $env->id));
 
         return redirect()->action('EnvironmentController@manage', $env)
-            ->with('message', "Your environment was successfully queued for deployment.");
+            ->with(
+                'message',
+                "Your environment was successfully queued for deployment."
+            );
     }
 
     public function delete($environment)

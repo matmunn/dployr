@@ -71,6 +71,27 @@ class DeployFail extends Notification
     }
 
     /**
+     * Get the sms representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \NotifcationChannels\Plivo\PlivoMessage
+     */
+    public function toPlivo($notifiable)
+    {
+        $server = $this->server;
+        $url = $this->url;
+
+        return (new PlivoMessage)
+                    ->content(
+                        $server->environment->repository->name .
+                        " failed to deploy to " . $server->environment->name .
+                        " and was triggered " . ($server->environment->deploy_mode
+                        == $server->environment::DEPLOY_MODE_AUTO ?
+                        "automatically" : "manually") . ". Regards, dployr."
+                    );
+    }
+
+    /**
      * Get the slack representation of the notification.
      *
      * @param  mixed  $notifiable

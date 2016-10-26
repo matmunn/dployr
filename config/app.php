@@ -169,6 +169,7 @@ return [
         Laravel\Cashier\CashierServiceProvider::class,
         GrahamCampbell\Bitbucket\BitbucketServiceProvider::class,
         GrahamCampbell\GitHub\GitHubServiceProvider::class,
+        NotificationChannels\Plivo\PlivoServiceProvider::class,
 
         //
 

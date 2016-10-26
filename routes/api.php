@@ -20,16 +20,17 @@ use App\Jobs\UpdateRepository;
 //     return $request->user();
 // })->middleware('auth:api');
 
-Route::post('/deploy/{env_id}/{token}', function($env_id, $token)
-{
+Route::post('/deploy/{env_id}/{token}', function ($env_id, $token) {
     echo $token . ' ' . $env_id;
 });
 
-Route::get('/refresh/{token}', function($token)
-{
-    if(!$repo = Repository::where('secret_key', $token)->first())
-    {
+Route::get('/refresh/{token}', function ($token) {
+    if (!$repo = Repository::where('secret_key', $token)->first()) {
         return response()->json("The specified refresh key is invalid.", 400);
+    }
+
+    if ($repo->status == $repo::STATUS_INITIALISING) {
+        return response()->json("Your repository is still initialising.", 400);
     }
 
     dispatch(new UpdateRepository(new GitService($repo)));

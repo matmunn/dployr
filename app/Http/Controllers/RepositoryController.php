@@ -91,10 +91,6 @@ class RepositoryController extends Controller
         Storage::put($repo->privateKeyPath(false), $keys['privatekey']);
         chmod($repo->privateKeyPath(), 0777);
 
-        $repo->status = $repo::STATUS_INITIALISING;
-        $repo->last_action = "clone";
-        $repo->save();
-
         dispatch(new CloneRepository(new GitService($repo)));
 
         return redirect()->action('RepositoryController@list')
@@ -106,6 +102,11 @@ class RepositoryController extends Controller
         if (!$repo = Auth::user()->repositories->find($repo)) {
             return redirect()->action('RepositoryController@list')
                 ->with('error', "Couldn't find the specified repository.");
+        }
+
+        if ($repo->status == $repo::STATUS_INITIALISING) {
+            return redirect()->action('RepositoryController@list')
+                ->with("error", "Your repository is already initialising.");
         }
 
         if ($repo->status == $repo::STATUS_IDLE) {
@@ -141,7 +142,12 @@ class RepositoryController extends Controller
     public function delete($repo)
     {
         if (!$repo = Auth::user()->repositories->find($repo)) {
-            return respose()->json("false", 403);
+            return response()->json("false", 403);
+        }
+
+        if ($repo->status == $repo::STATUS_INITIALISING) {
+            session()->flash('error', "Your repository is still initialising.");
+            return;
         }
 
         dispatch(new DeleteRepository($repo));

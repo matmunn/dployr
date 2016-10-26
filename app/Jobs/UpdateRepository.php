@@ -59,7 +59,7 @@ class UpdateRepository implements ShouldQueue
         //
         $remoteBranches = $this->git->getBranches('remote');
         $repo = $this->git->getRepository();
-        
+
         $repo->status = $repo::STATUS_UPDATING;
         $repo->last_action = "update";
         $repo->save();

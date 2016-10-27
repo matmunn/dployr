@@ -77,7 +77,7 @@ class GitService
     public function currentCommit()
     {
         $git = $this->getGitInstance();
-        $output = $git->run(['rev-parse', 'HEAD']);
+        $output = preg_replace('/\n/', '', $git->run(['rev-parse', 'HEAD']));
 
         return $output;
     }

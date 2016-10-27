@@ -39,4 +39,15 @@ class DeleteEnvironment implements ShouldQueue
         $this->environment->servers()->delete();
         $this->environment->delete();
     }
+
+    /**
+     * The job failed to process.
+     *
+     * @param Exception $exception
+     * @return void
+     */
+    public function failed(Exception $exception)
+    {
+        Log::error($exception);
+    }
 }

@@ -66,7 +66,10 @@ class UpdateRepository implements ShouldQueue
 
         foreach ($repo->environments as $environment) {
             if (!in_array($environment->branch, $remoteBranches)) {
-                return response()->json("Your environment is configured incorrectly.", 400);
+                return response()->json(
+                    "Your environment is configured incorrectly.",
+                    400
+                );
             }
 
             try {
@@ -80,7 +83,7 @@ class UpdateRepository implements ShouldQueue
                             "\n",
                             $this->git->changedFiles(
                                 $environment->current_commit,
-                                $this->git->currentCommit()
+                                preg_replace('/\n/', '', $this->git->currentCommit())
                             )
                         );
                         $files = array_filter($files);

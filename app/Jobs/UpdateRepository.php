@@ -79,7 +79,7 @@ class UpdateRepository implements ShouldQueue
                         $files = explode(
                             "\n",
                             $this->git->changedFiles(
-                                'HEAD',
+                                $this->git->currentCommit(),
                                 $environment->current_commit
                             )
                         );

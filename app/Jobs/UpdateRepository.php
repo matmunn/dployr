@@ -79,8 +79,8 @@ class UpdateRepository implements ShouldQueue
                         $files = explode(
                             "\n",
                             $this->git->changedFiles(
-                                $this->git->currentCommit(),
-                                $environment->current_commit
+                                $environment->current_commit,
+                                $this->git->currentCommit()
                             )
                         );
                         $files = array_filter($files);

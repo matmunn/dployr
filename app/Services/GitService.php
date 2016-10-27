@@ -64,7 +64,7 @@ class GitService
             $commit2 = $commit1 . "~1";
         }
         $git = $this->getGitInstance();
-        $output = $git->run(['diff', '--name-status', $commit1, $commit2]);
+        $output = $git->run(['diff', '--name-status', $commit2, $commit1]);
 
         return $output;
     }

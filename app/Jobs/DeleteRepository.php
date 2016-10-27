@@ -47,4 +47,15 @@ class DeleteRepository implements ShouldQueue
         $this->repository->environments()->delete();
         $this->repository->delete();
     }
+
+    /**
+     * The job failed to process.
+     *
+     * @param Exception $exception
+     * @return void
+     */
+    public function failed(Exception $exception)
+    {
+        Log::error($exception);
+    }
 }

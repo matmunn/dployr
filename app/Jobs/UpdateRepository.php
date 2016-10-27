@@ -79,8 +79,8 @@ class UpdateRepository implements ShouldQueue
                         $files = explode(
                             "\n",
                             $this->git->changedFiles(
-                                'HEAD',
-                                $environment->current_commit
+                                $environment->current_commit,
+                                $this->git->currentCommit()
                             )
                         );
                         $files = array_filter($files);
@@ -107,8 +107,8 @@ class UpdateRepository implements ShouldQueue
             } catch (\Exception $e) {
                 // dd($e);
                 Log::error($e);
-                $repo->status = $repo::STATUS_ERROR;
-                $repo->save();
+                // $repo->status = $repo::STATUS_ERROR;
+                // $repo->save();
                 continue;
             }
         }
@@ -125,6 +125,7 @@ class UpdateRepository implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
+        Log::error($exception);
         $repo = $this->git->getRepository();
         $repo->status = $repo::STATUS_ERROR;
         $repo->save();

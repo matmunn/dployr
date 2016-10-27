@@ -26,7 +26,10 @@
         "maknz/slack": "^1.7",
         "league/tactician": "^1.0",
         "laravel/cashier": "~7.0",
-        "aws/aws-sdk-php": "^3.19"
+        "aws/aws-sdk-php": "^3.19",
+        "laravel-notification-channels/plivo": "^1.0",
+        "graham-campbell/github": "^4.4",
+        "graham-campbell/bitbucket": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -11,7 +11,7 @@
             </div>
             <div class="row">
                 <div class="col s12 right-align">
-                    <a class="waves-effect waves-light btn btn-color-normal col s12 m5 offset-m7 l3 offset-l9" href="{{ action('RepositoryController@new') }}">Connect Repository</a>
+                    <a class="waves-effect waves-light btn btn-color-normal col s12 m5 offset-m7 l3 offset-l9 new-repository-button" href="#">Connect Repository</a>
                 </div>
             </div>
             <div class="row">
@@ -96,4 +96,17 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+    $(document).ready(function()
+    {
+        $('.new-repository-button').on('click', function () {
+            swal({
+                title: "New repository",
+                html: "Choose your repository type:<br /><br /><a class='btn btn-color-normal' href='{{ action('RepositoryController@new') }}'>Self Hosted</a> <a class='btn btn-color-normal disabled' href='#' title='Coming Soon!'>Github</a><br /><br /><a class='btn btn-color-normal disabled' href='#' title='Coming Soon!'>Bitbucket</a>",
+                showCancelButton: true ,
+                showConfirmButton: false
+            });
+        });
+    });
+    </script>
 @endsection

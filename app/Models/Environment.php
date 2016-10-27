@@ -62,7 +62,7 @@ class Environment extends Model
     {
         $recipients = [];
         foreach ($this->notifiers->where('type', 'sms')->all() as $notify) {
-            $recipients[] = $notify->data1;
+            $recipients[] = preg_replace('/\D+', '', $notify->data1);
         }
 
         return implode("<", $recipients);

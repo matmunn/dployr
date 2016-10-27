@@ -24,7 +24,7 @@ Route::post('/deploy/{env_id}/{token}', function ($env_id, $token) {
     echo $token . ' ' . $env_id;
 });
 
-Route::get('/refresh/{token}', function ($token) {
+Route::post('/refresh/{token}', function ($token) {
     if (!$repo = Repository::where('secret_key', $token)->first()) {
         return response()->json("The specified refresh key is invalid.", 400);
     }

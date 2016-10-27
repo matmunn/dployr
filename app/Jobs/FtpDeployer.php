@@ -120,4 +120,18 @@ class FtpDeployer implements ShouldQueue
 
         event(new DeploymentComplete($this->server));
     }
+
+    /**
+     * The job failed to process.
+     *
+     * @param Exception $exception
+     * @return void
+     */
+    public function failed(Exception $exception)
+    {
+        Log::error($exception);
+        $repo = $this->server->environment->repository;
+        $repo->status = $repo::STATUS_ERROR;
+        $repo->save();
+    }
 }

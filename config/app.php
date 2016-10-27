@@ -167,6 +167,9 @@ return [
          * Package Service Providers...
          */
         Laravel\Cashier\CashierServiceProvider::class,
+        GrahamCampbell\Bitbucket\BitbucketServiceProvider::class,
+        GrahamCampbell\GitHub\GitHubServiceProvider::class,
+        NotificationChannels\Plivo\PlivoServiceProvider::class,
 
         //
 
@@ -225,6 +228,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Github' => GrahamCampbell\GitHub\Facades\GitHub::class,
+        'Bitbucket' => GrahamCampbell\Bitbucket\Facades\Bitbucket::class,
 
     ],
 

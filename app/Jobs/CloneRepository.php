@@ -53,8 +53,6 @@ class CloneRepository implements ShouldQueue
             event(new CloneComplete($repo));
         } catch (GitException $e) {
             Log::error($e);
-            $repo->status = $repo::STATUS_ERROR;
-            $repo->save();
         }
     }
 

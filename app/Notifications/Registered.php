@@ -49,7 +49,8 @@ class Registered extends Notification
                     ->line('Thanks for registering for dployr.')
                     ->action('Get Started Now', url('/repository'))
                     ->line('We hope you enjoy using dployr.')
-                    ->line('If you have any suggestions or ideas then feel free to shoot us an email at support@dployr.io.');
+                    ->line('If you have any suggestions or ideas then feel free \
+                        to shoot us an email at support@dployr.io.');
     }
 
     /**

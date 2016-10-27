@@ -107,8 +107,8 @@ class UpdateRepository implements ShouldQueue
             } catch (\Exception $e) {
                 // dd($e);
                 Log::error($e);
-                $repo->status = $repo::STATUS_ERROR;
-                $repo->save();
+                // $repo->status = $repo::STATUS_ERROR;
+                // $repo->save();
                 continue;
             }
         }
@@ -125,6 +125,7 @@ class UpdateRepository implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
+        Log::error($exception);
         $repo = $this->git->getRepository();
         $repo->status = $repo::STATUS_ERROR;
         $repo->save();

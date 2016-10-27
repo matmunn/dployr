@@ -47,15 +47,20 @@ class Environment extends Model
         return $recipients;
     }
 
-    public function routeNotificationForSlack()
+    public function routeNotificationForSlackCustom()
     {
         $recipients = [];
         foreach ($this->notifiers->where('type', 'slack')->all() as $notify) {
             $recipients[] = $notify->data1;
         }
 
-        // return $recipients;
-        return $this->notifiers->where('type', 'slack')->first()->data1;
+        return $recipients;
+        // $recipient = $this->notifiers->where('type', 'slack')->first();
+        // if ($recipient) {
+        //     return $recipient->data1;
+        // }
+
+        // return [];
     }
 
     public function routeNotificationForPlivo()

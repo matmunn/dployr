@@ -36,13 +36,15 @@ class SlackImageUrlChannel
      */
     public function send($notifiable, Notification $notification)
     {
-        if (! $url = $notifiable->routeNotificationFor('slack')) {
+        if (! $urls = $notifiable->routeNotificationFor('slackCustom')) {
             return;
         }
 
         $message = $notification->toSlack($notifiable);
 
-        $this->http->post($url, $this->buildJsonPayload($message));
+        foreach ($urls as $url) {
+            $this->http->post($url, $this->buildJsonPayload($message));
+        }
     }
 
     /**

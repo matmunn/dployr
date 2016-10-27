@@ -35,6 +35,9 @@ class DeleteRepository implements ShouldQueue
     public function handle()
     {
         //
+        $this->repository->status = $this->repository::STATUS_DELETING;
+        $this->repository->save();
+
         Storage::delete($this->repository->privateKeyPath(false));
 
         Storage::deleteDirectory('repos/'.$this->repository->id);

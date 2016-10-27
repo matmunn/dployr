@@ -32,7 +32,15 @@
                             @if(count($repositories) > 0)
                                 @foreach($repositories as $repository)
                                     <tr>
-                                        <td><a href="{{ action('RepositoryController@manage', $repository->id) }}">{{ $repository->name }}</a></td>
+                                        <td>
+                                            @if($repository->status != $repository::STATUS_DELETING)
+                                                <a href="{{ action('RepositoryController@manage', $repository->id) }}">
+                                                    {{ $repository->name }}
+                                                </a>
+                                            @else
+                                                {{ $repository->name }}
+                                            @endif
+                                        </td>
                                         <td>{{ $repository->url }}</td>
                                         <td>
                                             @if($repository->status & $repository::STATUS_INITIALISING)
@@ -79,6 +87,15 @@
                                                     <i class="material-icons" style="vertical-align: bottom">clear</i>
                                                     Error
                                                 </span>
+                                            @endif
+                                            @if($repository->status & $repository::STATUS_DELETING)
+                                                Deleting 
+                                                <div class="sk-folding-cube">
+                                                    <div class="sk-cube1 sk-cube"></div>
+                                                    <div class="sk-cube2 sk-cube"></div>
+                                                    <div class="sk-cube4 sk-cube"></div>
+                                                    <div class="sk-cube3 sk-cube"></div>
+                                                </div>
                                             @endif
                                         </td>
                                     </tr>

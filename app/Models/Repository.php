@@ -17,6 +17,7 @@ class Repository extends Model
     const STATUS_UPDATING = 4;
     const STATUS_DEPLOYING = 8;
     const STATUS_ERROR = 16;
+    const STATUS_DELETING = 32;
 
     protected $fillable = [
         'name',

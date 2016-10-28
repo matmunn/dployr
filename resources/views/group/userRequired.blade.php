@@ -18,18 +18,18 @@
         <div class="section">
             <div class="row">
                 <div class="col s12">
-                    <h4>Create New Slack Notifier</h4>
+                    <h4>New Group</h4>
                 </div>
             </div>
-            <form action="{{ action('NotifierController@save') }}" method="POST">
+            <form action="{{ action('GroupController@saveUserRequired') }}" method="POST">
                 {{ csrf_field() }}
-                <input type="hidden" name="type" value="slack">
+                <input type="hidden" name="type" value="email">
                 <input type="hidden" name="environment" value="{{ $env->id }}">
                 <div class="row">
                     <div class="col s12 m12">
                         <div class="input-field">
-                            <input type="text" name="endpoint" value="{{ old('endpoint') }}">
-                            <label>Webhook URL</label>
+                            <input type="text" name="address" value="{{ old('address') }}">
+                            <label>Email Address</label>
                         </div>
                     </div>
                 </div>

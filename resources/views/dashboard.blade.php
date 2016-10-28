@@ -10,14 +10,15 @@
             </div>
             <div class="row">
                 <div class="col s12 m12">
-                    Your current plan: {{ Auth::user()->plan->name }} (Max repositories: 
-                    @if(Auth::user()->plan->repository_limit == 0)
-                        Unlimited
-                    @else
-                        {{ Auth::user()->plan->repository_limit }}
-                    @endif)
+                    Your group is currently on the {{ Auth::user()->group->plan->name }} plan.
                     <br />
-                    You are currently using {{ Auth::user()->repositories->count() }} repositories out of your allocation.
+                    Your group is currently using {{ Auth::user()->group->repositories->count() }} repositories out of your
+                    @if(Auth::user()->group->plan->repository_limit == 0)
+                        unlimited
+                    @else
+                        {{ Auth::user()->group->plan->repository_limit }}
+                    @endif
+                    repository limit.
                 </div>
             </div>
         </div>

@@ -17,7 +17,7 @@ class NotifierController extends Controller
 
     public function new($environment, $type)
     {
-        if (!$env = Auth::user()->environments->find($environment)) {
+        if (!$env = Auth::user()->group->environments->find($environment)) {
             return redirect()->action('RepositoryController@list')
                 ->with('error', "Couldn't find the specified environment.");
         }
@@ -64,7 +64,7 @@ class NotifierController extends Controller
             $notifier = ['type' => 'sms', 'data1' => $request->phone];
         }
 
-        if (!$environment = Auth::user()->environments->find($request->environment)) {
+        if (!$environment = Auth::user()->group->environments->find($request->environment)) {
             return redirect()->action('HomeController@dashboard')
                 ->with("error", "The specified environment couldn't be found.");
         }
@@ -81,7 +81,7 @@ class NotifierController extends Controller
             return response()->json("Couldn't find the given notifier.", 400);
         }
         
-        if (!Auth::user()->environments->contains($notifier->environment)) {
+        if (!Auth::user()->group->environments->contains($notifier->environment)) {
             return response()->json("Couldn't find the given notifier.", 400);
         }
 

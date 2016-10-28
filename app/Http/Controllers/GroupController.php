@@ -16,19 +16,9 @@ class ServerController extends Controller
         $this->middleware('auth');
     }
     
-    public function new($environment, $server)
+    public function userRequired()
     {
-        if (!$repo = Environment::find($environment)->repository) {
-            return redirect()->action("HomeController@dashboard")
-                ->with("error", "Couldn't get the repository for the given environment");
-        }
-
-        if (!Auth::user()->group->repositories->contains($repo)) {
-            return redirect()->action("HomeController@dashboard")
-                ->with("error", "No matching repository could be found for your account");
-        }
-
-        return view('server.new.'.$server)->with(compact('environment', 'server'));
+        return view('group.userRequired');
     }
 
     public function save(Request $request)

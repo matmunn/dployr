@@ -37,6 +37,12 @@
             </div>
             <div class="row">
                 <div class="input-field">
+                    <input id="groupname" type="text" class="form-control" name="group_name" value="{{ old('group_name') }}" required autofocus>
+                    <label for="group_name">Your Group Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field">
                     <input id="password" type="password" class="form-control" name="password" required>
                     <label for="password">Password</label>
                     

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Validator;
 use App\Models\Plan;
 use App\Models\User;
+use App\Models\Group;
 use App\Notifications\Registered;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
@@ -57,6 +58,7 @@ class RegisterController extends Controller
                 'name' => 'required|max:255',
                 'email' => 'required|email|max:255|unique:users',
                 'password' => 'required|min:8|confirmed',
+                'group_name' => 'required|string',
                 // 'site_name' => 'required|string',
             ]
         );
@@ -71,6 +73,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $group = Group::create(
+            [
+                'group_name' => $data['group_name'],
+            ]
+        );
+
         $user = User::create(
             [
                 'name' => $data['name'],
@@ -80,6 +88,9 @@ class RegisterController extends Controller
             ]
         );
 
+        $group->admin_user = $user->id;
+        $group->save();
+
         // For now we just want to associate the default plan
         if (!$plan = Plan::find(session()->pull('signup_plan'))) {
             return redirect()->url('/pricing')
@@ -88,9 +99,11 @@ class RegisterController extends Controller
                     "We were unable to associate you with your chosen plan. \
                     Your registration was unsuccessful."
                 );
+            $user->delete();
+            $group->delete();
         }
         
-        $plan->users()->save($user);
+        $plan->groups()->save($group);
         $user->notify(new Registered($user));
         return $user;
     }

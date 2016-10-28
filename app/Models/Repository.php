@@ -61,9 +61,9 @@ class Repository extends Model
         return storage_path('app/repos/'.$this->id);
     }
 
-    public function user()
+    public function group()
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(\App\Models\Group::class);
     }
 
     public function environments()

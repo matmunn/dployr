@@ -12,8 +12,8 @@ class Plan extends Model
         'visible' => 'bool',
     ];
 
-    public function users()
+    public function groups()
     {
-        return $this->hasMany(\App\Models\User::class);
+        return $this->hasMany(\App\Models\Group::class);
     }
 }

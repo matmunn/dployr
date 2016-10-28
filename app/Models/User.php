@@ -29,21 +29,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function repositories()
+    public function group()
     {
-        return $this->hasMany(\App\Models\Repository::class);
-    }
-
-    public function environments()
-    {
-        return $this->hasManyThrough(
-            \App\Models\Environment::class,
-            \App\Models\Repository::class
-        );
-    }
-
-    public function plan()
-    {
-        return $this->belongsTo(\App\Models\Plan::class);
+        return $this->belongsTo(\App\Models\Group::class);
     }
 }

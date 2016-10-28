@@ -21,7 +21,7 @@ class EnvironmentController extends Controller
 
     public function manage($environment)
     {
-        if (!$env = Auth::user()->environments->find($environment)) {
+        if (!$env = Auth::user()->group->environments->find($environment)) {
             return redirect()->action('HomeController@dashboard', $repo)
                 ->with('error', "The specified evironment couldn't be found.");
         }
@@ -31,7 +31,7 @@ class EnvironmentController extends Controller
 
     public function new($repo)
     {
-        if (!$repo = Auth::user()->repositories->find($repo)) {
+        if (!$repo = Auth::user()->group->repositories->find($repo)) {
             return redirect()->action('HomeController@dashboard')
                 ->with(
                     'error',
@@ -70,7 +70,7 @@ class EnvironmentController extends Controller
             ]
         );
 
-        if (!$repo = Auth::user()->repositories->find($request->repo)) {
+        if (!$repo = Auth::user()->group->repositories->find($request->repo)) {
             return redirect()->action('HomeController@dashboard')
                 ->with(
                     'error',
@@ -107,7 +107,7 @@ class EnvironmentController extends Controller
 
     public function deploy($environment)
     {
-        if (!$env = Auth::user()->environments->find($environment)) {
+        if (!$env = Auth::user()->group->environments->find($environment)) {
             return redirect()->action('RepositoryController@list')
                 ->with('error', "The specified environment couldn't be found.");
         }
@@ -123,7 +123,7 @@ class EnvironmentController extends Controller
 
     public function delete($environment)
     {
-        if (!$env = Auth::user()->environments->find($environment)) {
+        if (!$env = Auth::user()->group->environments->find($environment)) {
             return respose()->json("false", 403);
         }
 

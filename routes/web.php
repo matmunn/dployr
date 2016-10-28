@@ -56,3 +56,7 @@ Route::group(['prefix' => 'server'], function () {
     Route::post('save', 'ServerController@save');
     Route::get('{server}/manage', 'ServerController@manage');
 });
+
+Route::group(['prefix' => 'group'], function () {
+    Route::get('/', 'GroupController@userRequired');
+});

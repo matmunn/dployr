@@ -3,6 +3,19 @@
 @section('fill')
 <div class="container">
     <div class="section">
+        @if(count($errors) > 0)
+            <div class="row btn-color-error white-text">
+                <div class="col s12 m10 offset-m1 l6 offset-l3">
+                    <div class="">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="row">
             <div class="col s12">
                 <h4>Create New FTP Server</h4>

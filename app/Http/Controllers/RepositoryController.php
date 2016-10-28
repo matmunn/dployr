@@ -24,14 +24,14 @@ class RepositoryController extends Controller
     //
     public function list()
     {
-        $repositories = Auth::user()->repositories;
+        $repositories = Auth::user()->group->repositories;
 
         return view('repository.list')->with(compact('repositories'));
     }
 
     public function manage($repo)
     {
-        if (!$repo = Auth::user()->repositories()->where('id', $repo)
+        if (!$repo = Auth::user()->group->repositories()->where('id', $repo)
             ->with('environments')->first()) {
             return redirect()->action('RepositoryController@list')
                 ->with('error', "The specified repository couldn't be found.");
@@ -55,15 +55,15 @@ class RepositoryController extends Controller
             ]
         );
 
-        if ($repo = Auth::user()->repositories
+        if ($repo = Auth::user()->group->repositories
             ->where('url', $request->url)->first()) {
             return redirect()->action('RepositoryController@new')->withInput()
                 ->with('error', 'You have already connected that repository.');
         }
 
-        if (Auth::user()->plan->repository_limit > 0 &&
-            Auth::user()->repositories->count() ==
-            Auth::user()->plan->repository_limit) {
+        if (Auth::user()->group->plan->repository_limit > 0 &&
+            Auth::user()->group->repositories->count() ==
+            Auth::user()->group->plan->repository_limit) {
             return redirect()->action('RepositoryController@list')
                 ->with(
                     "error",
@@ -84,7 +84,7 @@ class RepositoryController extends Controller
             $pubKey
         );
         $repo->public_key = $pubKey;
-        Auth::user()->repositories()->save($repo);
+        Auth::user()->group->repositories()->save($repo);
         $repo->save();
         $repo->generateSecretKey();
 
@@ -99,7 +99,7 @@ class RepositoryController extends Controller
 
     public function initialise($repo)
     {
-        if (!$repo = Auth::user()->repositories->find($repo)) {
+        if (!$repo = Auth::user()->group->repositories->find($repo)) {
             return redirect()->action('RepositoryController@list')
                 ->with('error', "Couldn't find the specified repository.");
         }
@@ -125,7 +125,7 @@ class RepositoryController extends Controller
 
     public function key($repo)
     {
-        if (!$repo = Auth::user()->repositories->find($repo)) {
+        if (!$repo = Auth::user()->group->repositories->find($repo)) {
             return redirect()->action('RepositoryController@list')
                 ->with('error', "Couldn't find the specified repository.");
         }
@@ -141,7 +141,7 @@ class RepositoryController extends Controller
 
     public function delete($repo)
     {
-        if (!$repo = Auth::user()->repositories->find($repo)) {
+        if (!$repo = Auth::user()->group->repositories->find($repo)) {
             return response()->json("false", 403);
         }
 

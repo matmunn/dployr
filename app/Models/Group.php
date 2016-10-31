@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
+    use Billable;
+
     //
     protected $fillable = [
         'group_name',
@@ -32,5 +35,10 @@ class Group extends Model
     public function plan()
     {
         return $this->belongsTo(\App\Models\Plan::class);
+    }
+
+    public function invites()
+    {
+        return $this->hasMany(\App\Models\Invite::class);
     }
 }

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use App\Models\Group;
 use App\Http\Requests;
 use App\Models\Server;
+use App\Models\Repository;
 use App\Models\Environment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ServerController extends Controller
+class GroupController extends Controller
 {
     //
     public function __construct()
@@ -21,48 +24,33 @@ class ServerController extends Controller
         return view('group.userRequired');
     }
 
-    public function save(Request $request)
+    public function saveUserRequired(Request $request)
     {
         $this->validate(
             $request,
             [
-                'name' => 'required|string',
-                'type' => 'required|string',
-                'url' => 'required|string',
-                'user' => 'required|string',
-                'password' => 'required|string',
-                'path' => 'required|string',
-                'environment' => 'required|integer',
-                'port' => 'integer'
+                'name' => 'required|string'
             ]
         );
 
-        if (!$environment = Auth::user()->group->environments->find($request->environment)) {
-            return redirect()->action('HomeController@dashboard')
-                ->with("error", "The specified environment couldn't be found.");
+        $group = new Group;
+        $group->group_name = $request->name;
+        $group->admin_user = Auth::user()->id;
+        if (Auth::user()->plan_id) {
+            $group->plan_id = Auth::user()->plan_id;
+        } else {
+            $group->plan_id = 1;
+        }
+        $group->save();
+        Auth::user()->attachRole(Role::where('name', 'owner')->first());
+        $group->users()->save(Auth::user());
+
+        foreach (Repository::where('user_id', Auth::user()->id)->get() as $repo) {
+            $repo->group_id = Auth::user()->group->id;
+            $repo->save();
         }
 
-        $server = new Server(
-            [
-                'name'=> $request->name,
-                'type' => $request->type,
-                'server_name' => $request->url,
-                'server_username' => $request->user,
-                'server_password' => $request->password,
-                'server_path' => $request->path,
-            ]
-        );
-
-        if ($request->has('port')) {
-            $server->server_port = $request->port;
-        }
-
-        if (!$environment->servers()->save($server)) {
-            return redirect()->action("EnvironmentController@manage", $environment)
-                ->with("error", "The server couldn't be saved. Please try again later");
-        }
-
-        return redirect()->action('ServerController@manage', $server->id);
+        return redirect()->action('HomeController@dashboard');
     }
 
     public function manage($server)
@@ -75,8 +63,10 @@ class ServerController extends Controller
                     }
                 ]
             )->first();
-        if (!$server || !Auth::user()->group->environments->contains($server->environment)) {
-            return redirect()->action("HomeController@dashboard")->with("error", "The specified server couldn't be found");
+        if (!$server
+            || !Auth::user()->group->environments->contains($server->environment)) {
+            return redirect()->action("HomeController@dashboard")
+                ->with("error", "The specified server couldn't be found");
         }
 
         return view('server.manage')->with(compact('server'));

@@ -74,7 +74,7 @@
             </div>
             <div class="row">
                 <div class="col s12 m12 right-align">
-                    <a class="waves-effect waves-light btn btn-color-error delete-button col s12 m5 offset-m7 l3 offset-l9" href="#">Delete Repository</a>
+                    <a class="waves-effect waves-light btn btn-color-error delete-button col s12 m5 offset-m7 l3 offset-l9" href="#">Disconnect Repository</a>
                 </div>
             </div>
         </div>
@@ -84,8 +84,8 @@
         $('.delete-button').on('click', function()
         {
             swal({
-              title: "Delete repository",
-              text: "Are you sure you want to delete this repository?<br /><br /><strong>This can't be undone!</strong><br /><br />Type the repository name <div class='monospace code'>{{ $repo->name }}</div> below to confirm deletion.",
+              title: "Disconnect repository",
+              text: "Are you sure you want to disconnect this repository?<br /><br /><strong>This can't be undone!</strong><br /><br />Type the repository name <div class='monospace code'>{{ $repo->name }}</div> below to confirm deletion.",
               input: "text",
               showCancelButton: true,
               closeOnConfirm: false,

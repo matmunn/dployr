@@ -59,4 +59,5 @@ Route::group(['prefix' => 'server'], function () {
 
 Route::group(['prefix' => 'group'], function () {
     Route::get('/', 'GroupController@userRequired');
+    Route::post('/', 'GroupController@saveUserRequired');
 });

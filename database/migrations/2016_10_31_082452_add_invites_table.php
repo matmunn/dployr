@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddGroupsTable extends Migration
+class AddInvitesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,16 +14,11 @@ class AddGroupsTable extends Migration
     public function up()
     {
         //
-        Schema::create('groups', function ($table) {
+        Schema::create('invites', function ($table) {
             $table->increments('id');
-            $table->integer('admin_user');
-            $table->integer('plan_id');
-            $table->string('group_name');
-            $table->timestamps();
-        });
-
-        Schema::table('users', function ($table) {
             $table->integer('group_id');
+            $table->string('hash');
+            $table->timestamps();
         });
     }
 
@@ -35,10 +30,6 @@ class AddGroupsTable extends Migration
     public function down()
     {
         //
-        Schema::drop('groups');
-
-        Schema::table('users', function ($table) {
-            $table->dropColumn('group_id');
-        });
+        Schema::drop('invites');
     }
 }

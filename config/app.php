@@ -170,6 +170,7 @@ return [
         GrahamCampbell\Bitbucket\BitbucketServiceProvider::class,
         GrahamCampbell\GitHub\GitHubServiceProvider::class,
         NotificationChannels\Plivo\PlivoServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
 
         //
 
@@ -230,6 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Github' => GrahamCampbell\GitHub\Facades\GitHub::class,
         'Bitbucket' => GrahamCampbell\Bitbucket\Facades\Bitbucket::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
 
     ],
 

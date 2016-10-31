@@ -21,6 +21,19 @@
                     repository limit.
                 </div>
             </div>
+            <div class="row">
+                <div class="col s12">
+                    <h4>My Group</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12">
+                    There are {{ Auth::user()->group->count() }} members in your group.
+                    @if(Entrust::can('manage-group'))
+                        poop
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 @endsection

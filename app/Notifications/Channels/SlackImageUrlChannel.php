@@ -41,9 +41,10 @@ class SlackImageUrlChannel
         }
 
         $message = $notification->toSlack($notifiable);
+        $deliverable = $this->buildJsonPayload($message);
 
         foreach ($urls as $url) {
-            $this->http->post($url, $this->buildJsonPayload($message));
+            $this->http->post($url, $deliverable);
         }
     }
 

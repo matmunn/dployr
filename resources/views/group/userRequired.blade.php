@@ -2,20 +2,27 @@
 
 @section('fill')
     @if(count($errors) > 0)
-        <div class="row btn-color-error white-text">
-            <div class="col s12 m6 offset-m3">
-                <div class="">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+        <div class="section">
+            <div class="row btn-color-error white-text">
+                <div class="col s12 m6 offset-m3">
+                    <div class="">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     @endif
     <div class="container">
         <div class="section">
+                <div class="row">
+                    <div class="col s12 m12" style="text-align:center">
+                        <div class="message-success">Thanks for choosing dployr!<br />We've recently added groups and so now we'd like to offer you the opportunity to choose your group name, even if you use dployr for yourself.<br />Once you've chosen a group name you're free to get back to deploying your code!</div>
+                    </div>
+                </div>
             <div class="row">
                 <div class="col s12">
                     <h4>New Group</h4>
@@ -23,19 +30,18 @@
             </div>
             <form action="{{ action('GroupController@saveUserRequired') }}" method="POST">
                 {{ csrf_field() }}
-                <input type="hidden" name="type" value="email">
-                <input type="hidden" name="environment" value="{{ $env->id }}">
                 <div class="row">
                     <div class="col s12 m12">
                         <div class="input-field">
-                            <input type="text" name="address" value="{{ old('address') }}">
-                            <label>Email Address</label>
+                            <input type="text" name="name" value="{{ old('name') }}">
+                            <label>Your Group Name</label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <input type="submit" class="btn btn-color-success col s12 m5 l3" value="Save">
-                    <a class="btn btn-color-error col s12 m5 offset-m2 l3 offset-l6" href="{{ action('EnvironmentController@manage', $env) }}">Cancel</a>
+                    <div class="col s12 m5 l3">
+                        <input type="submit" class="btn btn-color-success col s12" value="Save">
+                    </div>
                 </div>
             </form>
         </div>

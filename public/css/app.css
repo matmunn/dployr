@@ -106,7 +106,7 @@ body {
   width: 50vw;
   word-wrap: break-word; }
 
-.code, .message-error {
+.code, .message-error, .message-success {
   width: 100%;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -142,6 +142,10 @@ body {
 .message-error {
   background-color: #f7d5d5;
   border: 1px solid #ce1d00; }
+
+.message-success {
+  background-color: #d5f7d7;
+  border: 1px solid #00af79; }
 
 .delete-button {
   margin-top: 4em; }

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CheckGroupExistence
@@ -17,7 +18,8 @@ class CheckGroupExistence
      */
     public function handle($request, Closure $next)
     {
-        if (!count(Auth::user()->group)) {
+        if (!Auth::guest() && !count(Auth::user()->group)
+            && request()->segment(1) != "group") {
             return redirect('/group');
         }
 

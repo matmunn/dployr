@@ -39,6 +39,14 @@ class EnvironmentController extends Controller
                 );
         }
 
+        if (!Auth::user()->can('add-environment')) {
+            return redirect()->action('RepositoryController@manage', $repo)
+                ->with(
+                    'error',
+                    "You don't have permission to create a new environment."
+                );
+        }
+
         if ($repo->status == $repo::STATUS_INITIALISING) {
             return redirect()->action('RepositoryController@list')
                 ->with('error', "Your repository is still initialising.");
@@ -110,6 +118,14 @@ class EnvironmentController extends Controller
         if (!$env = Auth::user()->group->environments->find($environment)) {
             return redirect()->action('RepositoryController@list')
                 ->with('error', "The specified environment couldn't be found.");
+        }
+
+        if (!Auth::user()->can('deploy')) {
+            return redirect()->action('EnvironmentController@manage', $env)
+                ->with(
+                    'error',
+                    "You don't have permission to deploy this environment."
+                );
         }
 
         dispatch(new UpdateRepository(new GitService($env->repository), $env->id));

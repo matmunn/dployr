@@ -7,6 +7,7 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Models\Group;
 use App\Notifications\Registered;
+use App\Jobs\NotifyOfRegistration;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -102,6 +103,8 @@ class RegisterController extends Controller
             $user->delete();
             $group->delete();
         }
+
+        dispatch(new NotifyOfRegistration($user));
         
         $plan->groups()->save($group);
         $user->notify(new Registered($user));

@@ -9,6 +9,7 @@ use App\Models\Server;
 use App\Models\Repository;
 use App\Models\Environment;
 use Illuminate\Http\Request;
+use App\Jobs\SendRegistrationInvite;
 use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
@@ -66,9 +67,46 @@ class GroupController extends Controller
         if (!$server
             || !Auth::user()->group->environments->contains($server->environment)) {
             return redirect()->action("HomeController@dashboard")
-                ->with("error", "The specified server couldn't be found");
+                ->with("error", "The specified server couldn't be found.");
         }
 
         return view('server.manage')->with(compact('server'));
+    }
+
+    public function invite()
+    {
+        if (Auth::user()->group->plan->user_limit > 0
+            && Auth::user()->group->users->count() >= Auth::user()->group
+            ->plan->user_limit) {
+            return redirect()->action("HomeController@dashboard")
+                ->with(
+                    "error",
+                    "Your group is currently at the user limit. 
+                    Before you can continue you must remove users or upgrade your 
+                    plan."
+                );
+        }
+
+        if (!Auth::user()->can('manage-users')) {
+            return redirect()->action('HomeController@dashboard')
+                ->with('error', "You don't have permission to invite users.");
+        }
+
+        return view('group.invite');
+    }
+
+    public function sendInvite(Request $request)
+    {
+        $this->validate(
+            $request,
+            [
+                'email' => 'required|email',
+            ]
+        );
+
+        dispatch(new SendRegistrationInvite($request->email, Auth::user()->group));
+
+        return redirect()->action('HomeController@dashboard')
+            ->with('message', "Your invite will be sent shortly.");
     }
 }

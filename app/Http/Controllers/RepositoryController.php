@@ -42,6 +42,14 @@ class RepositoryController extends Controller
 
     public function new()
     {
+        if (!Auth::user()->can('connect-repository')) {
+            return redirect()->action('RepositoryController@list')
+                ->with(
+                    'error',
+                    "You don't have permission to connect repositories."
+                );
+        }
+
         return view('repository.new');
     }
 
@@ -54,6 +62,14 @@ class RepositoryController extends Controller
                 'url' => 'required|string'
             ]
         );
+
+        if (strstr($request->url, 'https://')) {
+            return redirect()->action('RepositoryController@new')->withInput()
+                ->with(
+                    'error',
+                    'HTTPS login is currently unsupported, please use SSH URLs.'
+                );
+        }
 
         if ($repo = Auth::user()->group->repositories
             ->where('url', $request->url)->first()) {
@@ -69,6 +85,14 @@ class RepositoryController extends Controller
                     "error",
                     "You are at your repository limit, please \
                     disconnect a repository before trying to connect another one."
+                );
+        }
+
+        if (!Auth::user()->can('connect-repository')) {
+            return redirect()->action('RepositoryController@list')
+                ->with(
+                    'error',
+                    "You don't have permission to connect repositories."
                 );
         }
 
@@ -147,6 +171,14 @@ class RepositoryController extends Controller
 
         if ($repo->status == $repo::STATUS_INITIALISING) {
             session()->flash('error', "Your repository is still initialising.");
+            return;
+        }
+
+        if (!Auth::user()->can('disconnect-repository')) {
+            session()->flash(
+                'error',
+                "You don't have permission to disconnect repositories."
+            );
             return;
         }
 

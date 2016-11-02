@@ -17,6 +17,8 @@ Route::get('pricing', 'HomeController@pricing');
 
 Auth::routes();
 
+Route::get('/register/{invite}', 'Auth\RegisterController@showRegistrationForm');
+
 Route::get('/logout', 'Auth\LoginController@logout');
 
 Route::get('myaccount', 'HomeController@dashboard');
@@ -27,11 +29,6 @@ Route::group(['prefix' => 'repository'], function () {
     Route::get('new', 'RepositoryController@new');
     Route::post('new', 'RepositoryController@save');
     Route::get('{repo}', 'RepositoryController@manage');
-    // Route::get('{repo}/details', 'RepositoryController@details');
-    // Route::get('{repo}/clone', 'RepositoryController@clone');
-    // Route::get('{repo}/branches', 'RepositoryController@branches');
-    // Route::get('{repo}/files', 'RepositoryController@changedFiles');
-    // Route::get('{repo}/test', 'RepositoryController@testing');
     Route::get('{repo}/initialise', 'RepositoryController@initialise');
     Route::get('{repo}/key', 'RepositoryController@key');
     Route::delete('{repo}', 'RepositoryController@delete');
@@ -60,4 +57,6 @@ Route::group(['prefix' => 'server'], function () {
 Route::group(['prefix' => 'group'], function () {
     Route::get('/', 'GroupController@userRequired');
     Route::post('/', 'GroupController@saveUserRequired');
+    Route::get('invite', 'GroupController@invite');
+    Route::post('invite', 'GroupController@sendInvite');
 });

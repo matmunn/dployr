@@ -119,6 +119,16 @@
             </ul>
         </div>
     </nav>
+    @if(session()->has('message') || session()->has('status'))
+        <div class="card-panel btn-color-success white-text center-align">
+            {{ !empty(session('message')) ? session()->pull('message') : session()->pull('status') }}
+        </div>
+    @endif
+    @if(session()->has('error'))
+        <div class="card-panel btn-color-error center-align white-text text-lighten-2">
+            {{ session()->pull('error') }}
+        </div>
+    @endif
 
     @yield('content')
 

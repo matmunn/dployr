@@ -29,8 +29,8 @@ class RoleSeeder extends Seeder
         $disconnectRepository = new Permission;
         $disconnectRepository->name = "disconnect-repository";
         $disconnectRepository->display_name = "Disconnect Repository";
-        $disconnectRepository->description = "disconnect previously connected \
-            repositories";
+        $disconnectRepository->description = "disconnect previously connected ".
+            "repositories";
         $disconnectRepository->save();
 
         $addEnvironment = new Permission;
@@ -65,6 +65,7 @@ class RoleSeeder extends Seeder
 
         $owner = new Role;
         $owner->name = "owner";
+        $owner->display_name = "Owner";
         $owner->save();
         $owner->attachPermissions([
             $manageUsers,
@@ -79,6 +80,7 @@ class RoleSeeder extends Seeder
 
         $admin = new Role;
         $admin->name = "admin";
+        $admin->display_name = "Administrator";
         $admin->save();
         $admin->attachPermissions([
             $manageUsers,
@@ -92,11 +94,13 @@ class RoleSeeder extends Seeder
 
         $accounts = new Role;
         $accounts->name = "accounts";
+        $accounts->display_name = "Accounting";
         $accounts->save();
         $accounts->attachPermission($billing);
 
         $manager = new Role;
         $manager->name = "manager";
+        $manager->display_name = "Manager";
         $manager->save();
         $manager->attachPermissions([
             $connectRepository,
@@ -108,6 +112,7 @@ class RoleSeeder extends Seeder
 
         $user = new Role;
         $user->name = "user";
+        $user->display_name = "User";
         $user->save();
         $user->attachPermission($deploy);
     }

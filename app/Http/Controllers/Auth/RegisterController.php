@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use Validator;
+use Carbon\Carbon;
 use App\Models\Plan;
 use App\Models\User;
 use App\Models\Group;
+use App\Models\Invite;
 use App\Notifications\Registered;
 use App\Jobs\NotifyOfRegistration;
 use App\Http\Controllers\Controller;
@@ -97,13 +99,14 @@ class RegisterController extends Controller
             return redirect()->url('/pricing')
                 ->with(
                     'error',
-                    "We were unable to associate you with your chosen plan. \
-                    Your registration was unsuccessful."
+                    "We were unable to associate you with your chosen plan. ".
+                    "Your registration was unsuccessful."
                 );
             $user->delete();
             $group->delete();
         }
 
+        // I'd like to know when someone registers
         dispatch(new NotifyOfRegistration($user));
         
         $plan->groups()->save($group);
@@ -116,8 +119,23 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm($invite = null)
     {
+        $code = null;
+        if (!is_null($invite)) {
+            if (!$code = Invite::where('hash', $invite)
+                ->where('expires_at', '>', Carbon::now())->first()) {
+                session()->flash(
+                    'error',
+                    "Your registration token is invalid and you ".
+                        "won't join a group if you continue registration."
+                );
+                session()->forget('invite');
+            } else {
+                session('invite', $code);
+            }
+        }
+
         // This is for local only,
 
         if (!session()->has('signup_plan')) {
@@ -126,6 +144,6 @@ class RegisterController extends Controller
             session(['signup_plan' => 1]);
         }
 
-        return view('auth.register');
+        return view('auth.register')->with(compact('code'));
     }
 }

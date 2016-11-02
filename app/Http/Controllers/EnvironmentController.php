@@ -86,12 +86,20 @@ class EnvironmentController extends Controller
                 );
         }
 
+        if (!Auth::user()->can('add-environment')) {
+            return redirect()->action('RepositoryController@manage', $repo)
+                ->with(
+                    'error',
+                    "You don't have permission to create a new environment."
+                );
+        }
+
         if ($repo->environments->where('branch', $request->branch)->first()) {
             return redirect()->action('RepositoryController@manage', $repo)
                 ->with(
                     'error',
-                    "There is already an environment tracking this branch \
-                        for this repository."
+                    "There is already an environment tracking this branch ".
+                        "for this repository."
                 );
         }
 
@@ -141,6 +149,14 @@ class EnvironmentController extends Controller
     {
         if (!$env = Auth::user()->group->environments->find($environment)) {
             return respose()->json("false", 403);
+        }
+
+        if (!Auth::user()->can('delete-environment')) {
+            session()->flash(
+                'error',
+                "You don't have permission to delete environments."
+            );
+            return;
         }
 
         dispatch(new DeleteEnvironment($env));

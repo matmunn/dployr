@@ -24,7 +24,7 @@
 
             <!--   Icon Section   -->
             <div class="row">
-                <div class="col s12 m4">
+                <div class="col s12 m4 offset-m4">
                     <div class="icon-block">
                         <h2 class="center dployr-blue"><i class="material-icons">flash_on</i></h2>
                         <h5 class="center">Speeds up deployment</h5>
@@ -63,17 +63,5 @@
 @endsection
 
 @section('content')
-
-    @if(session()->has('message') || session()->has('status'))
-        <div class="card-panel btn-color-success white-text center-align">
-            {{ !empty(session('message')) ? session()->pull('message') : session()->pull('status') }}
-        </div>
-    @endif
-    @if(session()->has('error'))
-        <div class="card-panel btn-color-error center-align white-text text-lighten-2">
-            {{ session()->pull('error') }}
-        </div>
-    @endif
-
     @yield('fill')
 @endsection

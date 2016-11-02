@@ -31,16 +31,24 @@
             </div>
             <div class="row">
                 <div class="input-field">
-                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                    <input id="email" type="email" class="form-control" name="email" value="
+                    @if(session()->has('invite'))
+                        {{ session('invite')->email }}
+                    @else
+                        {{ old('email') }}
+                    @endif
+                    " required>
                     <label for="email">Email</label>
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field">
-                    <input id="groupname" type="text" class="form-control" name="group_name" value="{{ old('group_name') }}" required autofocus>
-                    <label for="group_name">Your Group Name</label>
+            @if(!session()->has('invite'))
+                <div class="row">
+                    <div class="input-field">
+                        <input id="group_name" type="text" class="form-control" name="group_name" value="{{ old('group_name') }}" required>
+                        <label for="group_name">Your Group Name</label>
+                    </div>
                 </div>
-            </div>
+            @endif
             <div class="row">
                 <div class="input-field">
                     <input id="password" type="password" class="form-control" name="password" required>
@@ -52,7 +60,6 @@
                 <div class="input-field">
                     <input id="password_confirm" type="password" class="form-control" name="password_confirmation" required>
                     <label for="password_confirm">Password Confirmation</label>
-                    
                 </div>
             </div>
             <div class="row">

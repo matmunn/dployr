@@ -150,4 +150,12 @@ body {
 .delete-button {
   margin-top: 4em; }
 
+.tabs .indicator {
+  background-color: #00A6C1; }
+
+.tabs .tab a {
+  color: #00A6C1; }
+  .tabs .tab a:hover {
+    color: #00d2f4; }
+
 /*# sourceMappingURL=app.css.map */

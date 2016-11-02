@@ -18,31 +18,23 @@
             @endif
             <div class="row">
                 <div class="col s12">
-                    <h4>Connect New Repository</h4>
+                    <h4>Invite New User</h4>
                 </div>
             </div>
-            <form action="{{ action('RepositoryController@save') }}" method="POST">
+            <form action="{{ action('GroupController@sendInvite') }}" method="POST">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="col s12 m12">
                         <div class="input-field">
-                            <input id="name" type="text" class="validate" name="name" required>
-                            <label for="name">Repository name</label>
+                            <input id="email" type="email" class="validate" name="email" required>
+                            <label for="email">Email Address</label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col s12 m12">
-                        <div class="input-field">
-                            <input id="url" type="text" class="validate" name="url" required>
-                            <label for="url">Repository URL</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12 m12">
-                        <input type="submit" class="btn btn-color-success col s12 m5 l3" value="Save">
-                        <a class="btn btn-color-error col s12 m5 offset-m2 l3 offset-l6" href="{{ action('RepositoryController@list') }}">Cancel</a>
+                        <input type="submit" class="btn btn-color-success col s12 m5 l3" value="Send">
+                        <a class="btn btn-color-error col s12 m5 offset-m2 l3 offset-l6" href="{{ action('HomeController@dashboard') }}">Cancel</a>
                     </div>
                 </div>
             </form>

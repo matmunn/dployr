@@ -105,7 +105,9 @@
                                                     </td>
                                                     <td>
                                                         <i class="material-icons dployr-blue">mode_edit</i>
-                                                        <i class="material-icons red-text">close</i>
+                                                        <a href="#" class="delete-button" data-user="{{ $user->id }}">
+                                                            <i class="material-icons red-text">close</i>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -114,6 +116,27 @@
                                 </div>
                             </div>
                         </div>
+                        <script type="text/javascript">
+                        $(document).ready(function() {
+                            $('.delete-button').on('click', function()
+                            {
+                                var userId = $(this).data('user');
+                                swal({
+                                  title: "Remove user from group",
+                                  text: "Are you sure you want to remove this user from your group?<br /><br /><strong>This can't be undone!</strong>",
+                                  showCancelButton: true,
+                                  closeOnConfirm: false,
+                                  type: "error",
+                                  confirmButtonClass: "btn-color-error"
+                                }).then(function(inputValue) {
+                                    $.post('{{ action('GroupController@removeUser') }}', {"_method": "DELETE", "_token": "{{ csrf_token() }}", "user": userId}, function(data) {
+                                        // Redirect to dashboard
+                                        window.location = '{{ action('HomeController@dashboard') }}';
+                                    });
+                                }).done();
+                            });
+                        });
+                        </script>
                     @endif
                     @if(Auth::user()->can('manage-group'))
                         <div id="manage_group_settings">

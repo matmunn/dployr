@@ -28,7 +28,7 @@
                 <div class="row">
                     <div class="col s12 m12">
                         <div class="input-field">
-                            <input type="text" name="endpoint" value="{{ old('endpoint') }}">
+                            <input type="text" name="endpoint" value="{{ old('endpoint') }}" required>
                             <label>Webhook URL</label>
                         </div>
                     </div>

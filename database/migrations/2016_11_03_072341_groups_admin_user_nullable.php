@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UserFieldsNullable extends Migration
+class GroupsAdminUserNullable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,8 @@ class UserFieldsNullable extends Migration
     public function up()
     {
         //
-        Schema::table('users', function ($table) {
-            $table->string('site_name')->nullable()->change();
-            $table->integer('plan_id')->nullable()->change();
+        Schema::table('groups', function ($table) {
+            $table->integer('admin_user')->nullable()->change();
         });
     }
 
@@ -28,9 +27,8 @@ class UserFieldsNullable extends Migration
     public function down()
     {
         //
-        Schema::table('users', function ($table) {
-            $table->string('site_name')->change();
-            $table->integer('plan_id')->change();
+        Schema::table('groups', function ($table) {
+            $table->integer('admin_user')->change();
         });
     }
 }

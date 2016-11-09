@@ -28,7 +28,7 @@
                 <div class="row">
                     <div class="col s12 m12">
                         <div class="input-field">
-                            <input type="text" name="address" value="{{ old('address') }}">
+                            <input type="text" name="address" value="{{ old('address') }}" required>
                             <label>Email Address</label>
                         </div>
                     </div>

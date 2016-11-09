@@ -33,7 +33,7 @@
                 <div class="row">
                     <div class="col s12 m12">
                         <div class="input-field">
-                            <input type="text" name="name" value="{{ old('name') }}">
+                            <input type="text" name="name" value="{{ old('name') }}" required>
                             <label>Your Group Name</label>
                         </div>
                     </div>

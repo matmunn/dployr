@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col s12 m12">
                     <div class="input-field">
-                        <input type="text" class="validate" name="name">
+                        <input type="text" class="validate" name="name" required>
                         <label>Environment name</label>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="col s12">
                     <div class="input-field">
-                        <select name="type">
+                        <select name="type" required>
                             <option selected disabled>--</option>
                             <option value="ftp">FTP</option>
                             <option value="sftp">SFTP</option>
@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="col s12">
                     <div class="input-field">
-                        <select name="branch">
+                        <select name="branch" required>
                             <option selected disabled>--</option>
                             @foreach($branches as $branch)
                                 <option value="{{ $branch }}">{{ $branch}}</option>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Validator;
 use Carbon\Carbon;
 use App\Models\Plan;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Invite;
@@ -76,12 +77,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $group = Group::create(
-            [
-                'group_name' => $data['group_name'],
-            ]
-        );
-
         $user = User::create(
             [
                 'name' => $data['name'],
@@ -91,25 +86,21 @@ class RegisterController extends Controller
             ]
         );
 
-        $group->admin_user = $user->id;
-        $group->save();
-
         // For now we just want to associate the default plan
-        if (!$plan = Plan::find(session()->pull('signup_plan'))) {
-            return redirect()->url('/pricing')
-                ->with(
-                    'error',
-                    "We were unable to associate you with your chosen plan. ".
-                    "Your registration was unsuccessful."
-                );
-            $user->delete();
-            $group->delete();
-        }
+        $plan = Plan::find(session()->pull('signup_plan'));
+
+        $group = new Group;
+        $group->group_name = $data['group_name'];
+        $group->admin_user = $user->id;
+
+        $plan->groups()->save($group);
+        $group->users()->save($user);
+
+        $user->attachRole(Role::where('name', 'owner')->first());
 
         // I'd like to know when someone registers
         dispatch(new NotifyOfRegistration($user));
         
-        $plan->groups()->save($group);
         $user->notify(new Registered($user));
         return $user;
     }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UserFieldsNullable extends Migration
+class AddGroupIdToRepositories extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,12 @@ class UserFieldsNullable extends Migration
     public function up()
     {
         //
+        Schema::table('repositories', function ($table) {
+            $table->integer('group_id');
+        });
+
         Schema::table('users', function ($table) {
-            $table->string('site_name')->nullable()->change();
-            $table->integer('plan_id')->nullable()->change();
+            $table->integer('group_id')->nullable()->change();
         });
     }
 
@@ -28,9 +31,12 @@ class UserFieldsNullable extends Migration
     public function down()
     {
         //
+        Schema::table('repositories', function ($table) {
+            $table->dropColumn('group_id');
+        });
+
         Schema::table('users', function ($table) {
-            $table->string('site_name')->change();
-            $table->integer('plan_id')->change();
+            $table->integer('group_id')->nullable(false)->change();
         });
     }
 }

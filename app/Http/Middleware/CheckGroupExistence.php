@@ -19,7 +19,7 @@ class CheckGroupExistence
     public function handle($request, Closure $next)
     {
         if (!Auth::guest() && !count(Auth::user()->group)
-            && request()->segment(1) != "group") {
+            && !in_array(request()->segment(1), ['group', 'logout'])) {
             return redirect('/group');
         }
 

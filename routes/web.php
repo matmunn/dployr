@@ -59,4 +59,5 @@ Route::group(['prefix' => 'group'], function () {
     Route::post('/', 'GroupController@saveUserRequired');
     Route::get('invite', 'GroupController@invite');
     Route::post('invite', 'GroupController@sendInvite');
+    Route::delete('removeuser', 'GroupController@removeUser');
 });

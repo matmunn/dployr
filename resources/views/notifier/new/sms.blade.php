@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col s12 m12">
                     <div class="input-field">
-                        <input type="text" name="phone" value="{{ old('phone') }}">
+                        <input type="text" name="phone" value="{{ old('phone') }}" required>
                         <label>Phone Number</label>
                     </div>
                 </div>

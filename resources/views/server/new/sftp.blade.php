@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col s12 m12">
                     <div class="input-field">
-                        <input type="text" name="name" value="{{ old('name') }}">
+                        <input type="text" name="name" value="{{ old('name') }}" required>
                         <label>Server Name</label>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
             <div class="row">
                 <div class="col s12 m12">
                     <div class="input-field">
-                        <input type="text" name="url" value="{{ old('url') }}">
+                        <input type="text" name="url" value="{{ old('url') }}" require>
                         <label>Server URL</label>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col s12 m12">
                     <div class="input-field">
-                        <input type="text" name="user" value="{{ old('user') }}">
+                        <input type="text" name="user" value="{{ old('user') }}" required>
                         <label>FTP Username</label>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
             <div class="row">
                 <div class="col s12 m12">
                     <div class="input-field">
-                        <input type="password" name="password">
+                        <input type="password" name="password" required>
                         <label>FTP Password</label>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
             <div class="row">
                 <div class="col s12 m12">
                     <div class="input-field">
-                        <input type="text" name="path">
+                        <input type="text" name="path" required>
                         <label>FTP Path</label>
                     </div>
                 </div>

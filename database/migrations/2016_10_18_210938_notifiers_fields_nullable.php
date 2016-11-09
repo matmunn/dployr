@@ -14,8 +14,7 @@ class NotifiersFieldsNullable extends Migration
     public function up()
     {
         //
-        Schema::table('notifiers', function($table)
-        {
+        Schema::table('notifiers', function ($table) {
             $table->string('data2')->nullable()->change();
             $table->string('data3')->nullable()->change();
         });
@@ -29,10 +28,9 @@ class NotifiersFieldsNullable extends Migration
     public function down()
     {
         //
-        Schema::table('notifiers', function($table)
-        {
-            $table->string('data2')->nullable(false)->change();
-            $table->string('data3')->nullable(false)->change();
+        Schema::table('notifiers', function ($table) {
+            $table->string('data2')->change();
+            $table->string('data3')->change();
         });
     }
 }

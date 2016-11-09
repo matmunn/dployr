@@ -14,8 +14,7 @@ class MakeDeploymentFieldsNullalbe extends Migration
     public function up()
     {
         //
-        Schema::table('deployments', function($table)
-        {
+        Schema::table('deployments', function ($table) {
             $table->string('commit_hash')->nullable()->change();
             $table->datetime('started_at')->nullable()->change();
             $table->datetime('finished_at')->nullable()->change();
@@ -30,11 +29,10 @@ class MakeDeploymentFieldsNullalbe extends Migration
     public function down()
     {
         //
-        Schema::table('deployments', function($table)
-        {
-            $table->string('commit_hash')->nullable(false)->change();
-            $table->datetime('started_at')->nullable(false)->change();
-            $table->datetime('finished_at')->nullable(false)->change();
+        Schema::table('deployments', function ($table) {
+            $table->string('commit_hash')->change();
+            $table->datetime('started_at')->change();
+            $table->datetime('finished_at')->change();
         });
     }
 }

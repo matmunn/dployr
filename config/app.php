@@ -170,7 +170,7 @@ return [
         GrahamCampbell\Bitbucket\BitbucketServiceProvider::class,
         GrahamCampbell\GitHub\GitHubServiceProvider::class,
         NotificationChannels\Plivo\PlivoServiceProvider::class,
-        Zizaco\Entrust\EntrustServiceProvider::class,
+        // Zizaco\Entrust\EntrustServiceProvider::class,
 
         //
 

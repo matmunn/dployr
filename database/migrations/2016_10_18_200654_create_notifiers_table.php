@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddEmailNotifiersTable extends Migration
+class CreateNotifiersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class AddEmailNotifiersTable extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('email_notifiers', function($table)
-        {
+        Schema::create('notifiers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('environment_id');
+            $table->string('type');
+            $table->string('data1');
+            $table->string('data2')->nullable();
+            $table->string('data3')->nullable();
             $table->timestamps();
-            $table->string('name');
-            $table->string('email');
         });
     }
 
@@ -31,7 +31,6 @@ class AddEmailNotifiersTable extends Migration
      */
     public function down()
     {
-        //
-        Schema::drop('email_notifiers');
+        Schema::drop('notifiers');
     }
 }

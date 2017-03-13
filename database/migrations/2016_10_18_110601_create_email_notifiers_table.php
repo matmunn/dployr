@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDeployStatusToEnvironment extends Migration
+class CreateEmailNotifiersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class AddDeployStatusToEnvironment extends Migration
      */
     public function up()
     {
-        //
-        Schema::table('environments', function($table)
-        {
-            $table->integer('deploy_mode')->default(1)->before('created_at');
+        Schema::create('email_notifiers', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('environment_id');
+            $table->string('name');
+            $table->string('email');
+            $table->timestamps();
         });
     }
 
@@ -27,10 +29,6 @@ class AddDeployStatusToEnvironment extends Migration
      */
     public function down()
     {
-        //
-        Schema::table('environments', function($table)
-        {
-            $table->dropColumn('deploy_mode');
-        });
+        Schema::drop('email_notifiers');
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Exceptions\Handler;
+
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
     /**
@@ -7,7 +9,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      *
      * @var string
      */
-    protected $baseUrl = 'http://localhost';
+    protected $baseUrl = 'http://localhost:3000';
 
     /**
      * Creates the application.
@@ -21,5 +23,16 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
+    }
+
+    protected function disableExceptionHandling()
+    {
+        $this->app->instance(ExceptionHandler::class, new class extends Handler {
+            public function __construct() {}
+            public function report(Exception $e) {}
+            public function render($request, Exception $e) {
+                throw $e;
+            }
+        });
     }
 }

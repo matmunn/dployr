@@ -13,11 +13,12 @@ class AddInvitesTable extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('invites', function ($table) {
+        Schema::create('invites', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('group_id');
             $table->string('hash');
+            $table->string('email');
+            $table->datetime('expires_at');
             $table->timestamps();
         });
     }
@@ -29,7 +30,6 @@ class AddInvitesTable extends Migration
      */
     public function down()
     {
-        //
         Schema::drop('invites');
     }
 }

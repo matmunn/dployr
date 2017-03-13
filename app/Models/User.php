@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
-    use EntrustUserTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -32,5 +30,12 @@ class User extends Authenticatable
     public function group()
     {
         return $this->belongsTo(\App\Models\Group::class);
+    }
+
+    public function check($permission)
+    {
+        if (env('ENABLE_PERMISSION_CHECK', 'true') == false) return true;
+
+        return $this->can($permission);
     }
 }

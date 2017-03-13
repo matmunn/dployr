@@ -96,7 +96,7 @@ class RegisterController extends Controller
         $plan->groups()->save($group);
         $group->users()->save($user);
 
-        $user->attachRole(Role::where('name', 'owner')->first());
+        // $user->attachRole(Role::where('name', 'owner')->first());
 
         // I'd like to know when someone registers
         dispatch(new NotifyOfRegistration($user));

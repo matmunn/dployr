@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPlanIdToUsers extends Migration
+class CreateRepositoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,16 @@ class AddPlanIdToUsers extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('plans', function($table)
-        {
+        Schema::create('repositories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->decimal('price', 5,2);
-            $table->integer('repository_limit');
+            $table->integer('status')->default(1);
+            $table->string('url');
+            $table->integer('group_id');
+            $table->string('secret_key')->nullable();
+            $table->text('public_key')->nullable();
+            $table->string('last_action')->nullable();
             $table->timestamps();
-        });
-
-        Schema::table('users', function($table)
-        {
-            $table->integer('plan_id')->before('created_at');
         });
     }
 
@@ -37,11 +34,6 @@ class AddPlanIdToUsers extends Migration
     public function down()
     {
         //
-        Schema::table('users', function($table)
-        {
-            $table->dropColumn('plan_id');
-        });
-
-        Schema::drop('plans');
+        Schema::drop('repositories');
     }
 }

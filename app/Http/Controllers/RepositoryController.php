@@ -21,7 +21,7 @@ class RepositoryController extends Controller
     {
         $this->middleware('auth');
     }
-    //
+
     public function list()
     {
         $repositories = Auth::user()->group->repositories;
@@ -42,14 +42,6 @@ class RepositoryController extends Controller
 
     public function new()
     {
-        if (!Auth::user()->can('connect-repository')) {
-            return redirect()->action('RepositoryController@list')
-                ->with(
-                    'error',
-                    "You don't have permission to connect repositories."
-                );
-        }
-
         return view('repository.new');
     }
 
@@ -88,34 +80,8 @@ class RepositoryController extends Controller
                 );
         }
 
-        if (!Auth::user()->can('connect-repository')) {
-            return redirect()->action('RepositoryController@list')
-                ->with(
-                    'error',
-                    "You don't have permission to connect repositories."
-                );
-        }
-
         $repo = new Repository(['name' => $request->name, 'url' => $request->url]);
-
-        $rsa = new RSA();
-        $rsa->setPublicKeyFormat(RSA::PUBLIC_FORMAT_OPENSSH);
-        $keys = $rsa->createKey();
-        $pubKey = $keys['publickey'];
-        $pubKey = str_replace(
-            'phpseclib-generated-key',
-            str_replace(" ", "", $repo->name).'@Dployr',
-            $pubKey
-        );
-        $repo->public_key = $pubKey;
-        Auth::user()->group->repositories()->save($repo);
-        $repo->save();
-        $repo->generateSecretKey();
-
-        Storage::put($repo->privateKeyPath(false), $keys['privatekey']);
-        chmod($repo->privateKeyPath(), 0777);
-
-        dispatch(new CloneRepository(new GitService($repo)));
+        $repo->prepInitialisation();
 
         return redirect()->action('RepositoryController@list')
             ->with("message", "Your repository has been queued for initialisation.");

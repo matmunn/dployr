@@ -13,17 +13,9 @@ class AddStripeRequirements extends Migration
      */
     public function up()
     {
-        //
-        Schema::table('users', function ($table) {
-            $table->string('stripe_id')->nullable();
-            $table->string('card_brand')->nullable();
-            $table->string('card_last_four')->nullable();
-            $table->timestamp('trial_ends_at')->nullable();
-        });
-
-        Schema::create('subscriptions', function ($table) {
+        Schema::create('subscriptions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('group_id');
             $table->string('name');
             $table->string('stripe_id');
             $table->string('stripe_plan');
@@ -41,14 +33,6 @@ class AddStripeRequirements extends Migration
      */
     public function down()
     {
-        //
-        Schema::table('users', function ($table) {
-            $table->dropColumn('stripe_id');
-            $table->dropColumn('card_brand');
-            $table->dropColumn('card_last_four');
-            $table->dropColumn('trial_ends_at');
-        });
-
         Schema::drop('subscriptions');
     }
 }

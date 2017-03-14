@@ -132,20 +132,12 @@ class RepositoryController extends Controller
     public function delete($repo)
     {
         if (!$repo = Auth::user()->group->repositories->find($repo)) {
-            return response()->json("false", 403);
+            return response()->json("false", 422);
         }
 
         if ($repo->status == $repo::STATUS_INITIALISING) {
             session()->flash('error', "Your repository is still initialising.");
-            return;
-        }
-
-        if (!Auth::user()->can('disconnect-repository')) {
-            session()->flash(
-                'error',
-                "You don't have permission to disconnect repositories."
-            );
-            return;
+            return response()->json("false", 422);
         }
 
         dispatch(new DeleteRepository($repo));

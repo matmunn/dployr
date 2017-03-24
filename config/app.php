@@ -171,6 +171,7 @@ return [
         GrahamCampbell\GitHub\GitHubServiceProvider::class,
         NotificationChannels\Plivo\PlivoServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
+        Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
 
         //
 
@@ -232,7 +233,7 @@ return [
         'Github' => GrahamCampbell\GitHub\Facades\GitHub::class,
         'Bitbucket' => GrahamCampbell\Bitbucket\Facades\Bitbucket::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-
+        'Bugsnag' => Bugsnag\BugsnagLaravel\Facades\Bugsnag::class,
     ],
 
 ];

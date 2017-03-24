@@ -42,3 +42,13 @@ $factory->define(App\Models\Plan::class, function (Faker\Generator $faker) {
         'user_limit' => 0,
     ];
 });
+
+$factory->define(App\Models\Repository::class, function (Faker\Generator $faker) {
+    return [
+        'name' => "Example Repo",
+        'url' => "git@example.com:example/repo.git",
+        'group_id' => function () {
+            return factory(App\Models\Group::class)->create()->id;
+        }
+    ];
+});

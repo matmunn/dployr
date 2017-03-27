@@ -6,3 +6,5 @@ php -r "if (hash_file('SHA384', 'composer-setup.php') === file_get_contents('ins
 php composer-setup.php
 php -r "unlink('composer-setup.php'); unlink('installer.sig');"
 php composer.phar install
+
+docker-php-ext-install gd

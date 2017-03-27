@@ -52,3 +52,15 @@ $factory->define(App\Models\Repository::class, function (Faker\Generator $faker)
         }
     ];
 });
+
+$factory->define(App\Models\Environment::class, function (Faker\Generator $faker) {
+    return [
+        'name' => "Default Environment",
+        'branch' => "master",
+        'repository_id' => function () {
+            return factory(App\Models\Repository::class)->create()->id;
+        },
+        'current_commit' => "foobar",
+        "deploy_mode" => App\Models\Environment::DEPLOY_MODE_AUTO
+    ];
+});

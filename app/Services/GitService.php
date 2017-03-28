@@ -31,7 +31,7 @@ class GitService
      */
     public function __destruct()
     {
-        chmod($this->repository->privateKeyPath(), 0777);
+        // chmod($this->repository->privateKeyPath(), 0777);
     }
 
     /**

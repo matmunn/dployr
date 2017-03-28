@@ -31,7 +31,7 @@ class Repository extends Model
      */
     public function generateSecretKey()
     {
-        $this->secret_key = hash("sha256", $this->user->name . $this->name . microtime());
+        $this->secret_key = hash("sha256", $this->group->name . $this->name . microtime());
         $this->save();
     }
 

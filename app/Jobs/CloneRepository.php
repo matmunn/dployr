@@ -38,8 +38,6 @@ class CloneRepository implements ShouldQueue
      */
     public function handle()
     {
-        //
-        
         $repo = $this->git->getRepository();
         $repo->last_action = "clone";
         $repo->status = $repo::STATUS_INITIALISING;
@@ -53,6 +51,8 @@ class CloneRepository implements ShouldQueue
             event(new CloneComplete($repo));
         } catch (GitException $e) {
             Log::error($e);
+            $repo->status = $repo::STATUS_ERROR;
+            $repo->save();
         }
     }
 

@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Unit\Controllers;
+
+use Tests\TestCase;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Repository;

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 class GitService
 {
     protected $repository;
+    protected $wrapper;
 
     /**
      * Construct an instance of our git handler
@@ -18,10 +19,15 @@ class GitService
      * @param App\Models\Repository $repository An instance of our repository
      * @return void
      */
-    public function __construct(Repository $repository)
+    public function __construct(Repository $repository, GitWrapper $wrapper = null)
     {
         $this->repository = $repository;
         chmod($this->repository->privateKeyPath(), 0600);
+
+        $this->wrapper = $wrapper ?: new GitWrapper();
+        $this->wrapper->setGitBinary(env('GIT_BINARY', '/usr/bin/git'));
+        $this->wrapper->setPrivateKey($this->repository->privateKeyPath());
+        $this->wrapper->setTimeout(env('GIT_TIMEOUT', 600));
     }
 
     /**
@@ -41,10 +47,7 @@ class GitService
      */
     public function getGitInstance($includeCopy = true)
     {
-        $wrapper = new GitWrapper(env('GIT_BINARY', '/usr/bin/git'));
-        $wrapper->setPrivateKey($this->repository->privateKeyPath());
-        $wrapper->setTimeout(env('GIT_TIMEOUT', 600));
-        // dd($wrapper);
+        $wrapper = $this->wrapper;
         if ($includeCopy) {
             $wrapper = $wrapper->workingCopy($this->repository->repositoryPath);
         }
@@ -90,8 +93,8 @@ class GitService
      */
     public function getCommitMessage($commit)
     {
-        $git = $this->getGitInstance();
-        $output = $git->getWrapper()->git(
+        $git = $this->getGitInstance(false);
+        $output = $git->git(
             'log --format=%B -n 1 '. $commit,
             $git->getDirectory()
         );

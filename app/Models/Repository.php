@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use phpseclib\Crypt\RSA;
 use GitWrapper\GitWrapper;
+use App\Services\GitService;
+use App\Jobs\CloneRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -36,6 +40,33 @@ class Repository extends Model
     }
 
     /**
+     * Generate keys for the repository and get initialisation started
+     *
+     * @return void
+     */
+    public function prepInitialisation()
+    {
+        $rsa = new RSA();
+        $rsa->setPublicKeyFormat(RSA::PUBLIC_FORMAT_OPENSSH);
+        $keys = $rsa->createKey();
+        $pubKey = $keys['publickey'];
+        $pubKey = str_replace(
+            'phpseclib-generated-key',
+            camel_case($this->name).'@Dployr',
+            $pubKey
+        );
+        $this->public_key = $pubKey;
+        Auth::user()->group->repositories()->save($this);
+        $this->save();
+        $this->generateSecretKey();
+
+        Storage::put($this->privateKeyPath(false), $keys['privatekey']);
+        chmod($this->privateKeyPath(), 0777);
+
+        dispatch(new CloneRepository(new GitService($this)));
+    }
+
+    /**
      * Get the path to the private key for the current repository
      *
      * @param bool $absolute Whether to return absolute or relative path
@@ -63,11 +94,11 @@ class Repository extends Model
 
     public function group()
     {
-        return $this->belongsTo(\App\Models\Group::class);
+        return $this->belongsTo(Group::class);
     }
 
     public function environments()
     {
-        return $this->hasMany(\App\Models\Environment::class);
+        return $this->hasMany(Environment::class);
     }
 }

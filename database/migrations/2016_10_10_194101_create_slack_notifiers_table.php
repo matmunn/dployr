@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class GroupsAdminUserNullable extends Migration
+class CreateSlackNotifiersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class GroupsAdminUserNullable extends Migration
      */
     public function up()
     {
-        //
-        Schema::table('groups', function ($table) {
-            $table->integer('admin_user')->nullable()->change();
+        Schema::create('slack_notifiers', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('environment_id');
+            $table->text('endpoint');
+            $table->timestamps();
         });
     }
 
@@ -26,9 +28,6 @@ class GroupsAdminUserNullable extends Migration
      */
     public function down()
     {
-        //
-        Schema::table('groups', function ($table) {
-            $table->integer('admin_user')->change();
-        });
+        Schema::drop('slack_notifiers');
     }
 }

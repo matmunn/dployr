@@ -46,7 +46,6 @@ class GroupController extends Controller
             $group->plan_id = 1;
         }
         $group->save();
-        Auth::user()->attachRole(Role::where('name', 'owner')->first());
         $group->users()->save(Auth::user());
 
         foreach (Repository::where('user_id', Auth::user()->id)->get() as $repo) {
@@ -90,11 +89,6 @@ class GroupController extends Controller
                 );
         }
 
-        if (!Auth::user()->can('manage-users')) {
-            return redirect()->action('HomeController@dashboard')
-                ->with('error', "You don't have permission to invite users.");
-        }
-
         return view('group.invite');
     }
 
@@ -115,14 +109,6 @@ class GroupController extends Controller
 
     public function removeUser(Request $request)
     {
-        if (!Auth::user()->can('manage-users')) {
-            session()->flash(
-                "error",
-                "You don't have permission to manage your group."
-            );
-            return;
-        }
-
         if (Auth::user()->id == $request->user) {
             session()->flash("error", "You can't remove yourself.");
             return;

@@ -1,0 +1,21 @@
+before_script:
+  - bash ci/build-deps.sh > /dev/null
+
+cache:
+  paths:
+  - vendor/
+
+stages:
+  - test
+
+php7.0:
+  stage: test
+  image: php:7.0
+  script:
+    - vendor/bin/phpunit
+
+php7.1:
+  stage: test
+  image: php:7.1
+  script:
+    - vendor/bin/phpunit

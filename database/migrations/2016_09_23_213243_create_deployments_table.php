@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDeploymentsTable extends Migration
+class CreateDeploymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class AddDeploymentsTable extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('deployments', function($table)
-        {
+        Schema::create('deployments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('commit');
-            $table->dateTime('started_at');
-            $table->dateTime('finished_at');
-            $table->integer('repository_id');
+            $table->integer('server_id');
+            $table->string('commit_hash')->nullable();
+            $table->dateTime('started_at')->nullable();
+            $table->dateTime('finished_at')->nullable();
+            $table->text('commit_message')->nullable();
+            $table->integer('file_count')->nullable()->default(0);
             $table->timestamps();
         });
     }
@@ -32,7 +32,6 @@ class AddDeploymentsTable extends Migration
      */
     public function down()
     {
-        //
         Schema::drop('deployments');
     }
 }

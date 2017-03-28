@@ -22,7 +22,7 @@ class EnvironmentController extends Controller
     public function manage($environment)
     {
         if (!$env = Auth::user()->group->environments->find($environment)) {
-            return redirect()->action('HomeController@dashboard', $repo)
+            return redirect()->action('HomeController@dashboard')
                 ->with('error', "The specified evironment couldn't be found.");
         }
 
@@ -36,14 +36,6 @@ class EnvironmentController extends Controller
                 ->with(
                     'error',
                     "The repository couldn't be found for your account."
-                );
-        }
-
-        if (!Auth::user()->can('add-environment')) {
-            return redirect()->action('RepositoryController@manage', $repo)
-                ->with(
-                    'error',
-                    "You don't have permission to create a new environment."
                 );
         }
 

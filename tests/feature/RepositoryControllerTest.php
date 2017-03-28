@@ -1,13 +1,16 @@
 <?php
 
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use App\Models\Plan;
+use App\Models\User;
+use App\Models\Repository;
 use App\Jobs\CloneRepository;
 use App\Jobs\DeleteRepository;
-use App\Models\Plan;
-use App\Models\Repository;
-use App\Models\User;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class RepositoryControllerTest extends TestCase
 {

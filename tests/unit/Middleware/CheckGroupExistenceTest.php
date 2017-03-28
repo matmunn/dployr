@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests\Unit\Middleware;
+
+use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class CheckGroupExistenceTest extends TestCase
 {

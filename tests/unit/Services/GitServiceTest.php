@@ -1,13 +1,17 @@
 <?php
 
+namespace Tests\Unit\Services;
+
+use Mockery;
+use Tests\TestCase;
 use App\Models\Repository;
-use App\Services\GitService;
-use GitWrapper\GitWorkingCopy;
 use GitWrapper\GitWrapper;
 use GitWrapper\GitBranches;
+use App\Services\GitService;
+use GitWrapper\GitWorkingCopy;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class GitServiceTest extends TestCase
 {

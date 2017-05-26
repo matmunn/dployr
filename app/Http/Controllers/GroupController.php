@@ -23,39 +23,6 @@ class GroupController extends Controller
         $this->middleware('auth');
     }
     
-    public function userRequired()
-    {
-        return view('group.userRequired');
-    }
-
-    public function saveUserRequired(Request $request)
-    {
-        $this->validate(
-            $request,
-            [
-                'name' => 'required|string'
-            ]
-        );
-
-        $group = new Group;
-        $group->group_name = $request->name;
-        $group->admin_user = Auth::user()->id;
-        if (Auth::user()->plan_id) {
-            $group->plan_id = Auth::user()->plan_id;
-        } else {
-            $group->plan_id = 1;
-        }
-        $group->save();
-        $group->users()->save(Auth::user());
-
-        foreach (Repository::where('user_id', Auth::user()->id)->get() as $repo) {
-            $repo->group_id = Auth::user()->group->id;
-            $repo->save();
-        }
-
-        return redirect()->action('HomeController@dashboard');
-    }
-
     public function manage($server)
     {
         $server = Server::where('id', $server)

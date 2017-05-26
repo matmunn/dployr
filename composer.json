@@ -25,7 +25,8 @@
         "graham-campbell/github": "^4.4",
         "graham-campbell/bitbucket": "^1.0",
         "zizaco/entrust": "5.2.x-dev",
-        "bugsnag/bugsnag-laravel": "^2.0"
+        "bugsnag/bugsnag-laravel": "^2.0",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

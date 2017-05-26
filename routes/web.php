@@ -10,19 +10,18 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+Auth::routes();
 
 Route::get('/', 'HomeController@index');
-Route::get('/home', 'HomeController@index');
+Route::get('home', 'HomeController@index');
 Route::get('pricing', 'HomeController@pricing');
-
-Auth::routes();
+Route::get('about', 'HomeController@about');
+Route::get('privacy', 'HomeController@privacy');
+Route::get('myaccount', 'HomeController@dashboard');
 
 Route::get('/register/{invite}', 'Auth\RegisterController@showRegistrationForm');
 
 Route::get('/logout', 'Auth\LoginController@logout');
-
-Route::get('myaccount', 'HomeController@dashboard');
-Route::get('about', 'HomeController@about');
 
 Route::group(['prefix' => 'repository'], function () {
     Route::get('/', 'RepositoryController@list');

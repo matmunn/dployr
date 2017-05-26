@@ -24,12 +24,33 @@
 
             <!--   Icon Section   -->
             <div class="row">
-                <div class="col s12 m4 offset-m4">
+                <div class="col s12 m4 offset-m2">
                     <div class="icon-block">
-                        <h2 class="center dployr-blue"><i class="material-icons">flash_on</i></h2>
-                        <h5 class="center">Speeds up deployment</h5>
+                        <h2 class="center dployr-blue">
+                            <i class="material-icons medium">flash_on</i>
+                        </h2>
+                        <h5 class="center">
+                            Speeds up deployment<br>
+                            &nbsp;
+                        </h5>
 
                         <p class="light">No more worrying about FTP account details and trying to keep track of which files you changed, dployr will take care of all the legwork in the background to ensure that as soon as you push to your repository your changes are reflected on your site.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center dployr-blue">
+                            <i class="material-icons medium">public</i>
+                        </h2>
+                        <h5 class="center">
+                            Multi-regional deployments<br />
+                            <em>coming soon</em>
+                        </h5>
+
+                        <p class="light">
+                            Dployr is an Australian based product, but what if your servers are in another country? Choose the deployment region closest to your servers and deploy your files at the best possible speed, no matter where your code is hosted, no matter where your servers are located.
                         </p>
                     </div>
                 </div>
